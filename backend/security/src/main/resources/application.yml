@@ -1,0 +1,53 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:mysql://localhost:8080/sasatech?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    generate-ddl: true
+
+server:
+  max-http-header-size: 8000000
+  port: 8081
+  servlet:
+    context-path: /api
+  error:
+    include-message: always
+
+jwt:
+  secret:
+    key: r5u8x/A?D(G+KbPeSgVkYp3s6v9y$B&E
+
+logging:
+  level:
+    root: info
+
+springdoc:
+  version: 1.0
+  api-docs:
+    path: /
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    operations-sorter: alpha
+    tags-sorter: alpha
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+    doc-expansion: none
+
+  paths-to-match:
+    /**
+
+  cors:
+    allowedOrigins: http://localhost:3000, http://localhost:8080
