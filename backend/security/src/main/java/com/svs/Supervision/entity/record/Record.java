@@ -44,4 +44,12 @@ public class Record {
     @JoinColumn(name = "CAR_ID")
     private Car car;
 
+    // 과태료 금액
+    @Column(nullable = false)
+    private int fine;
+
+    // 과태료 지불 여부
+    @Column(nullable = false)
+    private boolean pay;
+
 }
