@@ -17,10 +17,10 @@ public class SwaggerConfig {
     public OpenAPI openAPI(@Value("${springdoc.version}") String appVersion) {
         final String securitySchemeName = "bearerAuth";
 
-        Info info = new Info().title("돋움").version(appVersion)
-                .description("Team sasatech.")
+        Info info = new Info().title("주차삐까").version(appVersion)
+                .description("Team JuchaPika.")
                 .contact(new Contact()
-                        .name("dodum")
+                        .name("stone")
                         .url("https://www.notion.so/eb6c02638f4043f2b8c859dcc48bb69c"));
 //                        .email("wearecojeans@gmail.com"));
 
