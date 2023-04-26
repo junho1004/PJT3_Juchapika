@@ -46,13 +46,13 @@ public class Record {
 
     // 과태료 금액
     @Column(nullable = false)
-    private int fine;
+    private Long fine;
 
     // 과태료 지불 여부
     @Column(nullable = false)
-    private boolean pay;
+    private Boolean pay;
 
     // 단속 횟수
-    @Column(columnDefinition = "LONG DEFAULT 0")
+    @Column(columnDefinition = "BIGINT DEFAULT 0")
     private Long cnt;
 }
