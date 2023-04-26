@@ -52,4 +52,7 @@ public class Record {
     @Column(nullable = false)
     private boolean pay;
 
+    // 단속 횟수
+    @Column(columnDefinition = "LONG DEFAULT 0")
+    private Long cnt;
 }
