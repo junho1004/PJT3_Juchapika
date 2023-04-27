@@ -1,4 +1,4 @@
-package com.svs.Supervision.dto.response;
+package com.svs.Supervision.dto.response.car;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

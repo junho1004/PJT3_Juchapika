@@ -37,9 +37,9 @@ public class JwtTokenProvider {
         log.info("[init] JwtTokenProvider 내 secretKey 초기화 완료");
     }
 
-    public String createToken(String userid){
+    public String createToken(String userId){
         log.info("[createToken] 토큰 생성 시작");
-        Claims claims = Jwts.claims().setSubject(userid);
+        Claims claims = Jwts.claims().setSubject(userId);
 
         Date now = new Date();
 

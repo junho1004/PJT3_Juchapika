@@ -1,4 +1,4 @@
-package com.svs.Supervision.dto.request;
+package com.svs.Supervision.dto.request.car;
 
 import com.svs.Supervision.entity.car.Car;
 import lombok.AllArgsConstructor;

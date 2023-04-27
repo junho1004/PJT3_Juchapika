@@ -1,8 +1,8 @@
 package com.svs.Supervision.controller;
 
-import com.svs.Supervision.dto.request.CarNumberListRequestDto;
-import com.svs.Supervision.dto.request.CarNumberRequestDto;
-import com.svs.Supervision.entity.user.Admin;
+import com.svs.Supervision.dto.request.car.CarNumberListRequestDto;
+import com.svs.Supervision.dto.request.car.CarNumberRequestDto;
+import com.svs.Supervision.entity.user.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,18 +22,18 @@ public class CarController {
     @Operation(summary = "차량 번호판 등록", description = "번호판을 기준으로 단속된 차량의 단속 기록을 저장합니다.")
     public ResponseEntity<?> addCarNumber(@RequestBody CarNumberRequestDto carNumberRequestDto,
                                           @Parameter(hidden = true)
-                                          @AuthenticationPrincipal Admin admin) {
+                                          @AuthenticationPrincipal User user) {
         LOGGER.info("addCarNumber() 호출 : " + carNumberRequestDto);
         return null;
     }
 
 
-    @PostMapping("/number")
+    @PostMapping("/search")
     @Operation(summary = "차량 번호판 조회", description = "번호판 기준으로 단속된 차량의 단속 기록들을 조회합니다.")
     public ResponseEntity<?> listCarNumber(@RequestBody CarNumberListRequestDto carNumberListRequestDto,
                                            @Parameter(hidden = true)
-                                           @AuthenticationPrincipal Admin admin) {
-        LOGGER.info("listCarNumber() 호출");
+                                           @AuthenticationPrincipal User user) {
+        LOGGER.info("listCarNumber() 호출 : " + carNumberListRequestDto);
         return null;
     }
 }

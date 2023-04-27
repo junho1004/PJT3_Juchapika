@@ -15,10 +15,10 @@ import java.util.Collection;
 @ToString
 @Getter
 @Builder
-@Table(name = "admin")
+@Table(name = "user")
 @DynamicInsert
 @DynamicUpdate
-public class Admin implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,11 +33,6 @@ public class Admin implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
         return null;
     }
 
