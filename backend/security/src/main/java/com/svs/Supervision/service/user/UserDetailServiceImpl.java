@@ -1,6 +1,6 @@
 package com.svs.Supervision.service.user;
 
-import com.svs.Supervision.repository.UserRepository;
+import com.svs.Supervision.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

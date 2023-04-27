@@ -1,18 +1,23 @@
 package com.svs.Supervision.controller;
 
 
+import com.svs.Supervision.dto.request.record.RecordListRequestDto;
 import com.svs.Supervision.dto.request.record.ExcelRequestDto;
+import com.svs.Supervision.dto.request.record.RecordRequestDto;
+import com.svs.Supervision.dto.response.api.ApiResponseDto;
 import com.svs.Supervision.entity.user.User;
+import com.svs.Supervision.service.record.RecordService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,13 +27,48 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOGGER;
+
 @Tag(name = "Record", description = "기록 관련 API")
 @RestController
 @RequestMapping("/record")
 @RequiredArgsConstructor
 public class RecordController {
 
-    @GetMapping("/download")
+    private final RecordService recordService;
+
+    // 1. 입력박은 차량 번호판 정보를 통해 carId를 찾는다.
+    // 2. carId를 통해 Record 를 조회한다.
+    // 3. Record 가 여러개 존재할 경우.. date 기준 정렬 가장 첫 번째 idx
+    // 3. Record 가 존재하지 않을경우, 첫 번째 단속이므로 Database 에 저장한다.
+    // 4. 이미 Record 가 존재할 경우, 단속 횟수(cnt) 에 1을 더한다.
+    // 4-1. 만약 단속 횟수(cnt) 가 1 이상일 경우에는 pass.
+    // 12시에 초기화 (Scheduler)
+
+    @PostMapping("/number")
+    @Operation(summary = "단속 차량 등록", description = "번호판을 기준으로 단속된 차량의 단속 기록을 저장합니다.")
+    public ResponseEntity<?> addRecord(@RequestBody RecordRequestDto recordRequestDto,
+                                          @Parameter(hidden = true)
+                                          @AuthenticationPrincipal User user) {
+        LOGGER.info("addRecord() 호출 : " + recordRequestDto);
+        recordService.addRecord(recordRequestDto);
+        System.out.println("변경됨!");
+        return new ResponseEntity(new ApiResponseDto(true, "addRecord successfully@", null), HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/search")
+    @Operation(summary = "단속 차량 조회", description = "번호판 기준으로 단속된 차량의 단속 기록들을 조회합니다.")
+    public ResponseEntity<?> searchRecord(@RequestBody RecordListRequestDto carNumberListRequestDto,
+                                           @Parameter(hidden = true)
+                                           @AuthenticationPrincipal User user) {
+        LOGGER.info("searchRecord() 호출 : " + carNumberListRequestDto);
+        return null;
+    }
+
+
+
+    @PostMapping("/download")
     public ResponseEntity<?> downloadExcel(@RequestBody List<ExcelRequestDto> excelRequestDtoList,
                                            @Parameter(hidden = true)
                                            @AuthenticationPrincipal User user) throws IOException {

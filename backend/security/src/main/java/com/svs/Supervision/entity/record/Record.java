@@ -1,5 +1,6 @@
 package com.svs.Supervision.entity.record;
 
+import com.svs.Supervision.dto.request.record.RecordRequestDto;
 import com.svs.Supervision.entity.car.Car;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -55,4 +56,18 @@ public class Record {
     // 단속 횟수
     @Column(columnDefinition = "BIGINT DEFAULT 0")
     private Long cnt;
+
+    public static Record build(RecordRequestDto recordRequestDto, Car car) {
+            return Record.builder()
+                .location(recordRequestDto.getLocation())
+                .plateImageUrl(recordRequestDto.getPlateImageUrl())
+                .carImageUrl(recordRequestDto.getCarImageUrl())
+                .videoUrl(recordRequestDto.getVideoUrl())
+                .car(car)
+                .fine(recordRequestDto.getFine())
+                .pay(recordRequestDto.getPay())
+                .build();
+    }
+
+
 }

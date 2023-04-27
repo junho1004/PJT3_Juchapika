@@ -2,9 +2,8 @@ package com.svs.Supervision.service.user;
 
 import com.svs.Supervision.dto.jwt.SignInResultDto;
 import com.svs.Supervision.dto.jwt.SignUpResultDto;
-import com.svs.Supervision.dto.request.user.UserSignupRequestDto;
 import com.svs.Supervision.entity.user.User;
-import com.svs.Supervision.repository.UserRepository;
+import com.svs.Supervision.repository.user.UserRepository;
 import com.svs.Supervision.security.JwtTokenProvider;
 import com.svs.Supervision.security.common.CommonResponse;
 import lombok.RequiredArgsConstructor;

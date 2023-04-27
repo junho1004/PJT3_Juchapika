@@ -1,24 +1,22 @@
-package com.svs.Supervision.dto.request.car;
+package com.svs.Supervision.dto.request.record;
 
-import com.svs.Supervision.entity.car.Car;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CarNumberRequestDto {
+public class RecordRequestDto {
 
-    private Car car;
+    private String carNum;
     private String carImageUrl;
-    private Date date;
+    private String plateImageUrl;
+    private String videoUrl;
     private Long fine;
     private String location;
     private Boolean pay;
-    private String plateImageUrl;
+
 }
