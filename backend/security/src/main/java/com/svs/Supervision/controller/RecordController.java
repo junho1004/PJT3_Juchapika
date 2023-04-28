@@ -1,3 +1,4 @@
+
 package com.svs.Supervision.controller;
 
 
@@ -5,6 +6,7 @@ import com.svs.Supervision.dto.request.record.RecordListRequestDto;
 import com.svs.Supervision.dto.request.record.ExcelRequestDto;
 import com.svs.Supervision.dto.request.record.RecordRequestDto;
 import com.svs.Supervision.dto.response.api.ApiResponseDto;
+import com.svs.Supervision.dto.response.record.RecordResponseDto;
 import com.svs.Supervision.entity.user.User;
 import com.svs.Supervision.service.record.RecordService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,22 +50,32 @@ public class RecordController {
     @PostMapping("/number")
     @Operation(summary = "단속 차량 등록", description = "번호판을 기준으로 단속된 차량의 단속 기록을 저장합니다.")
     public ResponseEntity<?> addRecord(@RequestBody RecordRequestDto recordRequestDto,
-                                          @Parameter(hidden = true)
-                                          @AuthenticationPrincipal User user) {
+                                       @Parameter(hidden = true)
+                                       @AuthenticationPrincipal User user) {
         LOGGER.info("addRecord() 호출 : " + recordRequestDto);
         recordService.addRecord(recordRequestDto);
-        System.out.println("변경됨!");
+
         return new ResponseEntity(new ApiResponseDto(true, "addRecord successfully@", null), HttpStatus.CREATED);
     }
 
 
+
+    // 1. 번호판 넘버를 기준으로, 먼저 차량의 id (carId)를 찾습니다.
+    // 2. carId를 기준으로 record 들을 기록을 찾아옵니다.
+
     @PostMapping("/search")
     @Operation(summary = "단속 차량 조회", description = "번호판 기준으로 단속된 차량의 단속 기록들을 조회합니다.")
     public ResponseEntity<?> searchRecord(@RequestBody RecordListRequestDto carNumberListRequestDto,
-                                           @Parameter(hidden = true)
-                                           @AuthenticationPrincipal User user) {
+                                          @Parameter(hidden = true)
+                                          @AuthenticationPrincipal User user) {
         LOGGER.info("searchRecord() 호출 : " + carNumberListRequestDto);
-        return null;
+        List<RecordResponseDto> recordResponseDtoList = recordService.searchRecord(carNumberListRequestDto.getCarNum());
+
+        if (recordResponseDtoList == null) {
+            return new ResponseEntity(new ApiResponseDto(false, "searchRecord Fail@", null), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(new ApiResponseDto(true, "searchRecord successfully@", recordResponseDtoList), HttpStatus.OK);
+        }
     }
 
 

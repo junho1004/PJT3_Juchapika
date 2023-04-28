@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface RecordRepositoryQdslRepository {
-    List<Record> findAllByCarNum(String carNum);
+    List<Record> findAllRecordByCarNumWhereCntZero(String carNum);
 }

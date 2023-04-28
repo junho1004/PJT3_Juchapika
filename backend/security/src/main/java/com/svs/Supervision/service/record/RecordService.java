@@ -1,6 +1,7 @@
 package com.svs.Supervision.service.record;
 
 import com.svs.Supervision.dto.request.record.RecordRequestDto;
+import com.svs.Supervision.dto.response.record.RecordResponseDto;
 import com.svs.Supervision.entity.car.Car;
 import com.svs.Supervision.entity.record.Record;
 import com.svs.Supervision.repository.car.CarRepository;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,9 +33,9 @@ public class RecordService {
     public void addRecord(RecordRequestDto recordRequestDto) {
         String carNum = recordRequestDto.getCarNum();
         Car car = carRepository.findByCarNum(carNum);
-        List<Record> recordList = recordRepositoryQdslRepository.findAllByCarNum(carNum);
+        List<Record> recordList = recordRepositoryQdslRepository.findAllRecordByCarNumWhereCntZero(carNum);
 
-        // Record 가 존재하지 않을경우, 첫 번째 단속이므로 Database 에 저장한다.
+        // Record 가 존재하지 않을경우, 첫 번째(새로운) 단속이므로 Database 에 저장한다.
         if (recordList.size() == 0) {
             recordRepository.save(Record.build(recordRequestDto, car));
         } else { // Record 가 여러개 존재할 경우.. date 기준 정렬 가장 첫 번째 idx
@@ -44,6 +46,28 @@ public class RecordService {
                 Long carId = record.getCar().getId();
                 recordRepository.updateCnt(carId);
             }
+        }
+    }
+
+    public List<RecordResponseDto> searchRecord(String carNum) {
+        // 단속 기록에 해당 번호판 정보가 존재하는 경우..
+//        boolean isExists = recordRepository.existsByCarNum(carNum);
+        Car car = carRepository.findByCarNum(carNum);
+        boolean isExists = recordRepository.existsByCar_Id(car.getId());
+
+        List<RecordResponseDto> recordResponseDtoList = new ArrayList<>();
+
+        if (isExists) {
+            // 단속 기록을 조회한다.
+            List<Record> recordList = recordRepositoryQdslRepository.findAllRecordByCarNumWhereCntZero(carNum);
+
+            for (Record record : recordList) {
+                recordResponseDtoList.add(RecordResponseDto.build(record, car));
+            }
+
+            return recordResponseDtoList;
+        } else { // 단속 차량이 없는 경우
+            return null;
         }
     }
 }

@@ -19,7 +19,7 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
 
 
     @Override
-    public List<Record> findAllByCarNum(String carNum) {
+    public List<Record> findAllRecordByCarNumWhereCntZero(String carNum) {
         QRecord record = QRecord.record;
         QCar car = QCar.car;
 
@@ -28,7 +28,7 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
 
         return jpaQueryFactory.selectFrom(record)
                 .join(car).on(car.id.eq(record.car.id))
-                .where(car.carNum.eq(carNum))
+                .where(car.carNum.eq(carNum), record.cnt.eq(0L))
                 .orderBy(record.date.desc())
                 .fetch()
                 ;
