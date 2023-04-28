@@ -65,11 +65,11 @@ public class RecordController {
 
     @PostMapping("/search")
     @Operation(summary = "단속 차량 조회", description = "번호판 기준으로 단속된 차량의 단속 기록들을 조회합니다.")
-    public ResponseEntity<?> searchRecord(@RequestBody RecordListRequestDto carNumberListRequestDto,
+    public ResponseEntity<?> searchRecord(@RequestBody RecordListRequestDto recordListRequestDto,
                                           @Parameter(hidden = true)
                                           @AuthenticationPrincipal User user) {
-        LOGGER.info("searchRecord() 호출 : " + carNumberListRequestDto);
-        List<RecordResponseDto> recordResponseDtoList = recordService.searchRecord(carNumberListRequestDto.getCarNum());
+        LOGGER.info("searchRecord() 호출 : " + recordListRequestDto);
+        List<RecordResponseDto> recordResponseDtoList = recordService.searchRecord(recordListRequestDto.getCarNum());
 
         if (recordResponseDtoList == null) {
             return new ResponseEntity(new ApiResponseDto(false, "searchRecord Fail@", null), HttpStatus.OK);
