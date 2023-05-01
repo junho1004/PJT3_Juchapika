@@ -41,6 +41,17 @@ export const cardetails = [
     fee: "납부완료",
   },
   {
+    car: "38차 4326",
+    date:"2dsfsfdsf분",
+    caught:"수dfsdfsdfsd앞",
+    carnumber: car3license,
+    name: "이fsdfss",
+    phonenumber: "01sdffsddfsf",
+    address: "광주광sfsfs로 54",
+    pic: car3,
+    fee: "납sfdffsd료",
+  },
+  {
     car: "80차 2201",
     date:"2023/04/14 오전 11시 04분",
     caught:"수완동 더벤티앞",
