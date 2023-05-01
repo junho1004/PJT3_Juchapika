@@ -42,6 +42,9 @@ COPY gradle gradle
 # gradlew 실행 권한 부여
 RUN chmod +x gradlew
 
+# 디렉토리 구조 출력
+RUN ls build/libs
+
 # Gradle을 사용하여 애플리케이션을 빌드합니다.
 RUN ./gradlew clean build
 
@@ -50,3 +53,5 @@ COPY build/libs/security-0.0.1-SNAPSHOT.jar app.jar
 
 # 컨테이너 실행 시 실행할 명령어를 정의합니다.
 CMD ["java", "-jar", "app.jar"]
+
+# test
