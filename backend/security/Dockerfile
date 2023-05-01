@@ -46,7 +46,7 @@ RUN chmod +x gradlew
 RUN ls build/libs
 
 # Gradle을 사용하여 애플리케이션을 빌드합니다.
-RUN ./gradlew clean build
+RUN ./gradlew clean build --info
 
 # 빌드된 jar 파일을 복사합니다.
 COPY build/libs/security-0.0.1-SNAPSHOT.jar app.jar
