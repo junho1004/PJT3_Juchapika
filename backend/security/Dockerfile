@@ -55,32 +55,47 @@
 ## 컨테이너 실행 시 실행할 명령어를 정의합니다.
 #CMD ["java", "-jar", "app.jar"]
 
-# 사용할 base 이미지를 정의합니다.
+## 사용할 base 이미지를 정의합니다.
+#FROM openjdk:11.0.11-jdk-slim-buster
+#
+## 작업 디렉토리를 설정합니다.
+#WORKDIR /var/jenkins_home/workspace/juchapika/backend/security
+#
+## Gradle 빌드 스크립트 파일을 복사합니다.
+#COPY build.gradle .
+#COPY gradlew .
+#
+## Gradle 의존성을 복사합니다.
+#COPY gradle gradle
+#
+## gradlew 실행 권한 부여
+#RUN chmod +x gradlew
+#
+## 빌드를 실행하기 전에 현재 위치를 출력합니다.
+#RUN pwd && ls -la
+#
+## Gradle을 사용하여 애플리케이션을 빌드합니다.
+##RUN ./gradlew build --info
+#RUN ./gradlew clean build --no-daemon --no-cache --console=plain
+#
+#
+## 빌드된 jar 파일을 복사합니다.
+#COPY build/libs/security-0.0.1-SNAPSHOT.jar app.jar
+#
+## 컨테이너 실행 시 실행할 명령어를 정의합니다.
+#CMD ["java", "-jar", "app.jar"]
+
+
 FROM openjdk:11.0.11-jdk-slim-buster
 
-# 작업 디렉토리를 설정합니다.
-WORKDIR /var/jenkins_home/workspace/juchapika/backend/security
+WORKDIR /app
 
-# Gradle 빌드 스크립트 파일을 복사합니다.
-COPY build.gradle .
-COPY gradlew .
+COPY build.gradle gradle.properties gradlew ./
+COPY gradle ./gradle
 
-# Gradle 의존성을 복사합니다.
-COPY gradle gradle
+RUN chmod +x gradlew && \
+    ./gradlew clean build --no-daemon --no-cache --console=plain
 
-# gradlew 실행 권한 부여
-RUN chmod +x gradlew
+COPY src ./src
 
-# 빌드를 실행하기 전에 현재 위치를 출력합니다.
-RUN pwd && ls -la
-
-# Gradle을 사용하여 애플리케이션을 빌드합니다.
-#RUN ./gradlew build --info
-RUN ./gradlew clean build --no-daemon --no-cache --console=plain
-
-
-# 빌드된 jar 파일을 복사합니다.
-COPY build/libs/security-0.0.1-SNAPSHOT.jar app.jar
-
-# 컨테이너 실행 시 실행할 명령어를 정의합니다.
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "build/libs/security-0.0.1-SNAPSHOT.jar"]
