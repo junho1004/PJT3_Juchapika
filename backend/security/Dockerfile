@@ -44,10 +44,10 @@ RUN chmod +x gradlew
 
 
 # Gradle을 사용하여 애플리케이션을 빌드합니다.
-RUN ./gradlew clean build --info
+RUN ./gradlew build --info
 
 # 빌드된 jar 파일을 복사합니다.
-COPY build/libs/security-0.0.1-SNAPSHOT.jar app.jar
+COPY /var/jenkins_home/workspace/juchapika/backend/security/build/libs/security-0.0.1-SNAPSHOT.jar app.jar
 
 # 컨테이너 실행 시 실행할 명령어를 정의합니다.
 CMD ["java", "-jar", "app.jar"]
