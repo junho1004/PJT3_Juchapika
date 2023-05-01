@@ -23,3 +23,4 @@ COPY build/libs/security-0.0.1-SNAPSHOT.jar app.jar
 # 컨테이너 실행 시 실행할 명령어를 정의합니다.
 CMD ["java", "-jar", "app.jar"]
 
+# test
