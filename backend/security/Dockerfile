@@ -43,7 +43,7 @@ COPY gradle gradle
 RUN chmod +x gradlew
 
 # 디렉토리 구조 출력
-RUN ls build/libs
+RUN ls -l build/libs/
 
 # Gradle을 사용하여 애플리케이션을 빌드합니다.
 RUN ./gradlew clean build --info
