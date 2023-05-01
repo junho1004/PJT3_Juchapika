@@ -74,10 +74,10 @@ RUN chmod +x gradlew
 # 빌드를 실행하기 전에 현재 위치를 출력합니다.
 RUN pwd && ls -la
 
-ARG DISABLE_CACHE
-
 # Gradle을 사용하여 애플리케이션을 빌드합니다.
-RUN ./gradlew build --info
+#RUN ./gradlew build --info
+RUN ./gradlew clean build --no-daemon --no-cache --console=plain
+
 
 # 빌드된 jar 파일을 복사합니다.
 COPY build/libs/security-0.0.1-SNAPSHOT.jar app.jar
