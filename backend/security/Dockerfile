@@ -74,6 +74,8 @@ RUN chmod +x gradlew
 # 빌드를 실행하기 전에 현재 위치를 출력합니다.
 RUN pwd && ls -la
 
+ARG DISABLE_CACHE
+
 # Gradle을 사용하여 애플리케이션을 빌드합니다.
 RUN ./gradlew build --info
 
