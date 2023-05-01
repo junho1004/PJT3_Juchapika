@@ -46,6 +46,9 @@ RUN chmod +x gradlew
 # Gradle을 사용하여 애플리케이션을 빌드합니다.
 RUN ./gradlew build --info
 
+
+RUN pwd
+
 # 빌드된 jar 파일을 복사합니다.
 COPY build/libs/* app.jar
 
