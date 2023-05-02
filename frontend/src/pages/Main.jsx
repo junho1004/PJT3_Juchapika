@@ -3,6 +3,9 @@ import TopNav from "../components/Nav/TopNav";
 import styles from "./Main.module.css";
 // import Modal from "../components/modal.jsx";
 import { cardetails } from "../components/cardetails";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import calendar from "../assets/calendar.png";
 
 export default function Main() {
   const [modal, setmodal] = useState(false);
@@ -59,13 +62,74 @@ export default function Main() {
   const closeModal = () => {
     setmodal(false);
   };
+  const today = new Date();
+  const [startDate, setStartDate] = useState(today);
+  const [endDate, setEndDate] = useState(today);
+
+  const handleApply = () => {
+    // startDate와 endDate를 이용하여 작업 수행
+    console.log(startDate, endDate);
+  };
+
+  const minDate = new Date();
+  const maxDate = () => {
+    new Date();
+    console.log(startDate, endDate);
+
+    maxDate.setMonth(maxDate.getMonth() + 3);
+  };
 
   return (
     <div className={styles.background}>
       <TopNav setSearchcar={setSearchcar} />
       <div className={styles.body}>
-        <div className={styles.live}>
-          <div>80차 2201 331우 7799</div>
+        <div className={styles.list}>
+          <div style={{ fontSize: "1.5em", fontWeight: "800" }}>
+            단속 현황 조회
+          </div>
+          <hr></hr>
+          <div className={styles.mininav}>
+            <div style={{marginRight:"20px",paddingTop:"3px" }}>날짜</div>
+            <div>
+              <DatePicker
+                startDate={startDate}
+                endDate={endDate}
+                selectsRange
+                onChange={(update) => {
+                  setStartDate(update[0]);
+                  setEndDate(update[1]);
+                }}
+                minDate={minDate}
+                maxDate={maxDate}
+                className={styles.calendar}
+             /></div>
+              <div onClick={handleApply} className={styles.calendarimg} >
+                <img src={calendar} alt="error" style={{ width:"20px"}}  />
+              </div>
+
+
+
+              <div style={{marginRight:"20px",paddingTop:"3px" }}>지역</div>
+            <div>
+              <DatePicker
+                startDate={startDate}
+                endDate={endDate}
+                selectsRange
+                onChange={(update) => {
+                  setStartDate(update[0]);
+                  setEndDate(update[1]);
+                }}
+                minDate={minDate}
+                maxDate={maxDate}
+                className={styles.calendar}
+                
+                // placeholderText="날짜를 고르세요"
+              />
+            </div>
+              <div onClick={handleApply} className={styles.calendarimg} >
+                <img src={calendar} alt="error" style={{ width:"20px"}}  />
+              </div>
+          </div>
         </div>
         {modal && (
           <div className={styles.container}>
@@ -125,12 +189,34 @@ export default function Main() {
                     </div>
                     <div className={styles.name}>
                       <span style={{ width: "40%" }}>납부유무</span>
-                      <span className={styles.texts}> {fee}</span>
+                      <span className={styles.texts}>
+                        {fee === "납부완료" ? (
+                          <span style={{ color: "blue" }}>납부완료</span>
+                        ) : (
+                          <span style={{ color: "red" }}>미납</span>
+                        )}
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-                <div className={styles.else}>그 외 단속이력</div>
+              <div className={styles.else}>
+                <div style={{ fontWeight: "800", marginBottom: "2%" }}>
+                  그 외 단속이력
+                </div>
+                <div className={styles.else1}>
+                  <div style={{ marginRight: "5px" }}>{date}</div>
+                  <div style={{ marginRight: "25px" }}>{caught}</div>
+                  <div>
+                    {" "}
+                    {fee === "납부완료" ? (
+                      <span style={{ color: "blue" }}>납부완료</span>
+                    ) : (
+                      <span style={{ color: "red" }}>미납</span>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
             <div className={styles.back}></div>
           </div>
