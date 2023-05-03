@@ -1,10 +1,9 @@
-FROM python:3.6.4
-
-COPY . /app
+FROM python:3.8.5
 
 WORKDIR /app
+COPY . .
+RUN pip install -r requirements.txt
 
-RUN pip install -r requirement.txt
+EXPOSE 5000
 
-CMD ["uwsgi, "uwsgi.ini]
-
+CMD python ./app.py
