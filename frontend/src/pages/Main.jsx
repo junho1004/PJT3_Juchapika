@@ -6,6 +6,10 @@ import { cardetails } from "../components/cardetails";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import calendar from "../assets/calendar.png";
+import file from "../assets/file.png";
+import statistics from "../assets/statistics.png";
+import axios from "axios";
+import TotalTable from "../components/TotalTable";
 
 export default function Main() {
   const [modal, setmodal] = useState(false);
@@ -62,8 +66,6 @@ export default function Main() {
     }
   }, [searchCar]);
 
- 
-
   const closeModal = () => {
     setmodal(false);
   };
@@ -74,55 +76,75 @@ export default function Main() {
   const handleApply = () => {
     // startDate와 endDate를 이용하여 작업 수행
     console.log(startDate, endDate);
+    console.log('startDate:', startDate);
+    console.log('endDate:', endDate);
   };
 
   const minDate = new Date();
   const maxDate = () => {
     new Date();
     console.log(startDate, endDate);
+    console.log('startDate:', startDate);
+    console.log('endDate:', endDate);
 
     maxDate.setMonth(maxDate.getMonth() + 3);
   };
 
-  const handleChange = (e) => {
+  const [location, Setlocation] = useState("");
+  const [area, Setarea] = useState("");
+
+  const locationChange = (e) => {
     // event handler
     console.log(e.target.value);
+    Setlocation(e.target.value);
+  };
+  const areaChange = (e) => {
+    // event handler
+    console.log(e.target.value);
+    Setarea(e.target.value);
   };
 
-  const location = [
+  const locations = [
     { value: "all", name: "전체" },
-    { value: "apple", name: "광산구" },
-    { value: "banana", name: "동구" },
-    { value: "orange", name: "서구" },
+    { value: "gwangsangoo", name: "광산구" },
+    { value: "donggoo", name: "동구" },
+    { value: "seogoo", name: "서구" },
   ];
 
-  const area = [
+  const areas = [
     { value: "all", name: "전체" },
     { value: "suwandong", name: "수완동" },
     { value: "jangdukdong", name: "장덕동" },
     { value: "hanamdong", name: "하남동" },
   ];
-  
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
     // 폼 데이터 생성
-    const formData = new FormData();
-    formData.append("start_date", startDate);
-    formData.append("end_date", endDate);
-    formData.append("location", location);
-    formData.append("area", area);
+    // const formData = new FormdData();
+    // formData.append("start_date", startDate);
+    // formData.append("end_date", endDate);
+    // formData.append("location", location);
+    // formData.append("area", area);
 
-    console.log(formData)
+    // console.log(formData)
+    const data = {
+      start_date: startDate,
+      end_date: endDate,
+      location: location,
+      area: area,
+    };
 
     // axios로 폼 데이터 전송
-    // axios.post("주소주소", formData)
-    //   .then(response => {
-    //     console.log(response.data);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
+    axios
+      .post("주소주소", data)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -135,47 +157,66 @@ export default function Main() {
           </div>
           <hr></hr>
           <form onSubmit={handleSubmit}>
-          <div className={styles.mininav}>
-            <div style={{ marginRight: "30px", paddingTop: "3px" }}>날짜</div>
-            <div>
-              <DatePicker
-                startDate={startDate}
-                endDate={endDate}
-                selectsRange
-                onChange={(update) => {
-                  setStartDate(update[0]);
-                  setEndDate(update[1]);
-                }}
-                minDate={minDate}
-                maxDate={maxDate}
-                dateFormat="yyyy/MM/dd"
-                className={styles.calendar}
-              />
-            </div>
-            <div onClick={handleApply} className={styles.calendarimg}>
-              <img src={calendar} alt="error" style={{ width: "20px" }} />
-            </div>
+            <div className={styles.mininav}>
+              <div style={{ marginRight: "30px", paddingTop: "3px" }}>날짜</div>
+              <div>
+                <DatePicker
+                  startDate={startDate}
+                  endDate={endDate}
+                  selectsRange
+                  onChange={(update) => {
+                    setStartDate(update[0]);
+                    setEndDate(update[1]);
+                  }}
+                  minDate={minDate}
+                  maxDate={maxDate}
+                  dateFormat="yyyy/MM/dd"
+                  className={styles.calendar}
+                />
+              </div>
+              <div onClick={handleApply} className={styles.calendarimg}>
+                <img src={calendar} alt="error" style={{ width: "20px" }} />
+              </div>
 
-            <div style={{ marginRight: "30px", paddingTop: "3px" }}>지역</div>
-            <select onChange={handleChange} className={styles.localist}>
-              {location.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.name}
-                </option>
-              ))}
-            </select>
+              <div style={{ marginRight: "30px", paddingTop: "3px" }}>지역</div>
+              <select onChange={locationChange} className={styles.localist}>
+                {locations.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.name}
+                  </option>
+                ))}
+              </select>
 
-            <div style={{ marginRight: "30px", paddingTop: "3px" }}>동</div>
-            <select onChange={handleChange} className={styles.localist}>
-              {area.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.name}
-                </option>
-              ))}
-            </select>
+              <div style={{ marginRight: "30px", paddingTop: "3px" }}>동</div>
+              <select onChange={areaChange} className={styles.localist}>
+                {areas.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.name}
+                  </option>
+                ))}
+              </select>
+              <div onClick={handleSubmit} className={styles.btn}>
+                <div>조회</div>
+              </div>
+            </div>
+          </form>
+
+          <div className={styles.excelside}>
+            <div className={styles.excel} style={{marginRight:"20px"}}>
+              <div style={{paddingRight:"10px"}}>Excel</div>
+              <div>
+                <img src={file} alt="error" style={{ width: "20px" }} />
+                </div>
+            </div>
+            <div className={styles.excel}>
+              <div style={{paddingRight:"10px"}}>통계</div>
+              <img src={statistics} alt="error" style={{ width: "20px" }} />
+            </div>
           </div>
-          <button type="submit">저장</button>
-            </form>
+            <div className={styles.count}>총 4개</div>
+            <div>
+<TotalTable/>
+            </div>
         </div>
         {modal && (
           <div className={styles.container}>
@@ -267,7 +308,6 @@ export default function Main() {
             <div className={styles.back}></div>
           </div>
         )}
-        ;
       </div>
     </div>
   );
