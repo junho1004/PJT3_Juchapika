@@ -2,11 +2,12 @@
 package com.svs.Supervision.controller;
 
 
-import com.svs.Supervision.dto.request.record.RecordListRequestDto;
+import com.svs.Supervision.dto.request.record.RecordCarNumRequestDto;
 import com.svs.Supervision.dto.request.record.ExcelRequestDto;
+import com.svs.Supervision.dto.request.record.RecordDetailRequestDto;
 import com.svs.Supervision.dto.request.record.RecordRequestDto;
 import com.svs.Supervision.dto.response.api.ApiResponseDto;
-import com.svs.Supervision.dto.response.record.RecordResponseDto;
+import com.svs.Supervision.dto.response.record.RecordCarNumResponseDto;
 import com.svs.Supervision.entity.user.User;
 import com.svs.Supervision.service.record.RecordService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -63,21 +64,32 @@ public class RecordController {
     // 1. 번호판 넘버를 기준으로, 먼저 차량의 id (carId)를 찾습니다.
     // 2. carId를 기준으로 record 들을 기록을 찾아옵니다.
 
-    @PostMapping("/search")
+    @PostMapping("/search-by-carnum")
     @Operation(summary = "단속 차량 조회", description = "번호판 기준으로 단속된 차량의 단속 기록들을 조회합니다.")
-    public ResponseEntity<?> searchRecord(@RequestBody RecordListRequestDto recordListRequestDto,
+    public ResponseEntity<?> searchRecord(@RequestBody RecordCarNumRequestDto recordCarNumRequestDto,
                                           @Parameter(hidden = true)
                                           @AuthenticationPrincipal User user) {
-        LOGGER.info("searchRecord() 호출 : " + recordListRequestDto);
-        List<RecordResponseDto> recordResponseDtoList = recordService.searchRecord(recordListRequestDto.getCarNum());
+        LOGGER.info("searchRecord() 호출 : " + recordCarNumRequestDto);
+        List<RecordCarNumResponseDto> recordCarNumResponseDtoList = recordService.searchRecord(recordCarNumRequestDto.getCarNum());
 
-        if (recordResponseDtoList == null) {
+        if (recordCarNumResponseDtoList == null) {
             return new ResponseEntity(new ApiResponseDto(false, "searchRecord Fail@", null), HttpStatus.OK);
         } else {
-            return new ResponseEntity(new ApiResponseDto(true, "searchRecord successfully@", recordResponseDtoList), HttpStatus.OK);
+            return new ResponseEntity(new ApiResponseDto(true, "searchRecord successfully@", recordCarNumResponseDtoList), HttpStatus.OK);
         }
     }
 
+
+    @PostMapping("/search-by-detail")
+    @Operation(summary = "단속 현황 조회", description = "날짜, 지역, 동을 기준으로 단속 기록들을 조회합니다.")
+    public ResponseEntity<?> searchDetail(@RequestBody RecordDetailRequestDto recordDetailRequestDto,
+                                           @Parameter(hidden = true)
+                                           @AuthenticationPrincipal User user) throws IOException {
+
+        recordService.searchDetail(recordDetailRequestDto);
+
+        return null;
+    }
 
 
     @PostMapping("/download")
