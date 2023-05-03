@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecordListRequestDto {
+public class RecordCarNumRequestDto {
     private String carNum;
 }

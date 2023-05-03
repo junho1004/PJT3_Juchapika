@@ -1,7 +1,9 @@
 package com.svs.Supervision.service.record;
 
+import com.svs.Supervision.dto.request.record.RecordDetailRequestDto;
 import com.svs.Supervision.dto.request.record.RecordRequestDto;
-import com.svs.Supervision.dto.response.record.RecordResponseDto;
+import com.svs.Supervision.dto.response.record.RecordCarNumResponseDto;
+import com.svs.Supervision.dto.response.record.RecordDetailResponseDto;
 import com.svs.Supervision.entity.car.Car;
 import com.svs.Supervision.entity.record.Record;
 import com.svs.Supervision.repository.car.CarRepository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -49,25 +52,41 @@ public class RecordService {
         }
     }
 
-    public List<RecordResponseDto> searchRecord(String carNum) {
+    public List<RecordCarNumResponseDto> searchRecord(String carNum) {
         // 단속 기록에 해당 번호판 정보가 존재하는 경우..
 //        boolean isExists = recordRepository.existsByCarNum(carNum);
         Car car = carRepository.findByCarNum(carNum);
         boolean isExists = recordRepository.existsByCar_Id(car.getId());
 
-        List<RecordResponseDto> recordResponseDtoList = new ArrayList<>();
+        List<RecordCarNumResponseDto> recordCarNumResponseDtoList = new ArrayList<>();
 
         if (isExists) {
             // 단속 기록을 조회한다.
             List<Record> recordList = recordRepositoryQdslRepository.findAllRecordByCarNumWhereCntZero(carNum);
 
             for (Record record : recordList) {
-                recordResponseDtoList.add(RecordResponseDto.build(record, car));
+                recordCarNumResponseDtoList.add(RecordCarNumResponseDto.build(record));
             }
 
-            return recordResponseDtoList;
+            return recordCarNumResponseDtoList;
         } else { // 단속 차량이 없는 경우
             return null;
         }
+    }
+
+    public List<RecordDetailResponseDto> searchDetail(RecordDetailRequestDto recordDetailRequestDto) {
+
+        List<RecordDetailResponseDto> recordDetailResponseDtoList = new ArrayList<>();
+
+        // 1. 시작시간과 마지막 시간은 필수이다.
+        // 2. district 가 default(전체) 인 경우에는 조건에서 제외한다.
+        // 3. dong 이 default(전체) 인 경우에는 조건에서 제외한다.
+        List<Record> recordList = recordRepositoryQdslRepository.findAllRecordByDetail(recordDetailRequestDto);
+
+        for (Record record : recordList) {
+            recordDetailResponseDtoList.add(RecordDetailResponseDto.build(record));
+        }
+
+        return recordDetailResponseDtoList;
     }
 }

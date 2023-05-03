@@ -7,14 +7,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RecordResponseDto {
-    private Date date;
+public class RecordCarNumResponseDto {
+    private LocalDateTime date;
     private String location;
     private String plateImageUrl;
     private String carImageUrl;
@@ -28,20 +29,20 @@ public class RecordResponseDto {
     private String color;
 
 
-    public static RecordResponseDto build(Record record, Car car) {
-        return RecordResponseDto.builder()
+    public static RecordCarNumResponseDto build(Record record) {
+        return RecordCarNumResponseDto.builder()
                 .location(record.getLocation())
                 .plateImageUrl(record.getPlateImageUrl())
                 .carImageUrl(record.getCarImageUrl())
                 .date(record.getDate())
                 .pay(record.getPay())
                 .fine(record.getFine())
-                .carNum(car.getCarNum())
-                .phoneNum(car.getPhoneNum())
-                .name(car.getName())
-                .address(car.getAddress())
-                .model(car.getModel())
-                .color(car.getColor())
+                .carNum(record.getCar().getCarNum())
+                .phoneNum(record.getCar().getPhoneNum())
+                .name(record.getCar().getName())
+                .address(record.getCar().getAddress())
+                .model(record.getCar().getModel())
+                .color(record.getCar().getColor())
                 .build();
     }
 }
