@@ -19,6 +19,9 @@ export default function Main() {
   let [carnumber, Setcarnumber] = useState(null);
   let [fee, Setfee] = useState("");
   let [name, Setname] = useState("");
+  // const [view, setView] = useState(false);
+
+  // const [selectedData, setSelectedData] = useState("");
 
   useEffect(() => {
     let sch = 0;
@@ -59,6 +62,8 @@ export default function Main() {
     }
   }, [searchCar]);
 
+ 
+
   const closeModal = () => {
     setmodal(false);
   };
@@ -79,6 +84,47 @@ export default function Main() {
     maxDate.setMonth(maxDate.getMonth() + 3);
   };
 
+  const handleChange = (e) => {
+    // event handler
+    console.log(e.target.value);
+  };
+
+  const location = [
+    { value: "all", name: "전체" },
+    { value: "apple", name: "광산구" },
+    { value: "banana", name: "동구" },
+    { value: "orange", name: "서구" },
+  ];
+
+  const area = [
+    { value: "all", name: "전체" },
+    { value: "suwandong", name: "수완동" },
+    { value: "jangdukdong", name: "장덕동" },
+    { value: "hanamdong", name: "하남동" },
+  ];
+  
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    // 폼 데이터 생성
+    const formData = new FormData();
+    formData.append("start_date", startDate);
+    formData.append("end_date", endDate);
+    formData.append("location", location);
+    formData.append("area", area);
+
+    console.log(formData)
+
+    // axios로 폼 데이터 전송
+    // axios.post("주소주소", formData)
+    //   .then(response => {
+    //     console.log(response.data);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+  };
+
   return (
     <div className={styles.background}>
       <TopNav setSearchcar={setSearchcar} />
@@ -88,8 +134,9 @@ export default function Main() {
             단속 현황 조회
           </div>
           <hr></hr>
+          <form onSubmit={handleSubmit}>
           <div className={styles.mininav}>
-            <div style={{marginRight:"20px",paddingTop:"3px" }}>날짜</div>
+            <div style={{ marginRight: "30px", paddingTop: "3px" }}>날짜</div>
             <div>
               <DatePicker
                 startDate={startDate}
@@ -101,35 +148,34 @@ export default function Main() {
                 }}
                 minDate={minDate}
                 maxDate={maxDate}
+                dateFormat="yyyy/MM/dd"
                 className={styles.calendar}
-             /></div>
-              <div onClick={handleApply} className={styles.calendarimg} >
-                <img src={calendar} alt="error" style={{ width:"20px"}}  />
-              </div>
-
-
-
-              <div style={{marginRight:"20px",paddingTop:"3px" }}>지역</div>
-            <div>
-              <DatePicker
-                startDate={startDate}
-                endDate={endDate}
-                selectsRange
-                onChange={(update) => {
-                  setStartDate(update[0]);
-                  setEndDate(update[1]);
-                }}
-                minDate={minDate}
-                maxDate={maxDate}
-                className={styles.calendar}
-                
-                // placeholderText="날짜를 고르세요"
               />
             </div>
-              <div onClick={handleApply} className={styles.calendarimg} >
-                <img src={calendar} alt="error" style={{ width:"20px"}}  />
-              </div>
+            <div onClick={handleApply} className={styles.calendarimg}>
+              <img src={calendar} alt="error" style={{ width: "20px" }} />
+            </div>
+
+            <div style={{ marginRight: "30px", paddingTop: "3px" }}>지역</div>
+            <select onChange={handleChange} className={styles.localist}>
+              {location.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+
+            <div style={{ marginRight: "30px", paddingTop: "3px" }}>동</div>
+            <select onChange={handleChange} className={styles.localist}>
+              {area.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
           </div>
+          <button type="submit">저장</button>
+            </form>
         </div>
         {modal && (
           <div className={styles.container}>
