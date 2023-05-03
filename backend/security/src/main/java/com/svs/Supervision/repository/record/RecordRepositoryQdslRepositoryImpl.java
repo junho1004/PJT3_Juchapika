@@ -7,6 +7,7 @@ import com.svs.Supervision.entity.record.QRecord;
 import com.svs.Supervision.entity.record.Record;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -41,16 +42,19 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
         QRecord record = QRecord.record;
         QCar car = QCar.car;
 
-        Date startDate = recordDetailRequestDto.getStartDate();// 시작시간
-        Date endDate = recordDetailRequestDto.getEndDate();// 끝시간
+        LocalDateTime startDate = recordDetailRequestDto.getStartDate();// 시작시간
+        LocalDateTime endDate = recordDetailRequestDto.getEndDate();// 끝시간
         String district = recordDetailRequestDto.getCounty();// 지역(구)
         String dong = recordDetailRequestDto.getDong();// 동
 
 
         List<Record> list;
 
+        System.out.println(district + ", " + dong);
+
         // 지역(구)와 동이 모두 default(전체) 인 경우.
-        if (district == "전체" && dong == "전체") {
+        if (district.equals("전체") && dong.equals("전체")) {
+
             list = jpaQueryFactory.selectFrom(record)
                     .join(car).on(car.id.eq(record.car.id))
                     .where(record.date.between(startDate, endDate))
@@ -58,7 +62,7 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
                     .fetch();
         }
         // 지역(구)만 default(전체) 인 경우.
-        else if (district == "전체" && dong != "전체") {
+        else if (district.equals("전체") && !dong.equals("전체")) {
             list = jpaQueryFactory.selectFrom(record)
                     .join(car).on(car.id.eq(record.car.id))
                     .where(record.date.between(startDate, endDate), record.location.contains(dong))
@@ -66,7 +70,7 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
                     .fetch();
         }
         // 동만 default(전체) 인 경우.
-        else if (district != "전체" && dong == "전체") {
+        else if (!district.equals("전체") && dong.equals("전체")) {
             list = jpaQueryFactory.selectFrom(record)
                     .join(car).on(car.id.eq(record.car.id))
                     .where(record.date.between(startDate, endDate), record.location.contains(district))
@@ -84,14 +88,10 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
                     .fetch();
         }
 
-
-
-        list = jpaQueryFactory.selectFrom(record)
-                .join(car).on(car.id.eq(record.car.id))
-                .where()
-                .orderBy(record.date.desc())
-                .fetch();
-
+        System.out.println(list.size());
+        for (Record record1 : list) {
+            System.out.println(record1);
+        }
 
         return list;
     }

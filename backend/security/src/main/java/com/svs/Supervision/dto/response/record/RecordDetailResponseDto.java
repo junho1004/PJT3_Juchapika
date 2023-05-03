@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -15,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecordDetailResponseDto {
-    private Date date;
+    private LocalDate date;
     private LocalTime time;
     private String location;
     private String carNum;
@@ -24,7 +26,8 @@ public class RecordDetailResponseDto {
     public static RecordDetailResponseDto build(Record record) {
         return RecordDetailResponseDto.builder()
                 .location(record.getLocation())
-                .date(record.getDate())
+                .date(record.getDate().toLocalDate())
+                .time(record.getDate().toLocalTime())
                 .carNum(record.getCar().getCarNum())
                 .build();
     }

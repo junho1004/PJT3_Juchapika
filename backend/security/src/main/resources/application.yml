@@ -2,7 +2,7 @@ spring:
   main:
     allow-bean-definition-overriding: true
   datasource:
-    url: jdbc:mysql://localhost:3306/juchapika?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/juchapika?useSSL=false&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,6 +15,10 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     generate-ddl: true
+
+  jackson:
+    time-zone: Asia/Seoul
+
 
 server:
   max-http-header-size: 8000000

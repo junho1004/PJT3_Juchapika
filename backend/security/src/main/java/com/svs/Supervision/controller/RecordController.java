@@ -8,6 +8,7 @@ import com.svs.Supervision.dto.request.record.RecordDetailRequestDto;
 import com.svs.Supervision.dto.request.record.RecordRequestDto;
 import com.svs.Supervision.dto.response.api.ApiResponseDto;
 import com.svs.Supervision.dto.response.record.RecordCarNumResponseDto;
+import com.svs.Supervision.dto.response.record.RecordDetailResponseDto;
 import com.svs.Supervision.entity.user.User;
 import com.svs.Supervision.service.record.RecordService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -86,9 +87,11 @@ public class RecordController {
                                            @Parameter(hidden = true)
                                            @AuthenticationPrincipal User user) throws IOException {
 
-        recordService.searchDetail(recordDetailRequestDto);
+        LOGGER.info("searchDetail() 호출 : " + recordDetailRequestDto);
 
-        return null;
+        List<RecordDetailResponseDto> recordDetailResponseDtoList = recordService.searchDetail(recordDetailRequestDto);
+
+        return new ResponseEntity(new ApiResponseDto(true, "searchDetail successfully@", recordDetailResponseDtoList), HttpStatus.OK);
     }
 
 

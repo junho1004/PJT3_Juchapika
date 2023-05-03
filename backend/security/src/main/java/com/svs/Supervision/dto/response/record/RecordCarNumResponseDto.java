@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -14,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecordCarNumResponseDto {
-    private Date date;
+    private LocalDateTime date;
     private String location;
     private String plateImageUrl;
     private String carImageUrl;
