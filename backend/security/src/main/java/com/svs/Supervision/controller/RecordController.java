@@ -39,6 +39,7 @@ import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOG
 @RequiredArgsConstructor
 public class RecordController {
 
+    // test
     private final RecordService recordService;
 
     // 1. 입력박은 차량 번호판 정보를 통해 carId를 찾는다.
