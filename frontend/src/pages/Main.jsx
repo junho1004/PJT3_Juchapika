@@ -9,10 +9,14 @@ import calendar from "../assets/calendar.png";
 import file from "../assets/file.png";
 import statistics from "../assets/statistics.png";
 import axios from "axios";
-import TotalTable from "../components/TotalTable";
+import TotalTable from "../components/Table/TotalTable";
+import Chart from "../components/Table/Chart";
+import { format } from "date-fns";
+import ko from "date-fns/locale/ko";
 
 export default function Main() {
   const [modal, setmodal] = useState(false);
+  const [statistic, setstatistic] = useState(false);
   const [searchCar, setSearchcar] = useState("");
   let [car, SetCar] = useState("");
   let [caught, Setcaught] = useState("");
@@ -69,25 +73,31 @@ export default function Main() {
   const closeModal = () => {
     setmodal(false);
   };
+
+  const openstatistic = () => {
+    setstatistic(true);
+  };
+  const closestatistic = () => {
+    setstatistic(false);
+  };
   const today = new Date();
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
 
-  const handleApply = () => {
-    // startDate와 endDate를 이용하여 작업 수행
-    console.log(startDate, endDate);
-    console.log('startDate:', startDate);
-    console.log('endDate:', endDate);
-  };
-
   const minDate = new Date();
   const maxDate = () => {
     new Date();
-    console.log(startDate, endDate);
-    console.log('startDate:', startDate);
-    console.log('endDate:', endDate);
+    // console.log(startDate, endDate);
+    // console.log('startDate:', startDate);
+    // console.log('endDate:', endDate);
 
     maxDate.setMonth(maxDate.getMonth() + 3);
+  };
+  const handleApply = () => {
+    // startDate와 endDate를 이용하여 작업 수행
+    // console.log(startDate, endDate);
+    console.log("startDate:", startDate);
+    console.log("endDate:", endDate);
   };
 
   const [location, Setlocation] = useState("");
@@ -121,14 +131,6 @@ export default function Main() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // 폼 데이터 생성
-    // const formData = new FormdData();
-    // formData.append("start_date", startDate);
-    // formData.append("end_date", endDate);
-    // formData.append("location", location);
-    // formData.append("area", area);
-
-    // console.log(formData)
     const data = {
       start_date: startDate,
       end_date: endDate,
@@ -146,6 +148,7 @@ export default function Main() {
         console.log(error);
       });
   };
+  
 
   return (
     <div className={styles.background}>
@@ -167,6 +170,7 @@ export default function Main() {
                   onChange={(update) => {
                     setStartDate(update[0]);
                     setEndDate(update[1]);
+                    console.log(update);
                   }}
                   minDate={minDate}
                   maxDate={maxDate}
@@ -202,21 +206,21 @@ export default function Main() {
           </form>
 
           <div className={styles.excelside}>
-            <div className={styles.excel} style={{marginRight:"20px"}}>
-              <div style={{paddingRight:"10px"}}>Excel</div>
+            <div className={styles.excel} style={{ marginRight: "20px" }}>
+              <div style={{ paddingRight: "10px" }}>Excel</div>
               <div>
                 <img src={file} alt="error" style={{ width: "20px" }} />
-                </div>
+              </div>
             </div>
-            <div className={styles.excel}>
-              <div style={{paddingRight:"10px"}}>통계</div>
+            <div onClick={openstatistic} className={styles.excel}>
+              <div style={{ paddingRight: "10px" }}>통계</div>
               <img src={statistics} alt="error" style={{ width: "20px" }} />
             </div>
           </div>
-            <div className={styles.count}>총 4개</div>
-            <div>
-<TotalTable/>
-            </div>
+          <div className={styles.count}>총 4개</div>
+          <div>
+            <TotalTable />
+          </div>
         </div>
         {modal && (
           <div className={styles.container}>
@@ -303,6 +307,32 @@ export default function Main() {
                     )}
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className={styles.back}></div>
+          </div>
+        )}
+        {statistic && (
+          <div className={styles.container}>
+            <div className={styles.modal1}>
+              <div onClick={closestatistic} className={styles.x}>
+                <div>x</div>
+              </div>
+              <div className={styles.modalin}>
+                <div className={styles.modaltext}>
+                  <div style={{ fontSize: "1.5em", fontWeight: "800" }}>
+                    발생건수
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontSize: "0.7em", marginBottom: "20px" }}>
+                    {/* {startDate} ~ {endDate} */}
+                    {format(startDate, "yyyy.MM.dd", { locale: ko })}~
+                    {format(endDate, "yyyy.MM.dd", { locale: ko })}
+                  </div>
+                </div>
+                <hr></hr>
+                <div className={styles.modaltext1}><Chart startDate={startDate} endDate={endDate}/>표넣어</div>
               </div>
             </div>
             <div className={styles.back}></div>
