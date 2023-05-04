@@ -4,6 +4,7 @@ WORKDIR /var/jenkins_home/workspace/juchapika/frontend
 COPY package*.json ./
 RUN npm install
 COPY . .
+RUN npm install react-scripts -g
 RUN npm run build
 
 #
