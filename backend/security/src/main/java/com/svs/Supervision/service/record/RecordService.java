@@ -4,6 +4,7 @@ import com.svs.Supervision.dto.request.record.RecordDetailRequestDto;
 import com.svs.Supervision.dto.request.record.RecordRequestDto;
 import com.svs.Supervision.dto.response.record.RecordCarNumResponseDto;
 import com.svs.Supervision.dto.response.record.RecordDetailResponseDto;
+import com.svs.Supervision.dto.response.record.RecordStatisticsResponseDto;
 import com.svs.Supervision.entity.car.Car;
 import com.svs.Supervision.entity.record.Record;
 import com.svs.Supervision.repository.car.CarRepository;
@@ -13,9 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = false)
@@ -88,5 +89,49 @@ public class RecordService {
         }
 
         return recordDetailResponseDtoList;
+    }
+
+    public List<RecordStatisticsResponseDto> searchStatistics(RecordDetailRequestDto recordDetailRequestDto) {
+
+        List<RecordStatisticsResponseDto> recordStatisticsResponseDtoList = new ArrayList<>();
+        List<Record> recordList = recordRepositoryQdslRepository.findAllRecordByDateForStatistics(recordDetailRequestDto);
+
+        HashMap<LocalDate, HashMap<String, Long>> newMap = new HashMap<>();
+
+        List<String> county = Arrays.asList("광산구", "남구", "북구", "서구", "동구");
+
+
+        // 1. recordList 를 뒤지면서, 날짜별로 newMap 에 {Date: countyMap} 을 추가한다.
+        // 2. 다시 recordList 를 뒤지면서 , 해당 Date 의 Value countyMap 을 가져온다.
+        // 3. countyMap 의 county 의 숫자를 1 증가시키고 저장한다.
+
+        for (Record record : recordList) {
+            if (newMap.get(record.getDate().toLocalDate()) == null) {
+                HashMap<String, Long> countyMap = new HashMap<>();
+
+                // HashMap 초기화
+                for (String c : county) {
+                    countyMap.put(c, 0L);
+                }
+                newMap.put(record.getDate().toLocalDate(), countyMap);
+            }
+        }
+
+
+        for (Record record : recordList) {
+            System.out.println(record);
+            for (String c : county) {
+                if (record.getLocation().contains(c)) {
+                    HashMap<String, Long> countyMap2 = newMap.get(record.getDate().toLocalDate());
+                    countyMap2.put(c, countyMap2.get(c) + 1);
+                    newMap.put(record.getDate().toLocalDate(), countyMap2);
+                }
+            }
+        }
+
+
+        recordStatisticsResponseDtoList.add(RecordStatisticsResponseDto.build(newMap));
+
+        return recordStatisticsResponseDtoList;
     }
 }
