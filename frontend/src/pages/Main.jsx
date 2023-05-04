@@ -11,6 +11,8 @@ import statistics from "../assets/statistics.png";
 import axios from "axios";
 import TotalTable from "../components/TotalTable";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export default function Main() {
   const [modal, setmodal] = useState(false);
   const [searchCar, setSearchcar] = useState("");
@@ -138,7 +140,7 @@ export default function Main() {
 
     // axios로 폼 데이터 전송
     axios
-      .post("주소주소", data)
+      .post(REACT_APP_API_URL + , data)
       .then((res) => {
         console.log(res.data);
       })
