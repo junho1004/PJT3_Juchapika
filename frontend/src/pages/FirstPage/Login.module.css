@@ -1,0 +1,122 @@
+.body {
+  /* background-color:white; */
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  background-color: rgba(217, 217, 217, 1);
+}
+/* .body::before{
+    background-image: url(../../assets/main.png);
+    opacity: 0.5;
+    content: "";
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: top center;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: -1;
+} */
+.body1 {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+.title1 {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+.title {
+  color: white;
+  font-weight: 500;
+  font-size: 2em;
+  margin: 0.2rem;
+}
+.logo {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  /* padding-bottom: 3%; */
+}
+.detail {
+  margin-top: 3%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.box {
+  width: 95%;
+  padding: 2%;
+  /* margin: 5%; */
+  margin-left: 3%;
+  background-color: white;
+  border: none;
+  border-radius: 10px;
+}
+.id {
+  margin-bottom: 3%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+.loginbtn {
+  /* border: 2px solid black; */
+  border-radius: 10px;
+  margin-top: 3%;
+  padding: 2.5%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  background-color: rgba(24, 92, 165, 1);
+  color: white;
+}
+.loginbtn:hover {
+  background: rgba(43, 114, 189, 1)
+}
+
+.arr {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+.body2 {
+  width: 500px;
+  height: 380px;
+  /* padding: 2%; */
+  background-color: rgba(68, 68, 68, 1);
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px 5px gray;
+}
+.body3 {
+  margin: 10%;
+  /* padding: 10%; */
+}
+input::placeholder {
+  color: rgba(143, 170, 199, 1);
+  font-size: large;
+  font-weight: 800;
+}
+.logintext {
+  color: white;
+  padding-left: 37px;
+}
