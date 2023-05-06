@@ -6,17 +6,18 @@ import React from "react"
 import Login from './pages/FirstPage/Login';
 
 //네비
-
+import Viewer from './useViewer';
 function App() {
   return (
     <div className="App">
-     <BrowserRouter>
-      {/* <Header/> */}
-      <Routes>
-        <Route exact path="/" element={<Login/>}/>
-        <Route exact path="/main" element={<Main/>}/>
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        {/* <Header/> */}
+        <Routes>
+          <Route exact path="/" element={<Login />} />
+          <Route exact path="/main" element={<Main />} />
+          <Route exact path="/live" element={<Viewer />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
