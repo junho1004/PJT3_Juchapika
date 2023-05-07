@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styles from "./TopNav.module.css";
 import logo from "../../assets/logo.png";
 import magnifier from "../../assets/magnifier.png";
-// import { markerdata } from "./Markerdata";
 
 // eslint-disable-next-line react/prop-types
 export default function TopNav({setSearchcar}) {
@@ -47,7 +46,7 @@ export default function TopNav({setSearchcar}) {
           <div
             className={styles.block}
             onClick={() => {
-              navigate("/");
+              navigate("/videostorage");
             }}
           >
             VIDEO STORAGE

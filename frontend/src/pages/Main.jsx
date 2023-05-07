@@ -14,10 +14,10 @@ import { format } from "date-fns";
 import ko from "date-fns/locale/ko";
 import PropTypes from "prop-types";
 import UserTable from "../components/Table/UserTable";
-// import UserTable from "../components/Table/TotalTable";
+// import {downloadExcel} from "../components/Table/UserTable";
 
-export default function Main(props) {
-  const { data } = props;
+export default function Main() {
+  // const { data } = props;
   // const { onDownloadExcel } = this.props;
   const [modal, setmodal] = useState(false);
   const [statistic, setstatistic] = useState(false);
@@ -31,6 +31,7 @@ export default function Main(props) {
   let [carnumber, Setcarnumber] = useState(null);
   let [fee, Setfee] = useState("");
   let [name, Setname] = useState("");
+  // const [down,Setdown] = useState(null)
 
   useEffect(() => {
     let sch = 0;
@@ -102,12 +103,12 @@ export default function Main(props) {
     new Date();
     minDate.setMonth(minDate.getMonth() - 90);
   };
-  const handleApply = () => {
-    // startDate와 endDate를 이용하여 작업 수행
-    // console.log(startDate, endDate);
-    console.log("startDate:", startDate);
-    console.log("endDate:", endDate);
-  };
+  // const handleApply = () => {
+  //   // startDate와 endDate를 이용하여 작업 수행
+  //   // console.log(startDate, endDate);
+  //   console.log("startDate:", startDate);
+  //   console.log("endDate:", endDate);
+  // };
 
   const [location, Setlocation] = useState("");
   const [area, Setarea] = useState("");
@@ -157,6 +158,10 @@ export default function Main(props) {
         console.log(error);
       });
   };
+  // function Clickdown(){
+  //   UserTable.downloadExcel(UserTable.users, UserTable.columns)
+  //   // console.log(Setdown)
+  // }
 
   return (
     <div className={styles.background}>
@@ -172,6 +177,7 @@ export default function Main(props) {
               <div style={{ marginRight: "30px", paddingTop: "3px" }}>날짜</div>
               <div>
                 <DatePicker
+                  id="datepicker"
                   startDate={startDate}
                   endDate={endDate}
                   selectsRange
@@ -186,7 +192,12 @@ export default function Main(props) {
                   className={styles.calendar}
                 />
               </div>
-              <div onClick={handleApply} className={styles.calendarimg}>
+              <div
+                onClick={() => {
+                  document.getElementById("datepicker").focus();
+                }}
+                className={styles.calendarimg}
+              >
                 <img src={calendar} alt="error" style={{ width: "20px" }} />
               </div>
 
@@ -217,21 +228,20 @@ export default function Main(props) {
             <div
               className={styles.excel}
               style={{ marginRight: "20px" }}
-              onClick={data}
+              // onClick={Clickdown}
             >
-              <div style={{ paddingRight: "10px" }}>Excel</div>
+              <div className={styles.excelbtn}>Excel</div>
               <div>
                 <img src={file} alt="error" style={{ width: "20px" }} />
               </div>
             </div>
             <div onClick={openstatistic} className={styles.excel}>
-              <div style={{ paddingRight: "10px" }}>통계</div>
+              <div className={styles.excelbtn}>통계</div>
               <img src={statistics} alt="error" style={{ width: "20px" }} />
             </div>
           </div>
-          <div className={styles.count}>총 4개</div>
           <div>
-            <UserTable/>
+            <UserTable />
           </div>
         </div>
         {modal && (
@@ -247,10 +257,8 @@ export default function Main(props) {
                   </div>
                 </div>
                 <div className={styles.modaltext}>
-                  <div style={{ fontSize: "0.7em", marginBottom: "20px" }}>
-                    {/* <span> */}
+                  <div style={{ fontSize: "0.7em", marginBottom: "10px" }}>
                     {date} {caught}
-                    {/* </span> */}
                   </div>
                 </div>
                 <hr></hr>
@@ -262,7 +270,7 @@ export default function Main(props) {
                     src={pic}
                     alt="go"
                     className={styles.carimage}
-                    style={{ width: "100px" }}
+                    style={{ width: "150px", marginRight: "20px" }}
                   />
 
                   {/* </div> */}
@@ -337,7 +345,7 @@ export default function Main(props) {
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: "0.7em", marginBottom: "20px" }}>
+                  <div style={{ fontSize: "0.7em", marginBottom: "30px" }}>
                     {/* {startDate} ~ {endDate} */}
                     {format(startDate, "yyyy.MM.dd", { locale: ko })}~
                     {format(endDate, "yyyy.MM.dd", { locale: ko })}
@@ -349,7 +357,7 @@ export default function Main(props) {
                 </div>
               </div>
             </div>
-            <div className={styles.back}></div>
+            <div className={styles.back} onClick={closestatistic}></div>
           </div>
         )}
       </div>

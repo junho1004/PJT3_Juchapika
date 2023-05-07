@@ -35,7 +35,12 @@
   width: 10%;
   color: white;
   font-size: 0.8em;
+  transition: font-weight ease-in-out;
 }
+.block:hover {
+  font-weight: bold;
+}
+
 .blocklogout {
   align-content: flex-end;
   align-items: flex-end;

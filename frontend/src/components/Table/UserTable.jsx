@@ -11,14 +11,15 @@ import {
   TablePagination,
   TableRow,
   Paper,
-  // Button,
+  Button,
 } from "@material-ui/core";
 import ExcelJS from "exceljs";
-import Main from "../../pages/Main"
+// import Main from "../../pages/Main"
 
 function UserTable({ columns = [] }) {
   // columns 기본값을 빈 배열로 설정
   const [page, setPage] = useState(0);
+
   const [rowsPerPage, setRowsPerPage] = useState(20);
 
   const StyledTableCell = withStyles((theme) => ({
@@ -38,15 +39,6 @@ function UserTable({ columns = [] }) {
       },
     },
   }))(TableRow);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
 
   function getDate() {
     const today = new Date();
@@ -126,91 +118,104 @@ function UserTable({ columns = [] }) {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        // console.log(downloadExcel(users,columns))
       })
       .catch((error) => {
         console.log(error);
       });
   }
-  const data = downloadExcel(users,columns);
-  
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+    // const data = downloadExcel(users, columns)
+    // Setdown(data)
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
-    <TableContainer component={Paper}>
-      <Main data={data} />
-      <Table>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell align="center" width="10%">
-              순번
-            </StyledTableCell>
-            <StyledTableCell align="center" width="20%">
-              단속일자
-            </StyledTableCell>
-            <StyledTableCell align="center" width="20%">
-              단속시간
-            </StyledTableCell>
-            <StyledTableCell align="center" width="40%">
-              단속위치
-            </StyledTableCell>
-            <StyledTableCell align="center" width="10%">
-              차량번호
-            </StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((user) => (
-              <StyledTableRow key={user.id}>
-                <StyledTableCell align="center" width="10%">
-                  {user.id}
-                </StyledTableCell>
-                <StyledTableCell align="center" width="20%">
-                  {user.date}
-                </StyledTableCell>
-                <StyledTableCell align="center" width="20%">
-                  {user.time}
-                </StyledTableCell>
-                <StyledTableCell align="center" width="40%">
-                  {user.location}
-                </StyledTableCell>
-                <StyledTableCell align="center" width="10%">
-                  {user.carNum}
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[20, 50, 100]}
-              count={users.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: { "aria-label": "rows per page" },
-                native: true,
-              }}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-            <StyledTableCell>
-              {/* <Button
-                variant="contained"
-                color="primary"
-                onClick={() => downloadExcel(users, columns)}
-              >
-                Download Excel
-              </Button> */}
-            </StyledTableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+    <div>
+      <div style={{ fontSize: "0.7em" }}>총 {users.length}개</div>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align="center" width="10%">
+                순번
+              </StyledTableCell>
+              <StyledTableCell align="center" width="20%">
+                단속일자
+              </StyledTableCell>
+              <StyledTableCell align="center" width="20%">
+                단속시간
+              </StyledTableCell>
+              <StyledTableCell align="center" width="40%">
+                단속위치
+              </StyledTableCell>
+              <StyledTableCell align="center" width="10%">
+                차량번호
+              </StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((user) => (
+                <StyledTableRow key={user.id}>
+                  <StyledTableCell align="center" width="10%">
+                    {user.id}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" width="20%">
+                    {user.date}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" width="20%">
+                    {user.time}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" width="40%">
+                    {user.location}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" width="10%">
+                    {user.carNum}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[20, 50, 100]}
+                count={users.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { "aria-label": "rows per page" },
+                  native: true,
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+              />
+              <StyledTableCell>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => downloadExcel(users, columns)}
+                >
+                  Download Excel
+                </Button>
+              </StyledTableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+    </div>
   );
 }
 
 UserTable.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),
+  // Setdown: PropTypes.func.isRequired,
 };
 
 export default UserTable;
