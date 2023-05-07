@@ -9,12 +9,16 @@ import calendar from "../assets/calendar.png";
 import file from "../assets/file.png";
 import statistics from "../assets/statistics.png";
 import axios from "axios";
-import TotalTable from "../components/Table/TotalTable";
 import Chart from "../components/Table/Chart";
 import { format } from "date-fns";
 import ko from "date-fns/locale/ko";
+import PropTypes from "prop-types";
+import UserTable from "../components/Table/UserTable";
+// import UserTable from "../components/Table/TotalTable";
 
-export default function Main() {
+export default function Main(props) {
+  const { data } = props;
+  // const { onDownloadExcel } = this.props;
   const [modal, setmodal] = useState(false);
   const [statistic, setstatistic] = useState(false);
   const [searchCar, setSearchcar] = useState("");
@@ -27,27 +31,24 @@ export default function Main() {
   let [carnumber, Setcarnumber] = useState(null);
   let [fee, Setfee] = useState("");
   let [name, Setname] = useState("");
-  // const [view, setView] = useState(false);
-
-  // const [selectedData, setSelectedData] = useState("");
 
   useEffect(() => {
     let sch = 0;
-    if (searchCar !== "") {
-      console.log(searchCar);
-      // console.log(searchCar.type);
-      cardetails.forEach((el) => {
-        let car1 = el.car;
-        let caught = el.caught;
-        let date = el.date;
-        let pic = el.pic;
-        let phonenumber = el.phonenumber;
-        let address = el.address;
-        let carnumber = el.carnumber;
-        let fee = el.fee;
-        let name = el.name;
-        // console.log(cardetails);
-        sch++;
+    console.log(searchCar);
+    // console.log(searchCar.type);
+    cardetails.forEach((el) => {
+      let car1 = el.car;
+      let caught = el.caught;
+      let date = el.date;
+      let pic = el.pic;
+      let phonenumber = el.phonenumber;
+      let address = el.address;
+      let carnumber = el.carnumber;
+      let fee = el.fee;
+      let name = el.name;
+      // console.log(cardetails);
+      sch++;
+      if (searchCar !== "") {
         if (searchCar === car1) {
           setmodal(true);
           SetCar(car1);
@@ -61,15 +62,27 @@ export default function Main() {
           Setname(name);
           setSearchcar("");
           return;
-        } else if (sch == cardetails.length) {
+        } else if (sch === cardetails.length) {
           alert("등록된 차량이 없습니다");
           setSearchcar("");
           return;
         }
-      });
-    }
+      }
+    });
   }, [searchCar]);
 
+  //엑셀다운버튼
+
+  // const {UserTable} = this.props;
+  // function handleDownloadExcel() {
+  //   UserTable.downloadExcel(UserTable.users, UserTable.columns);
+  // }
+
+  // function handleExcelDownload() {
+  //   const users = [] // 다운로드할 유저 데이터
+  //   const columns = []
+  //   UserTable.downloadExcel(users, columns);
+  // }
   const closeModal = () => {
     setmodal(false);
   };
@@ -84,14 +97,10 @@ export default function Main() {
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
 
-  const minDate = new Date();
-  const maxDate = () => {
+  const maxDate = new Date();
+  const minDate = () => {
     new Date();
-    // console.log(startDate, endDate);
-    // console.log('startDate:', startDate);
-    // console.log('endDate:', endDate);
-
-    maxDate.setMonth(maxDate.getMonth() + 3);
+    minDate.setMonth(minDate.getMonth() - 90);
   };
   const handleApply = () => {
     // startDate와 endDate를 이용하여 작업 수행
@@ -148,7 +157,6 @@ export default function Main() {
         console.log(error);
       });
   };
-  
 
   return (
     <div className={styles.background}>
@@ -206,7 +214,11 @@ export default function Main() {
           </form>
 
           <div className={styles.excelside}>
-            <div className={styles.excel} style={{ marginRight: "20px" }}>
+            <div
+              className={styles.excel}
+              style={{ marginRight: "20px" }}
+              onClick={data}
+            >
               <div style={{ paddingRight: "10px" }}>Excel</div>
               <div>
                 <img src={file} alt="error" style={{ width: "20px" }} />
@@ -219,7 +231,7 @@ export default function Main() {
           </div>
           <div className={styles.count}>총 4개</div>
           <div>
-            <TotalTable />
+            <UserTable/>
           </div>
         </div>
         {modal && (
@@ -309,7 +321,7 @@ export default function Main() {
                 </div>
               </div>
             </div>
-            <div className={styles.back}></div>
+            <div className={styles.back} onClick={closeModal}></div>
           </div>
         )}
         {statistic && (
@@ -332,7 +344,9 @@ export default function Main() {
                   </div>
                 </div>
                 <hr></hr>
-                <div className={styles.modaltext1}><Chart startDate={startDate} endDate={endDate}/>표넣어</div>
+                <div className={styles.modaltext1}>
+                  <Chart startDate={startDate} endDate={endDate} />
+                </div>
               </div>
             </div>
             <div className={styles.back}></div>
@@ -342,3 +356,6 @@ export default function Main() {
     </div>
   );
 }
+Main.propTypes = {
+  data: PropTypes.func.isRequired,
+};

@@ -39,7 +39,7 @@ export default function TopNav({setSearchcar}) {
           <div
             className={styles.block}
             onClick={() => {
-              navigate("/");
+              navigate("/live");
             }}
           >
             LIVE

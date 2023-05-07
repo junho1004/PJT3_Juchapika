@@ -9,16 +9,14 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.5.0",
-<<<<<<< HEAD
+    "amazon-kinesis-video-streams-webrtc": "^1.0.8",
     "apexcharts": "^3.40.0",
     "axios": "^1.4.0",
     "chance": "^1.1.11",
-    "faker": "^6.6.6",
-=======
-    "amazon-kinesis-video-streams-webrtc": "^1.0.8",
-    "axios": "^1.4.0",
+    "crypto-browserify": "^3.12.0",
     "events": "^3.3.0",
->>>>>>> 5440993fbc9f0a35564b446e4eb794edd312d2a9
+    "exceljs": "^4.3.0",
+    "faker": "^6.6.6",
     "react": "^16.14.0",
     "react-apexcharts": "^1.4.0",
     "react-cookie": "^4.1.1",
@@ -28,7 +26,8 @@
     "react-kinesis-webrtc": "^0.3.0",
     "react-router-dom": "^6.10.0",
     "sweetalert2": "^11.7.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",
