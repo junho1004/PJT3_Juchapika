@@ -50,6 +50,8 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
 
         List<Record> list;
 
+        System.out.println(startDate + ", " + endDate);
+
         System.out.println(district + ", " + dong);
 
         // 지역(구)와 동이 모두 default(전체) 인 경우.

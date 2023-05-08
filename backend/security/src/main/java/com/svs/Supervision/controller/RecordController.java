@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOGGER;
@@ -36,6 +38,7 @@ import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOG
 @Tag(name = "Record", description = "기록 관련 API")
 @RestController
 @RequestMapping("/record")
+@CrossOrigin(origins = "http://localhost:3000") // 컨트롤러에서 설정
 @RequiredArgsConstructor
 public class RecordController {
 
@@ -111,8 +114,9 @@ public class RecordController {
         headerRow.createCell(4).setCellValue("차량번호");
 
 
-        for (ExcelRequestDto dto : excelRequestDtoList) {
-            Row dataRow = sheet.createRow(excelRequestDtoList.size());
+        for (int i = 0; i < excelRequestDtoList.size(); i++) {
+            ExcelRequestDto dto = excelRequestDtoList.get(i);
+            Row dataRow = sheet.createRow(i + 1); // 행의 인덱스를 i + 1로 지정
             dataRow.createCell(0).setCellValue(dto.getId());
             dataRow.createCell(1).setCellValue(dto.getDate());
             dataRow.createCell(2).setCellValue(dto.getTime());

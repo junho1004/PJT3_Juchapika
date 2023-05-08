@@ -31,6 +31,14 @@ export default function Main() {
   let [carnumber, Setcarnumber] = useState(null);
   let [fee, Setfee] = useState("");
   let [name, Setname] = useState("");
+  let [search, Setsearch] = useState({
+    startDate: "",
+    endDate: "",
+    county: "",
+    dong: ""
+  });
+  let [tableData, setTableData] = useState([]);
+
   // const [down,Setdown] = useState(null)
 
   useEffect(() => {
@@ -88,6 +96,45 @@ export default function Main() {
     setmodal(false);
   };
 
+  const convertExcel = () => {
+    console.log("asd");
+    const data = Array(tableData.length)
+    .fill()
+    .map((_, i) => ({
+      id: i + 1,
+      date: tableData[i].date,
+      time: tableData[i].time,
+      location: tableData[i].location,
+      carNum: tableData[i].carNum,
+    }));
+
+    data.forEach(test => {
+      console.log(test);
+    });
+  
+
+    axios
+      .post("http://localhost:8081/api/record/download", data, {
+        responseType: 'blob' // blob 형태로 데이터를 받아옴
+      })
+      .then((res) => {
+        // Blob 데이터를 이용해 엑셀 파일 생성
+        const file = new Blob([res.data], {type: 'application/vnd.ms-excel'})
+        // 엑셀 파일 다운로드 링크 생성
+        const fileURL = URL.createObjectURL(file)
+        const a = document.createElement('a')
+        const startDate = search.startDate.slice(0, 10)
+        const endDate = search.endDate.slice(0, 10)
+
+        a.href = fileURL
+        a.download = '(' + startDate + '~' + endDate + ')' + ' 단속현황_조회_' + search.county + ' ' + search.dong + '.xlsx'
+        a.click()
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const openstatistic = () => {
     setstatistic(true);
   };
@@ -125,34 +172,52 @@ export default function Main() {
   };
 
   const locations = [
-    { value: "all", name: "전체" },
-    { value: "gwangsangoo", name: "광산구" },
-    { value: "donggoo", name: "동구" },
-    { value: "seogoo", name: "서구" },
+    { value: "전체", name: "전체" },
+    { value: "광산구", name: "광산구" },
+    // { value: "동구", name: "동구" },
+    // { value: "서구", name: "서구" },
+    // { value: "남구", name: "남구" },
+    // { value: "북구", name: "북구" },
   ];
 
   const areas = [
-    { value: "all", name: "전체" },
-    { value: "suwandong", name: "수완동" },
-    { value: "jangdukdong", name: "장덕동" },
-    { value: "hanamdong", name: "하남동" },
+    { value: "전체", name: "전체" },
+    { value: "수완동", name: "수완동" },
+    { value: "장덕동", name: "장덕동" },
+    { value: "하남동", name: "하남동" },
   ];
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const data = {
-      start_date: startDate,
-      end_date: endDate,
-      location: location,
-      area: area,
+      startDate: format(startDate, "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"),
+      endDate: format(endDate, "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"),
+      county: location,
+      dong: area,
     };
+
+    Setsearch(data)
+
+    console.log(data.startDate);
+    console.log(data.endDate);
+    console.log(typeof (data.startDate));
+    console.log(typeof (data.endDate));
+
 
     // axios로 폼 데이터 전송
     axios
-      .post("주소주소", data)
+      .post("http://localhost:8081/api/record/search-by-detail", data)
       .then((res) => {
-        console.log(res.data);
+
+
+        console.log(res.data.responseData[0]);
+        console.log(typeof(res.data.responseData[0]));
+        setTableData(res.data.responseData);
+
+
+        console.log(tableData);
+        // res.data
       })
       .catch((error) => {
         console.log(error);
@@ -228,9 +293,9 @@ export default function Main() {
             <div
               className={styles.excel}
               style={{ marginRight: "20px" }}
-              // onClick={Clickdown}
+              onClick={convertExcel}
             >
-              <div className={styles.excelbtn}>Excel</div>
+              <div  className={styles.excelbtn}>Excel</div>
               <div>
                 <img src={file} alt="error" style={{ width: "20px" }} />
               </div>
@@ -241,7 +306,7 @@ export default function Main() {
             </div>
           </div>
           <div>
-            <UserTable />
+          <UserTable tableData={tableData} />
           </div>
         </div>
         {modal && (
@@ -341,14 +406,13 @@ export default function Main() {
               <div className={styles.modalin}>
                 <div className={styles.modaltext}>
                   <div style={{ fontSize: "1.5em", fontWeight: "800" }}>
-                    발생건수
+                    기간별 통계
                   </div>
                 </div>
                 <div>
                   <div style={{ fontSize: "0.7em", marginBottom: "30px" }}>
                     {/* {startDate} ~ {endDate} */}
-                    {format(startDate, "yyyy.MM.dd", { locale: ko })}~
-                    {format(endDate, "yyyy.MM.dd", { locale: ko })}
+                    {format(startDate, "yyyy.MM.dd", { locale: ko })} ~ {format(endDate, "yyyy.MM.dd", { locale: ko })}
                   </div>
                 </div>
                 <hr></hr>
