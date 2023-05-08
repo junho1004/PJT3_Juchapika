@@ -11,4 +11,6 @@ public interface RecordRepositoryQdslRepository {
     List<Record> findAllRecordByCarNumWhereCntZero(String carNum);
 
     List<Record> findAllRecordByDetail(RecordDetailRequestDto recordDetailRequestDto);
+
+    List<Record> findAllRecordByDateForStatistics(RecordDetailRequestDto recordDetailRequestDto);
 }
