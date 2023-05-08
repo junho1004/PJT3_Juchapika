@@ -88,15 +88,66 @@ export default function Feeletter() {
             </div>
           </div>
           <div style={{ fontWeight: "600", fontSize: "1.1em" }}>부과내역</div>
-          <div>dd</div>
-          <div>dd</div>
-          <div>dd</div>
-          <div>dd</div>
-          <div>dd</div>
-          <div>dd</div>
-          <div>dd</div>
-          <div>dd</div>
-          <div>dd</div>
+          <div className={styles.f}>
+            <div className={styles.g}>
+              <div className={styles.f}>
+                <div className={styles.g1}>
+                  <div style={{ width: "100px" }}>납부기한</div>
+                  <div className={styles.empty}></div>
+                  <div style={{ width: "100px" }}>2023/08/05</div>
+                </div>
+                <div className={styles.g1}>
+                  <div style={{ width: "100px" }}>과목</div>
+                  <div className={styles.empty}></div>
+                  <div style={{ width: "100px" }}>납기내금액</div>
+                </div>
+                <div className={styles.g2}>
+                  <div style={{ width: "100px" }}>과태료</div>
+                  <div className={styles.empty}></div>
+                  <div style={{ width: "100px" }}>40,000</div>
+                </div>
+                <div className={styles.g2}>
+                  <div style={{ width: "100px" }}>가산금</div>
+                  <div className={styles.empty}></div>
+                  <div style={{ width: "100px" }}>0</div>
+                </div>
+                <div className={styles.g2}>
+                  <div style={{ width: "100px" }}>합계금액</div>
+                  <div className={styles.empty}></div>
+                  <div style={{ width: "100px" }}>40,000</div>
+                </div>
+              </div>
+              <div className={styles.f}>
+                <div className={styles.g1}>
+                  <div style={{ width: "100px" }}>적발일시</div>
+                  <div className={styles.empty}></div>
+                  <div style={{ width: "100px" }}>2023/05/04</div>
+                </div>
+                <div className={styles.g1}>
+                  <div style={{ width: "100px" }}>적발장소</div>
+                  <div className={styles.empty}></div>
+                  <div style={{ width: "100px" }}>주소적어야함</div>
+                </div>
+                <div className={styles.g1}>
+                  <div style={{ width: "100px" }}>법조항</div>
+                  <div className={styles.empty}></div>
+                  <div style={{ width: "100px" }}>도로교통법 제 32-34조</div>
+                </div>
+                <div className={styles.g1}>
+                  <div style={{ width: "100px" }}>고지번호</div>
+                  <div className={styles.empty}></div>
+                  <div style={{ width: "100px" }}>202011101633</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className={styles.h}>
+            <div className={styles.h1}>
+              <div>가상계좌번호(납기내)</div>
+              <div className={styles.empty}></div>
+              <div>농협) 352-4985-9845</div>
+            </div>
+          </div>
         </div>
       </div>
       {modal && (

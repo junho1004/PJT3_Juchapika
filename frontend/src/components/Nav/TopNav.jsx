@@ -5,7 +5,7 @@ import logo from "../../assets/logo.png";
 import magnifier from "../../assets/magnifier.png";
 
 // eslint-disable-next-line react/prop-types
-export default function TopNav({setSearchcar}) {
+export default function TopNav({Searchcar1}) {
   const navigate = useNavigate();
   const [InputText, setInputText] = useState("");
   
@@ -17,7 +17,7 @@ export default function TopNav({setSearchcar}) {
   const handleSubmit = (e) => {
       const data=InputText
       e.preventDefault();
-      setSearchcar(data)
+      Searchcar1(data)
       setInputText("");
       // console.log(data)
     }

@@ -16,7 +16,7 @@ import {
 import ExcelJS from "exceljs";
 // import Main from "../../pages/Main"
 
-function UserTable({ columns = [] }) {
+function UserTable({ columns = []}) {
   // columns 기본값을 빈 배열로 설정
   const [page, setPage] = useState(0);
 
@@ -67,8 +67,12 @@ function UserTable({ columns = [] }) {
         carNum: `331우 7799`,
       }))
   );
+  
+
 
   function downloadExcel(users, columns) {
+    
+
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Users");
 
@@ -106,6 +110,7 @@ function UserTable({ columns = [] }) {
       column.width = maxLength;
     });
 
+    
     // Download Excel file
     workbook.xlsx
       .writeBuffer()
@@ -126,8 +131,7 @@ function UserTable({ columns = [] }) {
   }
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    // const data = downloadExcel(users, columns)
-    // Setdown(data)
+    
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -215,7 +219,7 @@ function UserTable({ columns = [] }) {
 
 UserTable.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string),
-  // Setdown: PropTypes.func.isRequired,
+  downme: PropTypes.func.isRequired,
 };
 
 export default UserTable;

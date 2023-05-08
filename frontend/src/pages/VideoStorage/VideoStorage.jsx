@@ -27,7 +27,7 @@ export default function VideoStorage() {
         console.error(error);
       });
   }, []);
-///이거 블로그에 올릴것 이기능에 title 데이터를 넣어서 set에 넣음
+  ///이거 블로그에 올릴것 이기능에 title 데이터를 넣어서 set에 넣음
   const openModal = (title) => {
     Setmodal(true);
     setSelectedTitle(title);

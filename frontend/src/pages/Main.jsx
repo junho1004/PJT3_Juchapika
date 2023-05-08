@@ -16,6 +16,7 @@ import PropTypes from "prop-types";
 import UserTable from "../components/Table/UserTable";
 // import {downloadExcel} from "../components/Table/UserTable";
 
+
 export default function Main() {
   // const { data } = props;
   // const { onDownloadExcel } = this.props;
@@ -31,7 +32,9 @@ export default function Main() {
   let [carnumber, Setcarnumber] = useState(null);
   let [fee, Setfee] = useState("");
   let [name, Setname] = useState("");
-  // const [down,Setdown] = useState(null)
+  // const [users, setUsers] = useState([]);
+  // const [columns, setColumns] = useState([]);
+  // const [down,setdown] = useState(null)
 
   useEffect(() => {
     let sch = 0;
@@ -158,14 +161,13 @@ export default function Main() {
         console.log(error);
       });
   };
-  // function Clickdown(){
-  //   UserTable.downloadExcel(UserTable.users, UserTable.columns)
-  //   // console.log(Setdown)
-  // }
+  const Clickdown = ()=>{
+    UserTable.downloadExcel(UserTable.users, UserTable.columns);
+  }
 
   return (
     <div className={styles.background}>
-      <TopNav setSearchcar={setSearchcar} />
+      <TopNav Searchcar1={setSearchcar} />
       <div className={styles.body}>
         <div className={styles.list}>
           <div style={{ fontSize: "1.5em", fontWeight: "800" }}>
@@ -228,8 +230,8 @@ export default function Main() {
             <div
               className={styles.excel}
               style={{ marginRight: "20px" }}
-              // onClick={Clickdown}
-            >
+              onClick={Clickdown}>
+            
               <div className={styles.excelbtn}>Excel</div>
               <div>
                 <img src={file} alt="error" style={{ width: "20px" }} />
@@ -241,7 +243,7 @@ export default function Main() {
             </div>
           </div>
           <div>
-            <UserTable />
+            <UserTable/>
           </div>
         </div>
         {modal && (
@@ -366,4 +368,5 @@ export default function Main() {
 }
 Main.propTypes = {
   data: PropTypes.func.isRequired,
+  downme: PropTypes.func.isRequired,
 };

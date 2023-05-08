@@ -87,7 +87,7 @@
 .c {
   display: flex;
   justify-content: center;
-  align-items:left;
+  align-items: left;
   align-content: center;
   flex-direction: column;
   width: 20%;
@@ -103,9 +103,9 @@
   display: flex;
   flex-direction: row;
 }
-.e{
-    display: flex;
-    justify-content: right;
+.e {
+  display: flex;
+  justify-content: right;
 }
 .btn {
   width: 100px;
@@ -120,62 +120,117 @@
   font-size: 0.8em;
   transition: background-color ease-in-out;
 }
-.btn:hover{
-    background-color:rgba(253, 185, 15, 1)
+.btn:hover {
+  background-color: rgba(253, 185, 15, 1);
+}
+.f {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* border: 2px red solid; */
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  font-size: 1em;
+}
+.g {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.g1 {
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  padding-bottom: 5px;
+  /* align-items: left; */
+  /* align-content: left; */
+}
+.g2 {
+  width: 250px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  /* align-items: right; */
+  /* align-content: right; */
+  text-align: right;
+  /* font-size: 0.9em; */
 }
 
+.empty {
+  width: 120px;
+  height: 1em;
+  background-color: white;
+}
 
-
+.h{
+  width: 90%;
+  display: flex;
+  justify-content: right;
+  margin-top: 50px;
+  /* border: red 2px solid; */
+}
+.h1{
+  /* width: 80%; */
+  display: flex;
+  justify-content: right;
+  padding: 1% 4% 1% 4%;
+  border: red 2px solid;
+}
 
 /* 모달부분 */
 .container {
-    width: 100%;
-    z-index: 3;
-  }
-  .back {
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: black;
-    opacity: 50%;
-    z-index: 4;
-  }
-  
-  .modal {
-    padding: 2% 2% 2% 2%;
-    position: fixed;
-    z-index: 5;
-    width: 50%;
-    height: 60%;
-    background-color: white;
-    top: 50vh;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    border: lightgray 2px solid;
-  }
-  .modalin {
-    width: 90%;
-    height: 80%;
-    padding: 5%;
-    font-weight: 600;
-    /* border: red 2px solid; */
-  }
-  .x {
-    justify-content: right;
-    display: flex;
-    font-size: 1.2rem;
-    width: 80%;
-    /* margin: 5%; */
-  }
-  .centre {
-    display: flex;
-    justify-content: center;
-  }
-  
+  width: 100%;
+  z-index: 3;
+}
+.back {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: black;
+  opacity: 50%;
+  z-index: 4;
+}
+
+.modal {
+  padding: 2% 2% 2% 2%;
+  position: fixed;
+  z-index: 5;
+  width: 50%;
+  height: 60%;
+  background-color: white;
+  top: 50vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  border: lightgray 2px solid;
+}
+.modalin {
+  width: 90%;
+  height: 80%;
+  padding: 5%;
+  font-weight: 600;
+  /* border: red 2px solid; */
+}
+.x {
+  justify-content: right;
+  display: flex;
+  font-size: 1.2rem;
+  width: 80%;
+  /* margin: 5%; */
+}
+.centre {
+  display: flex;
+  justify-content: center;
+}
