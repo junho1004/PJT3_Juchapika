@@ -6,13 +6,28 @@ class ApexChart extends Component {
   static propTypes = {
     startDate: PropTypes.string.isRequired,
     endDate: PropTypes.string.isRequired,
+    chartData: PropTypes.string.isRequired,
   };
 
   constructor(props) {
     super(props);
-    const { startDate, endDate } = this.props;
+    const { startDate, endDate, chartData } = this.props;
+    
+    console.log("========");
+    console.log(chartData);
+    console.log(startDate);
+    console.log(endDate);
+    console.log("========");
+
     const total_data = [];
-    const series = [  {    name: "전체",    data: total_data,  },  {    name: "광산구",    data: [5, 1, 7, 8, 4, 6, 8, 5],
+    const series = [  
+      {    
+        name: "전체",    
+        data: total_data,  
+      },  
+      {    
+        name: "광산구",    
+        data: [5, 1, 7, 8, 4, 6, 8, 5],
       },
       {
         name: "동구",

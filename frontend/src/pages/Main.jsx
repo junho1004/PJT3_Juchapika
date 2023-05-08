@@ -34,11 +34,12 @@ export default function Main() {
   let [search, Setsearch] = useState({
     startDate: "",
     endDate: "",
-    county: "",
-    dong: ""
+    county: "전체",
+    dong: "전체"
   });
   let [tableData, setTableData] = useState([]);
-
+  let [chartData, setChartData] = useState({});
+  
   // const [down,Setdown] = useState(null)
 
   useEffect(() => {
@@ -80,18 +81,14 @@ export default function Main() {
     });
   }, [searchCar]);
 
-  //엑셀다운버튼
 
-  // const {UserTable} = this.props;
-  // function handleDownloadExcel() {
-  //   UserTable.downloadExcel(UserTable.users, UserTable.columns);
-  // }
+  useEffect(() => {
+    setChartData(chartData)
+    console.log(chartData);
+  }, [chartData]);
 
-  // function handleExcelDownload() {
-  //   const users = [] // 다운로드할 유저 데이터
-  //   const columns = []
-  //   UserTable.downloadExcel(users, columns);
-  // }
+
+
   const closeModal = () => {
     setmodal(false);
   };
@@ -135,12 +132,63 @@ export default function Main() {
       });
   };
 
+
+
   const openstatistic = () => {
+    console.log("openstatistic");
+
+    const data = {
+      startDate: search.startDate,
+      endDate: search.endDate,
+      county: search.county,
+      dong: search.dong
+    }
+
+    if (data.county == "") {
+      data.county = "전체"
+    }
+
+    if (data.dong == "") {
+      data.dong = "전체"
+    }
+
+    console.log(data);
+    
+    axios
+      .post("http://localhost:8081/api/record/statistics", data)
+      .then((res) => {
+        console.log("12345");
+        console.log(res.data.responseData[0])
+        const responseData = res.data.responseData[0].county
+
+
+        setChartData(responseData)
+
+        // for(let key in responseData) {
+        //   console.log(key);
+        // }
+
+        // responseData.forEach(test => {
+        //   console.log(test);
+        // });
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+
     setstatistic(true);
   };
+
+
+
   const closestatistic = () => {
+    console.log("closestatistic");
+
     setstatistic(false);
   };
+
   const today = new Date();
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
@@ -196,6 +244,17 @@ export default function Main() {
       county: location,
       dong: area,
     };
+
+    console.log(data.county);
+    console.log(data.dong);
+
+    if (data.county == "") {
+      data.county = "전체"
+    }
+
+    if (data.dong == "") {
+      data.dong = "전체"
+    }
 
     Setsearch(data)
 
@@ -417,7 +476,7 @@ export default function Main() {
                 </div>
                 <hr></hr>
                 <div className={styles.modaltext1}>
-                  <Chart startDate={startDate} endDate={endDate} />
+                  <Chart startDate={startDate} endDate={endDate} chartData={chartData} />
                 </div>
               </div>
             </div>
