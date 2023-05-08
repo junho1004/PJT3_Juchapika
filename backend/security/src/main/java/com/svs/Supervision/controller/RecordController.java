@@ -9,6 +9,7 @@ import com.svs.Supervision.dto.request.record.RecordRequestDto;
 import com.svs.Supervision.dto.response.api.ApiResponseDto;
 import com.svs.Supervision.dto.response.record.RecordCarNumResponseDto;
 import com.svs.Supervision.dto.response.record.RecordDetailResponseDto;
+import com.svs.Supervision.dto.response.record.RecordStatisticsResponseDto;
 import com.svs.Supervision.entity.user.User;
 import com.svs.Supervision.service.record.RecordService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -95,6 +96,25 @@ public class RecordController {
     }
 
 
+    // 1. 전달받은 starDate 와 endDate 를 기준으로 Record 에서 데이터를 조회한다.
+    // 2. 조회한 데이터들 중, 5개의 지역별로 개수를 새어 HashMap 형태로 저장한다.
+    // ex) 날짜: Date, 통계: {"광산구" : 5, "xx구" : 1, "xx구" : 7}
+    @PostMapping("/statistics")
+    @Operation(summary = "단속 차량 통계", description = "날짜 기준으로 단속된 차량의 단속 기록들에 대한 통계 기록을 확인합니다.")
+    public ResponseEntity<?> searchStatistics(@RequestBody RecordDetailRequestDto recordDetailRequestDto,
+                                           @Parameter(hidden = true)
+                                           @AuthenticationPrincipal User user) throws IOException {
+
+        LOGGER.info("searchStatistics() 호출 : " + recordDetailRequestDto);
+
+        List<RecordStatisticsResponseDto> recordStatisticsResponseDtoList = recordService.searchStatistics(recordDetailRequestDto);
+
+        System.out.println(recordStatisticsResponseDtoList.get(0).getCounty());
+
+        return new ResponseEntity(new ApiResponseDto(true, "searchStatistics successfully@", recordStatisticsResponseDtoList), HttpStatus.OK);
+    }
+
+
     @PostMapping("/download")
     public ResponseEntity<?> downloadExcel(@RequestBody List<ExcelRequestDto> excelRequestDtoList,
                                            @Parameter(hidden = true)
@@ -134,4 +154,7 @@ public class RecordController {
                 .contentLength(bytes.length)
                 .body(resource);
     }
+
+
+
 }
