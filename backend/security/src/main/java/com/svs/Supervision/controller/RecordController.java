@@ -113,7 +113,7 @@ public class RecordController {
         headerRow.createCell(3).setCellValue("단속위치");
         headerRow.createCell(4).setCellValue("차량번호");
 
-
+        
         for (int i = 0; i < excelRequestDtoList.size(); i++) {
             ExcelRequestDto dto = excelRequestDtoList.get(i);
             Row dataRow = sheet.createRow(i + 1); // 행의 인덱스를 i + 1로 지정
@@ -123,6 +123,7 @@ public class RecordController {
             dataRow.createCell(3).setCellValue(dto.getLocation());
             dataRow.createCell(4).setCellValue(dto.getCarNum());
         }
+
 
         // 엑셀 파일 저장
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
