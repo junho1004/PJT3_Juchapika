@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import {
@@ -16,11 +16,25 @@ import {
 // import ExcelJS from "exceljs";
 // import Main from "../../pages/Main"
 
-function UserTable() {
+function UserTable({ tableData = [] }) {
   // columns 기본값을 빈 배열로 설정
   const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [users, setUsers] = useState([]);
 
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  useEffect(() => {
+    const updatedUsers = Array(tableData.length)
+    .fill()
+    .map((_, i) => ({
+      id: i + 1,
+      date: tableData[i].date,
+      time: tableData[i].time,
+      location: tableData[i].location,
+      carNum: tableData[i].carNum,
+    }))
+
+    setUsers(updatedUsers);
+  }, [tableData]);
 
   const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -40,98 +54,12 @@ function UserTable() {
     },
   }))(TableRow);
 
-  function getDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  }
 
-  function getTime() {
-    const today = new Date();
-    const hours = String(today.getHours()).padStart(2, "0");
-    const minutes = String(today.getMinutes()).padStart(2, "0");
-    const seconds = String(today.getSeconds()).padStart(2, "0");
-    return `${hours}:${minutes}:${seconds}`;
-  }
-
-  const [users] = useState(() =>
-    Array(23)
-      .fill()
-      .map((_, i) => ({
-        id: i + 1,
-        date: `${getDate()}`,
-        time: `${getTime()}`,
-        location: `광주광역시 광산구 수완동`,
-        carNum: `331우 7799`,
-      }))
-  );
-  
-
-
-  // function downloadExcel(users, columns) {
-    
-
-  //   const workbook = new ExcelJS.Workbook();
-  //   const worksheet = workbook.addWorksheet("Users");
-
-  //   // Add header row
-  //   const headerRow = worksheet.addRow([
-  //     "순번",
-  //     "단속일자",
-  //     "단속시간",
-  //     "단속위치",
-  //     "차량번호",
-  //     ...columns,
-  //   ]);
-  //   headerRow.font = { bold: true };
-
-  //   // Add data rows
-  //   users.forEach((user, index) => {
-  //     worksheet.addRow([
-  //       index + 1,
-  //       user.date,
-  //       user.time,
-  //       user.location,
-  //       user.carNum,
-  //       ...Object.values(user),
-  //     ]);
-  //   });
-
-  //   // Auto fit column width
-  //   worksheet.columns.forEach((column) => {
-  //     let maxLength = 0;
-  //     column.eachCell((cell) => {
-  //       maxLength =
-  //         Math.max(maxLength, cell.value ? String(cell.value).length : 0, 10) +
-  //         2;
-  //     });
-  //     column.width = maxLength;
-  //   });
-
-    
-  //   // Download Excel file
-  //   workbook.xlsx
-  //     .writeBuffer()
-  //     .then((buffer) => {
-  //       const blob = new Blob([buffer], { type: "application/vnd.ms-excel" });
-  //       const href = URL.createObjectURL(blob);
-  //       const link = document.createElement("a");
-  //       link.href = href;
-  //       link.download = `users_${getDate()}_${getTime()}.xlsx`;
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       document.body.removeChild(link);
-  //       // console.log(downloadExcel(users,columns))
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    
+    // const data = downloadExcel(users, columns)
+    // Setdown(data)
+    console.log(tableData);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -139,9 +67,27 @@ function UserTable() {
     setPage(0);
   };
 
+  const btn =()=>{
+    console.log("========");
+
+    tableData.forEach( test => {
+      console.log(test);
+    });
+
+    users.forEach( test => {
+      console.log(test);
+    });
+
+    console.log(tableData.length);
+    console.log(users.length);
+
+    // console.log(tableData)
+    // console.log(tableData[0].date);
+  }
+
   return (
     <div>
-      <div style={{ fontSize: "1em" }}>총 {users.length}개</div>
+      <div onClick={btn} style={{ fontSize: "0.7em" }}>총 {users.length}개</div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -165,26 +111,26 @@ function UserTable() {
           </TableHead>
           <TableBody>
             {users
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((user) => (
-                <StyledTableRow key={user.id}>
-                  <StyledTableCell align="center" width="10%">
-                    {user.id}
-                  </StyledTableCell>
-                  <StyledTableCell align="center" width="20%">
-                    {user.date}
-                  </StyledTableCell>
-                  <StyledTableCell align="center" width="20%">
-                    {user.time}
-                  </StyledTableCell>
-                  <StyledTableCell align="center" width="40%">
-                    {user.location}
-                  </StyledTableCell>
-                  <StyledTableCell align="center" width="10%">
-                    {user.carNum}
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((user) => (
+                  <StyledTableRow key={user.id}>
+                    <StyledTableCell align="center" width="10%">
+                      {user.id}
+                    </StyledTableCell>
+                    <StyledTableCell align="center" width="20%">
+                      {user.date}
+                    </StyledTableCell>
+                    <StyledTableCell align="center" width="20%">
+                      {user.time}
+                    </StyledTableCell>
+                    <StyledTableCell align="center" width="40%">
+                      {user.location}
+                    </StyledTableCell>
+                    <StyledTableCell align="center" width="10%">
+                      {user.carNum}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
           </TableBody>
           <TableFooter>
             <TableRow>
@@ -218,8 +164,9 @@ function UserTable() {
 }
 
 UserTable.propTypes = {
-  columns: PropTypes.arrayOf(PropTypes.string),
-  downme: PropTypes.func.isRequired,
+  // columns: PropTypes.arrayOf(PropTypes.string),
+  tableData: PropTypes.array.isRequired
+  // Setdown: PropTypes.func.isRequired,
 };
 
 export default UserTable;

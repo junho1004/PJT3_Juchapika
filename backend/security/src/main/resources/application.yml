@@ -16,6 +16,10 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     generate-ddl: true
 
+  jackson:
+    time-zone: Asia/Seoul
+
+
 server:
   max-http-header-size: 8000000
   port: 8081
