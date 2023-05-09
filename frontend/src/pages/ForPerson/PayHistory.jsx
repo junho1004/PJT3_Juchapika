@@ -83,26 +83,78 @@ export default function PayHistory() {
                 </div>
           </div>
           {modal && (
-            <div className={styles.container}>
-              <div className={styles.modal}>
-                <div onClick={closeModal} className={styles.x}>
-                  <div>x</div>
+          <div className={styles.container}>
+            <div className={styles.modal}>
+              <div onClick={closeModal} className={styles.x}>
+                <div>x</div>
+              </div>
+              <div>
+                <div className={styles.modaltext}>
+                  <div style={{ fontSize: "1.5em", fontWeight: "800" }}>
+                    차번호
+                  </div>
                 </div>
-                <div className={styles.modalin}>
-                  <div className={styles.centre}>{selectedTitle}</div>
-                  <div className={styles.centre} style={{ padding: "5%" }}>
-                    <video
-                      src="https://www.w3schools.com/html/mov_bbb.mp4"
-                      width="500"
-                      height="300"
-                      controls
-                    />
+                <div className={styles.modaltext}>
+                  <div style={{ fontSize: "0.7em", marginBottom: "10px" }}>
+                    {selectedTitle}
+                  </div>
+                </div>
+                <hr></hr>
+                <div className={styles.modaltext1}>
+                <video
+                  src="https://www.w3schools.com/html/mov_bbb.mp4"
+                  width="500"
+                  height="300"
+                  controls
+                />
+                  {/* <img
+                    src={pic}
+                    alt="go"
+                    className={styles.carimage}
+                    style={{ width: "150px", marginRight: "20px" }}
+                  /> */}
+
+                  <div className={styles.contenttext}>
+                    <div className={styles.name}>
+                      <span style={{ width: "40%" }}>소유주</span>
+                      <span className={styles.texts}> 이름</span>
+                    </div>
+                    <div className={styles.name}>
+                      <span style={{ width: "40%" }}>전화번호</span>
+                      <span className={styles.texts}> 번호</span>
+                    </div>
+                    <div className={styles.name}>
+                      <span style={{ width: "40%" }}>주소</span>
+                      <span className={styles.texts}>주소</span>
+                    </div>
+                    <div className={styles.name}>
+                      <span style={{ width: "40%" }}>번호판</span>
+                      <span className={styles.texts}>
+                        {" "}
+                        {/* <img
+                          src={carnumber}
+                          alt="go"
+                          style={{ width: "100px" }}
+                        /> */}
+                      </span>
+                    </div>
+                    <div className={styles.name}>
+                      <span style={{ width: "40%" }}>납부유무</span>
+                      <span className={styles.texts}>
+                        {/* {fee === "납부완료" ? (
+                          <span style={{ color: "blue" }}>납부완료</span>
+                        ) : (
+                          <span style={{ color: "red" }}>미납</span>
+                        )} */}납부완료
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className={styles.back} onClick={closeModal}></div>
             </div>
-          )}
+            <div className={styles.back} onClick={closeModal}></div>
+          </div>
+        )}
         </div>
       </div>
     // </div>

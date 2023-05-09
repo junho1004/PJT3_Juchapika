@@ -146,10 +146,11 @@
   width: 50%;
   display: flex;
   flex-direction: row;
-  justify-content: left;
+  justify-content: right;
   padding-bottom: 5px;
-  /* align-items: left; */
-  /* align-content: left; */
+  /* border: red 2px solid */
+  /* align-items: right; */
+  /* align-content: right; */
 }
 .g2 {
   width: 250px;

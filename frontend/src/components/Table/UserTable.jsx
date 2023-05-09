@@ -11,16 +11,16 @@ import {
   TablePagination,
   TableRow,
   Paper,
-  Button,
+  // Button,
 } from "@material-ui/core";
-import ExcelJS from "exceljs";
+// import ExcelJS from "exceljs";
 // import Main from "../../pages/Main"
 
-function UserTable({ columns = []}) {
+function UserTable() {
   // columns 기본값을 빈 배열로 설정
   const [page, setPage] = useState(0);
 
-  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -57,7 +57,7 @@ function UserTable({ columns = []}) {
   }
 
   const [users] = useState(() =>
-    Array(53)
+    Array(23)
       .fill()
       .map((_, i) => ({
         id: i + 1,
@@ -70,65 +70,65 @@ function UserTable({ columns = []}) {
   
 
 
-  function downloadExcel(users, columns) {
+  // function downloadExcel(users, columns) {
     
 
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("Users");
+  //   const workbook = new ExcelJS.Workbook();
+  //   const worksheet = workbook.addWorksheet("Users");
 
-    // Add header row
-    const headerRow = worksheet.addRow([
-      "순번",
-      "단속일자",
-      "단속시간",
-      "단속위치",
-      "차량번호",
-      ...columns,
-    ]);
-    headerRow.font = { bold: true };
+  //   // Add header row
+  //   const headerRow = worksheet.addRow([
+  //     "순번",
+  //     "단속일자",
+  //     "단속시간",
+  //     "단속위치",
+  //     "차량번호",
+  //     ...columns,
+  //   ]);
+  //   headerRow.font = { bold: true };
 
-    // Add data rows
-    users.forEach((user, index) => {
-      worksheet.addRow([
-        index + 1,
-        user.date,
-        user.time,
-        user.location,
-        user.carNum,
-        ...Object.values(user),
-      ]);
-    });
+  //   // Add data rows
+  //   users.forEach((user, index) => {
+  //     worksheet.addRow([
+  //       index + 1,
+  //       user.date,
+  //       user.time,
+  //       user.location,
+  //       user.carNum,
+  //       ...Object.values(user),
+  //     ]);
+  //   });
 
-    // Auto fit column width
-    worksheet.columns.forEach((column) => {
-      let maxLength = 0;
-      column.eachCell((cell) => {
-        maxLength =
-          Math.max(maxLength, cell.value ? String(cell.value).length : 0, 10) +
-          2;
-      });
-      column.width = maxLength;
-    });
+  //   // Auto fit column width
+  //   worksheet.columns.forEach((column) => {
+  //     let maxLength = 0;
+  //     column.eachCell((cell) => {
+  //       maxLength =
+  //         Math.max(maxLength, cell.value ? String(cell.value).length : 0, 10) +
+  //         2;
+  //     });
+  //     column.width = maxLength;
+  //   });
 
     
-    // Download Excel file
-    workbook.xlsx
-      .writeBuffer()
-      .then((buffer) => {
-        const blob = new Blob([buffer], { type: "application/vnd.ms-excel" });
-        const href = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = href;
-        link.download = `users_${getDate()}_${getTime()}.xlsx`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        // console.log(downloadExcel(users,columns))
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+  //   // Download Excel file
+  //   workbook.xlsx
+  //     .writeBuffer()
+  //     .then((buffer) => {
+  //       const blob = new Blob([buffer], { type: "application/vnd.ms-excel" });
+  //       const href = URL.createObjectURL(blob);
+  //       const link = document.createElement("a");
+  //       link.href = href;
+  //       link.download = `users_${getDate()}_${getTime()}.xlsx`;
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //       // console.log(downloadExcel(users,columns))
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
     
@@ -141,7 +141,7 @@ function UserTable({ columns = []}) {
 
   return (
     <div>
-      <div style={{ fontSize: "0.7em" }}>총 {users.length}개</div>
+      <div style={{ fontSize: "1em" }}>총 {users.length}개</div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -189,7 +189,7 @@ function UserTable({ columns = []}) {
           <TableFooter>
             <TableRow>
               <TablePagination
-                rowsPerPageOptions={[20, 50, 100]}
+                rowsPerPageOptions={[10, 30, 50]}
                 count={users.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
@@ -200,7 +200,7 @@ function UserTable({ columns = []}) {
                 onChangePage={handleChangePage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
               />
-              <StyledTableCell>
+              {/* <StyledTableCell>
                 <Button
                   variant="contained"
                   color="primary"
@@ -208,7 +208,7 @@ function UserTable({ columns = []}) {
                 >
                   Download Excel
                 </Button>
-              </StyledTableCell>
+              </StyledTableCell> */}
             </TableRow>
           </TableFooter>
         </Table>
