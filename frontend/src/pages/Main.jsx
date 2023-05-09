@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TopNav from "../components/Nav/TopNav";
 import styles from "./Main.module.css";
 // import Modal from "../components/modal.jsx";
-import { cardetails } from "../components/cardetails";
+// import { cardetails } from "../components/cardetails";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import calendar from "../assets/calendar.png";
@@ -23,15 +23,21 @@ export default function Main() {
   const [modal, setmodal] = useState(false);
   const [statistic, setstatistic] = useState(false);
   const [searchCar, setSearchcar] = useState("");
-  let [car, SetCar] = useState("");
-  let [caught, Setcaught] = useState("");
-  let [date, Setdate] = useState("");
-  let [pic, Setpic] = useState(null);
-  let [phonenumber, Setphonenumber] = useState("");
-  let [address, Setaddress] = useState("");
-  let [carnumber, Setcarnumber] = useState(null);
-  let [fee, Setfee] = useState("");
-  let [name, Setname] = useState("");
+  let [carDetails, setCarDetails] = useState([]);
+
+  let [address, setAddress] = useState("");
+  let [carImageUrl, setCarImageUrl] = useState("");
+  let [carNum, setCarNum] = useState("");
+  // let [color, setColor] = useState("");
+  let [date, setDate] = useState("");
+  // let [fine, setFine] = useState("");
+  let [dlocation, setDlocation] = useState("");
+  // let [model, setModel] = useState("");
+  let [name, setName] = useState("");
+  let [pay, setPay] = useState("");
+  let [phoneNum, setPhoneNum] = useState("");
+  let [plateImageUrl, setPlateImageUrl] = useState("");
+
   let [search, Setsearch] = useState({
     startDate: "",
     endDate: "",
@@ -41,47 +47,51 @@ export default function Main() {
   let [tableData, setTableData] = useState([]);
   let [chartData, setChartData] = useState({});
   
+
+
   // const [down,Setdown] = useState(null)
 
   useEffect(() => {
-    let sch = 0;
+    // let sch = 0;
     console.log(searchCar);
-    // console.log(searchCar.type);
-    cardetails.forEach((el) => {
-      let car1 = el.car;
-      let caught = el.caught;
-      let date = el.date;
-      let pic = el.pic;
-      let phonenumber = el.phonenumber;
-      let address = el.address;
-      let carnumber = el.carnumber;
-      let fee = el.fee;
-      let name = el.name;
-      // console.log(cardetails);
-      sch++;
-      if (searchCar !== "") {
-        if (searchCar === car1) {
-          setmodal(true);
-          SetCar(car1);
-          Setcaught(caught);
-          Setdate(date);
-          Setpic(pic);
-          Setphonenumber(phonenumber);
-          Setaddress(address);
-          Setcarnumber(carnumber);
-          Setfee(fee);
-          Setname(name);
-          setSearchcar("");
-          return;
-        } else if (sch === cardetails.length) {
-          alert("등록된 차량이 없습니다");
-          setSearchcar("");
-          return;
-        }
-      }
+
+    const carNum = {
+      carNum: searchCar
+    }
+
+    axios
+      .post("http://localhost:8081/api/record/search-by-carnum", carNum)
+      .then((res) => {
+        console.log(res.data.responseData)
+        setCarDetails(res.data.responseData)
+      })
+      .catch((error) => {
+        console.log(error);
     });
+
   }, [searchCar]);
 
+
+
+  const test = () => {
+    // console.log(searchCar.type);
+    const info = carDetails[0]
+  
+    console.log(carDetails);
+  
+    setAddress(info["address"]) 
+    setCarImageUrl(info["carImageUrl"])
+    setCarNum(info["carNum"])
+    // setColor(info["color"])
+    setDate(info["date"])
+    // setFine(info["fine"])
+    setDlocation(info["location"])
+    // setModel(info["model"])
+    setName(info["name"])
+    setPay(info["pay"])
+    setPhoneNum(info["phoneNum"])
+    setPlateImageUrl(info["plateImageUrl"])
+  }
 
 
 
@@ -160,7 +170,7 @@ export default function Main() {
         
         setChartData(responseData)
         setstatistic(true);
-        
+
       })
       .catch((error) => {
         console.log(error);
@@ -352,36 +362,41 @@ export default function Main() {
           <UserTable tableData={tableData} />
           </div>
         </div>
+        {/* 모달 */}
         {modal && (
           <div className={styles.container}>
             <div className={styles.modal}>
+              
               <div onClick={closeModal} className={styles.x}>
                 <div>x</div>
               </div>
+
               <div>
                 <div className={styles.modaltext}>
                   <div style={{ fontSize: "1.5em", fontWeight: "800" }}>
-                    {car}
+                    {carNum}
                   </div>
                 </div>
+
                 <div className={styles.modaltext}>
                   <div style={{ fontSize: "0.7em", marginBottom: "10px" }}>
-                    {date} {caught}
+                    {date} {location}
                   </div>
                 </div>
                 <hr></hr>
+
                 <div className={styles.modaltext1}>
-                  {/* <div
+                  <div
                       className={styles.detailcon}
-                    > */}
+                    >
                   <img
-                    src={pic}
+                    src={carImageUrl}
                     alt="go"
                     className={styles.carimage}
                     style={{ width: "150px", marginRight: "20px" }}
                   />
 
-                  {/* </div> */}
+                  </div>
                   <div className={styles.contenttext}>
                     <div className={styles.name}>
                       <span style={{ width: "40%" }}>소유주</span>
@@ -389,7 +404,7 @@ export default function Main() {
                     </div>
                     <div className={styles.name}>
                       <span style={{ width: "40%" }}>전화번호</span>
-                      <span className={styles.texts}> {phonenumber}</span>
+                      <span className={styles.texts}> {phoneNum}</span>
                     </div>
                     <div className={styles.name}>
                       <span style={{ width: "40%" }}>주소</span>
@@ -400,7 +415,7 @@ export default function Main() {
                       <span className={styles.texts}>
                         {" "}
                         <img
-                          src={carnumber}
+                          src={plateImageUrl}
                           alt="go"
                           style={{ width: "100px" }}
                         />
@@ -409,11 +424,11 @@ export default function Main() {
                     <div className={styles.name}>
                       <span style={{ width: "40%" }}>납부유무</span>
                       <span className={styles.texts}>
-                        {fee === "납부완료" ? (
-                          <span style={{ color: "blue" }}>납부완료</span>
-                        ) : (
-                          <span style={{ color: "red" }}>미납</span>
-                        )}
+                      {pay === true ? (
+                        <span style={{ color: "blue" }}>납부완료</span>
+                      ) : (
+                        <span style={{ color: "red" }}>미납</span>
+                      )}
                       </span>
                     </div>
                   </div>
@@ -425,14 +440,14 @@ export default function Main() {
                 </div>
                 <div className={styles.else1}>
                   <div style={{ marginRight: "5px" }}>{date}</div>
-                  <div style={{ marginRight: "25px" }}>{caught}</div>
+                  <div style={{ marginRight: "25px" }}>{dlocation}</div>
                   <div>
                     {" "}
-                    {fee === "납부완료" ? (
+                    {pay === true ? (
                       <span style={{ color: "blue" }}>납부완료</span>
                     ) : (
                       <span style={{ color: "red" }}>미납</span>
-                    )}
+                    )} 
                   </div>
                 </div>
               </div>
@@ -454,7 +469,7 @@ export default function Main() {
                 </div>
                 <div>
                   <div style={{ fontSize: "0.7em", marginBottom: "30px" }}>
-                    {/* {startDate} ~ {endDate} */}
+                    {startDate} ~ {endDate}
                     {format(startDate, "yyyy.MM.dd", { locale: ko })} ~ {format(endDate, "yyyy.MM.dd", { locale: ko })}
                   </div>
                 </div>

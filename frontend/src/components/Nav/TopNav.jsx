@@ -19,8 +19,19 @@ export default function TopNav({Searchcar1}) {
       e.preventDefault();
       Searchcar1(data)
       setInputText("");
+
+      
+      axios
+        .post("http://localhost:8081/api/record/search-by-carnum", carNum)
+        .then((res) => {
+          console.log(res.data.responseData)
+          setCarDetails(res.data.responseData)
+        })
+        .catch((error) => {
+          console.log(error);
+      });
       // console.log(data)
-    }
+  }
   
 
   return (
