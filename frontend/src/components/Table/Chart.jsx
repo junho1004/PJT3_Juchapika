@@ -21,33 +21,53 @@ class ApexChart extends Component {
     console.log("========");
 
     const total_data = [];
+
     const series = [  
       {    
         name: "전체",    
         data: total_data,  
       },  
       {    
-        name: "광산구",    
-        data: [5, 1, 7, 8, 4, 6, 8, 5],
+        name: "남구",    
+        data: [],
       },
       {
         name: "동구",
-        data: [8, 6, 7, 1, 8, 2, 6, 4],
+        data: [],
       },
       {
         name: "서구",
-        data: [4, 6, 7, 1, 8, 2, 6, 4],
+        data: [],
       },
       {
-        name: "남구",
-        data: [9, 6, 7, 1, 8, 2, 6, 4],
+        name: "광산구",
+        data: [],
       },
       {
         name: "북구",
-        data: [3, 6, 7, 1, 8, 2, 6, 4],
+        data: [],
       },
     ];
-    
+
+
+    // chartData 의 key(날짜) 값들을 기준으로 (남구, 동구, 서구, 광산구, 북구) 의 단속정보들을 받아온다.
+    // start 날짜를 기준으로 
+    for (let date = new Date(startDate); date <= new Date(endDate); date.setDate(date.getDate() + 1)) {
+      const startDateObj = new Date(date);
+      const key = startDateObj.getFullYear() + '-' + ('0' + (startDateObj.getMonth() + 1)).slice(-2) + '-' + ('0' + startDateObj.getDate()).slice(-2);
+      console.log(chartData[key]);
+      if (chartData[key] != undefined) {
+        for (let i = 1; i < series.length; i++) {
+          series[i].data.push(chartData[key][series[i].name]);
+        }
+      } else {
+        for (let i = 1; i < series.length; i++) {
+          series[i].data.push(0);
+        }
+      }
+
+    }
+
     for (let i = 0; i < series[1]["data"].length; i++) {
       const total =
         series[1]["data"][i] +

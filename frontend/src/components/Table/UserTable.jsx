@@ -80,9 +80,6 @@ function UserTable({ tableData = [] }) {
 
     console.log(tableData.length);
     console.log(users.length);
-
-    // console.log(tableData)
-    // console.log(tableData[0].date);
   }
 
   return (

@@ -160,15 +160,7 @@ export default function Main() {
         
         setChartData(responseData)
         setstatistic(true);
-
-        for(let key in responseData) {
-          console.log(key);
-        }
-
-        responseData.forEach(test => {
-          console.log(test);
-        });
-
+        
       })
       .catch((error) => {
         console.log(error);
