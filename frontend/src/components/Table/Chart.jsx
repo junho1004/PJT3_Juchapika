@@ -3,6 +3,7 @@ import ReactApexChart from "react-apexcharts";
 import PropTypes from "prop-types";
 
 class ApexChart extends Component {
+
   static propTypes = {
     startDate: PropTypes.string.isRequired,
     endDate: PropTypes.string.isRequired,

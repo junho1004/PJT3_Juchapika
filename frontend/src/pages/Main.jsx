@@ -82,11 +82,6 @@ export default function Main() {
   }, [searchCar]);
 
 
-  useEffect(() => {
-    setChartData(chartData)
-    console.log(chartData);
-  }, [chartData]);
-
 
 
   const closeModal = () => {
@@ -161,16 +156,17 @@ export default function Main() {
         console.log(res.data.responseData[0])
         const responseData = res.data.responseData[0].county
 
-
+        
         setChartData(responseData)
+        setstatistic(true);
 
-        // for(let key in responseData) {
-        //   console.log(key);
-        // }
+        for(let key in responseData) {
+          console.log(key);
+        }
 
-        // responseData.forEach(test => {
-        //   console.log(test);
-        // });
+        responseData.forEach(test => {
+          console.log(test);
+        });
 
       })
       .catch((error) => {
@@ -178,7 +174,6 @@ export default function Main() {
       });
 
 
-    setstatistic(true);
   };
 
 
