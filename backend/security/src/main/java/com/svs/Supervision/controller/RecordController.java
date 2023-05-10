@@ -60,7 +60,15 @@ public class RecordController {
                                        @Parameter(hidden = true)
                                        @AuthenticationPrincipal User user) {
         LOGGER.info("addRecord() 호출 : " + recordRequestDto);
-        recordService.addRecord(recordRequestDto);
+
+        // 정상적으로 저장이 된 경우,
+        if (recordService.addRecord(recordRequestDto) == "save") {
+            RestTemplate restTemplate = new RestTemplate();
+            String url = "https://jsonplaceholder.typicode.com/todos/1";
+
+        } else {
+
+        }
 
         return new ResponseEntity(new ApiResponseDto(true, "addRecord successfully@", null), HttpStatus.CREATED);
     }

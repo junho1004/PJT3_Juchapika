@@ -62,6 +62,8 @@ public class RecordService {
                 Long carId = record.getCar().getId();
                 recordRepository.updateCnt(carId);
             }
+
+            return "update";
         }
     }
 
