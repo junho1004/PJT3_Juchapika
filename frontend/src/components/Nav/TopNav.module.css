@@ -1,5 +1,5 @@
 .body {
-  position: sticky;
+  position: fixed;
   top: 0;
   display: flex;
   /* opacity: 75%; */
@@ -30,12 +30,19 @@
 .blockimg {
   width: 10%;
   padding-right: 100px;
+  cursor: pointer;
 }
+
+.img {
+  width: 150px;
+}
+
 .block {
   width: 10%;
   color: white;
-  font-size: 0.8em;
+  font-size: 0.9em;
   transition: font-weight ease-in-out;
+  cursor: pointer;
 }
 .block:hover {
   font-weight: bold;
@@ -46,24 +53,136 @@
   align-items: flex-end;
   color: white;
   font-size: 0.8em;
-  position:relative;
+  position: relative;
 
   /* display: flex; */
 }
-.searchbox{
-  width:250px;
-padding:4%;
-  border:0px;
-  border-Radius:4px;
-
+.searchbox {
+  width: 250px;
+  padding: 4%;
+  border: 0px;
+  border-radius: 4px;
+  cursor: pointer;
 }
-.searchbox::placeholder{
-  font-size: 12px
+.searchbox::placeholder {
+  font-size: 12px;
 }
-.icon{ 
+.icon {
   padding-top: 3%;
   background-color: none;
   position: absolute;
+  cursor: pointer;
   /* width: 5%;  */
   top: 0;
-  right: 0;}
+  right: 0;
+}
+
+input:focus::placeholder {
+  opacity: 0;
+}
+
+
+
+/*  */
+
+
+
+.container {
+  width: 100%;
+  z-index: 3;
+}
+.back {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: black;
+  opacity: 50%;
+  z-index: 4;
+}
+
+.modal {
+  padding: 2% 2% 2% 2%;
+  position: fixed;
+  z-index: 5;
+  width: 50%;
+  height: 60%;
+  background-color: white;
+  top: 50vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  border: lightgray 2px solid;
+}
+.modalin {
+  width: 90%;
+  height: 80%;
+  padding: 5%;
+  font-weight: 600;
+  /* border: red 2px solid; */
+}
+.x {
+  justify-content: right;
+  display: flex;
+  font-size: 1.2rem;
+  width: 80%;
+  /* margin: 5%; */
+}
+.centre {
+  display: flex;
+  justify-content: center;
+}
+
+
+/* 모달 네브꺼 */
+.modaltext {
+  margin-bottom: 1%;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  display: flex;
+}
+.modaltext1 {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  /* border: 2px solid red; */
+  /* margin: auto; */
+}
+.carimage {
+  width: 150px;
+}
+
+.contenttext {
+  /* border: 2px solid red; */
+  width: 200px;
+}
+.name {
+  font-size: 0.7em;
+  font-weight: 600;
+  margin-bottom: 3px;
+  display: flex;
+}
+.texts {
+  font-size: 0.6em;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.else {
+  margin-top: 4%;
+  align-items: left;
+  align-content: left;
+  width: 70%;
+  font-size: 0.8em;
+}
+.else1 {
+  display: flex;
+  flex-direction: row;
+}

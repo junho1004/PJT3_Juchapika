@@ -7,7 +7,10 @@ import VideoStorage from './pages/VideoStorage/VideoStorage'
 //로그인
 import Login from './pages/FirstPage/Login';
 
-//네비
+//차량등록
+import EnrollmentCar from './pages/EnrollmentCar/EnrollmentCar'
+
+//실시간영상
 import Viewer from './useViewer';
 
 //범법자용 고지서
@@ -26,6 +29,7 @@ function App() {
           <Route exact path="/videostorage" element={<VideoStorage/>}/>
           <Route exact path="/feeletter" element={<Feeletter/>}/>
           <Route exact path="/payhistory" element={<PayHistory/>}/>
+          <Route exact path="/enrollmentcar" element={<EnrollmentCar/>}/>
         </Routes>
       </BrowserRouter>
     </div>
