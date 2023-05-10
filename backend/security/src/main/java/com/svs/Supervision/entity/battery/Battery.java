@@ -17,7 +17,7 @@ import javax.persistence.*;
 @DynamicInsert
 @DynamicUpdate
 public class Battery {
-
+    // push
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
