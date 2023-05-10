@@ -17,8 +17,7 @@ import Feeletter from "./pages/ForPerson/FeeLetter";
 import PayHistory from "./pages/ForPerson/PayHistory"
 
 // Kinesis video stream
-import KinesisVideoViewer from "./pages/LiveStream/KinesisVideoViewer";
-import TestLive from "./pages/LiveStream/testLive";
+import LiveStream from "./pages/LiveStream/LiveStream";
 function App() {
   return (
     <div className="App">
@@ -30,8 +29,7 @@ function App() {
           <Route exact path="/videostorage" element={<VideoStorage />} />
           <Route exact path="/feeletter" element={<Feeletter />} />
           <Route exact path="/payhistory" element={<PayHistory />} />
-          <Route exact path="/live" element={<KinesisVideoViewer />} />
-          <Route exact path="/live1" element={<TestLive />} />
+          <Route exact path="/live" element={<LiveStream />} />
           <Route exact path="/enrollmentcar" element={<EnrollmentCar />} />
         </Routes>
       </BrowserRouter>
