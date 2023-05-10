@@ -59,7 +59,7 @@ const MediaViewer = () => {
   };
 
   return (
-    <div className="container">
+    <div>
       <h2>Amazon Kinesis Video Streams 미디어 뷰어</h2>
 
 

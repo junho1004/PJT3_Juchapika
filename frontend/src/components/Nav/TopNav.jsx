@@ -11,12 +11,13 @@ import axios from "axios";
 export default function TopNav() {
   const navigate = useNavigate();
   const [InputText, setInputText] = useState("");
-  const [bin, setbin] = useState("");
+
   const [modal, Setmodal] = useState(false);
+
   const [searchCar, setSearchcar] = useState([]);
   let [address, setAddress] = useState("");
   let [carImageUrl, setCarImageUrl] = useState("");
-  let [carNum, setCarNum] = useState("");
+  const [carNum, setCarNum] = useState("");
   // let [color, setColor] = useState("");
   let [date, setDate] = useState("");
   // let [fine, setFine] = useState("");
@@ -27,52 +28,59 @@ export default function TopNav() {
   let [phoneNum, setPhoneNum] = useState("");
   let [plateImageUrl, setPlateImageUrl] = useState("");
 
-  useEffect(() => {
-  }, [bin,searchCar]);
-  ///이거 블로그에 올릴것 이기능에 title 데이터를 넣어서 set에 넣음
+  useEffect(() => {}, [searchCar]);
 
   const closeModal = () => {
     Setmodal(false);
   };
   const onChange = (e) => {
     setInputText(e.target.value);
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setbin(InputText);
+    const carNum = {
+      carNum: e.target.value,
+    };
     axios
-      .post("http://localhost:8081/api/record/search-by-carnum", bin)
+      .post("http://localhost:8081/api/record/search-by-carnum", carNum)
       .then((res) => {
         console.log(res.data.responseData);
         setSearchcar(res.data.responseData);
-        if (bin === searchCar[0]["carNum"]) {
-          Setmodal(true);
-          setInputText("");
-          setbin("");
-          setCarNum(searchCar[0]["carNum"])
-          setAddress(searchCar[0]["address"]);
-          setCarImageUrl(searchCar[0]["carImageUrl"]);
-          setDate(searchCar[0]["date"]);
-          // setFine(info["fine"])
-          setDlocation(searchCar[0]["location"]);
-          // setModel(info["model"])
-          setName(searchCar[0]["name"]);
-          setPay(searchCar[0]["pay"]);
-          setPhoneNum(searchCar[0]["phoneNum"]);
-          setPlateImageUrl(searchCar[0]["plateImageUrl"]);
-          return;
-        }else if (bin !== searchCar[0]["carNum"])  {
-          alert("등록된 차량이 없습니다");
-          // setSearchcar("");
-          setInputText("");
-          setbin("");
-          return;
-        } })
-        .catch((error) => {
-          console.log(error);
-        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (InputText !== "") {
+      let foundCar = false;
+      for (let i = 0; i < searchCar.length; i++) {
+        if (InputText === searchCar[i]["carNum"]) {
+          Setmodal(true);
+          setCarNum(searchCar[i]["carNum"]);
+          setAddress(searchCar[i]["address"]);
+          setCarImageUrl(searchCar[i]["carImageUrl"]);
+          setDate(searchCar[i]["date"]);
+          // setFine(info["fine"])
+          setDlocation(searchCar[i]["location"]);
+          // setModel(info["model"])
+          setName(searchCar[i]["name"]);
+          setPay(searchCar[i]["pay"]);
+          setPhoneNum(searchCar[i]["phoneNum"]);
+          setPlateImageUrl(searchCar[i]["plateImageUrl"]);
+          setInputText("");
+          // setbin("");
+          foundCar = true;
+          break;
+        }
+      }
+      if (!foundCar) {
+        alert("등록된 차량이 없습니다");
+        setInputText("");
+        return;
+      }
+    }
+  };
   return (
     <div>
       <nav className={styles.body}>
@@ -97,7 +105,7 @@ export default function TopNav() {
             <div
               className={styles.block}
               onClick={() => {
-                navigate("/live");
+                navigate("/livepage");
               }}
             >
               실시간화면
@@ -119,6 +127,7 @@ export default function TopNav() {
                 onChange={onChange}
                 className={styles.searchbox}
                 placeholder="  차량 조회"
+                // onKeyDown={onCheckEnter}
               />
               <div onClick={handleSubmit} className={styles.icon}>
                 {" "}

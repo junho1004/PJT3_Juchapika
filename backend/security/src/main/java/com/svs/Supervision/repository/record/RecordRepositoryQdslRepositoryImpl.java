@@ -75,6 +75,9 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
         }
         // 동만 default(전체) 인 경우.
         else if (!district.equals("전체") && dong.equals("전체")) {
+            System.out.println(district + ", " + dong);
+            System.out.println(record.location);
+            System.out.println(record.location.contains(district));
             list = jpaQueryFactory.selectFrom(record)
                     .join(car).on(car.id.eq(record.car.id))
                     .where(record.date.between(startDate, endDate), record.location.contains(district))

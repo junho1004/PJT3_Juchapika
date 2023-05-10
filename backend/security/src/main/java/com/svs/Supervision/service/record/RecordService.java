@@ -56,6 +56,7 @@ public class RecordService {
     public List<RecordCarNumResponseDto> searchRecord(String carNum) {
         // 단속 기록에 해당 번호판 정보가 존재하는 경우..
 //        boolean isExists = recordRepository.existsByCarNum(carNum);
+        System.out.println(carNum);
         Car car = carRepository.findByCarNum(carNum);
         boolean isExists = recordRepository.existsByCar_Id(car.getId());
 
