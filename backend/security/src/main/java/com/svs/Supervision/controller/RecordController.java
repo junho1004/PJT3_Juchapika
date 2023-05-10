@@ -28,6 +28,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -42,7 +43,7 @@ import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOG
 @CrossOrigin(origins = "http://localhost:3000") // 컨트롤러에서 설정
 @RequiredArgsConstructor
 public class RecordController {
-
+    private RestTemplate restTemplate;
     private final RecordService recordService;
 
     // 1. 입력박은 차량 번호판 정보를 통해 carId를 찾는다.

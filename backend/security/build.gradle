@@ -47,7 +47,7 @@ dependencies {
 
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor' // 스프링 부트 구성 프로세서
 
-	implementation group: 'net.nurigo', name: 'sdk', version: '4.0.0'
+	implementation 'net.nurigo:sdk:4.2.7'
 
 	compileOnly 'org.projectlombok:lombok' // Lombok 라이브러리 (컴파일 시만 사용되는 의존성)
 	developmentOnly 'org.springframework.boot:spring-boot-devtools' // 스프링 부트 개발 도구
