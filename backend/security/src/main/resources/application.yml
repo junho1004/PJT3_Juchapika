@@ -20,6 +20,12 @@ spring:
     time-zone: Asia/Seoul
 
 
+coolsms:
+  api:
+    key: NCSCOGUYJX1YCUB9
+    secret: FAAQGUZSFSYHSJXL5SUBEZWGVIJUBMJG
+
+
 server:
   max-http-header-size: 8000000
   port: 8081

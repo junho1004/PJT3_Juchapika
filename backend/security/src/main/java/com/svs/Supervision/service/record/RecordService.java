@@ -11,6 +11,9 @@ import com.svs.Supervision.repository.car.CarRepository;
 import com.svs.Supervision.repository.record.RecordRepositoryQdslRepository;
 import com.svs.Supervision.repository.record.RecordRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import net.nurigo.sdk.message.Message;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +29,7 @@ public class RecordService {
     private final RecordRepositoryQdslRepository recordRepositoryQdslRepository;
     private final RecordRepository recordRepository;
     private final CarRepository carRepository;
+    private Environment env;
 
     // 1. 입력박은 차량 번호판 정보를 통해 carId를 찾는다.
     // 2. carId를 통해 Record 를 조회한다.
@@ -39,13 +43,36 @@ public class RecordService {
         Car car = carRepository.findByCarNum(carNum);
         List<Record> recordList = recordRepositoryQdslRepository.findAllRecordByCarNumWhereCntZero(carNum);
 
+        String apiKey = env.getProperty("coolsms.api.key");
+        String apiSecret = env.getProperty("coolsms.api.secret");
+
+//        Cannot resolve constructor 'Message(String, String)'
+        Message message = new Message();
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("to", "01042229234"); // 수신자 번호
+        params.put("from", "01041193220"); // 발신자 번호
+        params.put("type", "SMS");
+        params.put("text", "Hi, Fat Boy"); // 메시지 내용
+        params.put("app_version", "test app 1.2"); // application name and version
+
+        Message message = new Message(apiKey, apiSecret);
+
         // Record 가 존재하지 않을경우, 첫 번째(새로운) 단속이므로 Database 에 저장한다.
         if (recordList.size() == 0) {
+            // 단속 확정이 아니므로, 차량을 이동해달라는 SMS 를 전송한다.
+
+
+
+
             recordRepository.save(Record.build(recordRequestDto, car));
         } else { // Record 가 여러개 존재할 경우.. date 기준 정렬 가장 첫 번째 idx
             Record record = recordList.get(0);
 
             // 5 분뒤 또 단속에 걸리는 경우,
+            // 단속으로 확정하며, 단속내용을 고지하는 SMS 를 전송한다.
+
+
             if (record.getCnt() == 0) {
                 Long carId = record.getCar().getId();
                 recordRepository.updateCnt(carId);
