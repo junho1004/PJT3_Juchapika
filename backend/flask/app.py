@@ -8,11 +8,6 @@ import cv2
 
 app = Flask(__name__)
 
-aws_access_key_id = 'AKIAQVY7NV32G734VFPX'
-aws_secret_access_key = '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'
-region_name = 'ap-northeast-2'
-
-
 @app.route('/aa')
 def aa():
     kvs = boto3.client("kinesisvideo", region_name="ap-northeast-2")
@@ -21,8 +16,7 @@ def aa():
         APIName="GET_MEDIA"
     )
     kvs_stream_endpoint = stream["DataEndpoint"]
-    kvs_video_client = boto3.client("kinesis-video-media", endpoint_url=kvs_stream_endpoint,region_name=region_name,
-                                    aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+    kvs_video_client = boto3.client("kinesis-video-media", endpoint_url=kvs_stream_endpoint)
 
     kvs_stream = kvs_video_client.get_media(
         StreamARN="arn:aws:kinesisvideo:ap-northeast-2:046773677812:stream/juchapika-stream/1682054366062",
