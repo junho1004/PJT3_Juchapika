@@ -8,7 +8,8 @@ import axios from "axios";
 
 export default function EnrollmentCar() {
   const [posts, setPosts] = useState([]);
-  // const [carnum, setcarnum] = useState("19가337");
+  const [carnum, setcarnum] = useState("19가337");
+  const [InputText, setInputText] = useState("19가337");
 
   useEffect(() => {
     axios
@@ -20,8 +21,14 @@ export default function EnrollmentCar() {
         console.error(error);
       });
   }, []);
+  const onChange = (e) => {
+    setInputText(e.target.value);
+  };
 
-// let setcarnum("19가 337")
+  const button = (e) => {
+    e.preventDefault();
+    setcarnum(InputText);
+  };
 
   return (
     <div className={styles.background}>
@@ -46,11 +53,19 @@ export default function EnrollmentCar() {
           <div className={styles.details}>
             <div className={styles.detail}>
               <div className={styles.title}>차량번호</div>
-              <div className={styles.data}>차량번호</div>
+              <div className={styles.data1}>
+                <form onSubmit={button} style={{ width: "70%" }}>
+                  <input type="text" value={InputText} onChange={onChange} className={styles.input} />
+                </form>
+                <div onClick={button} className={styles.button}>
+                  <div>수정</div>
+                </div>
+              </div>
             </div>
+
             <div className={styles.detail}>
               <div className={styles.title}>적발일시</div>
-              <div className={styles.data}>적발일시</div>
+              <div className={styles.data}>{carnum}</div>
             </div>
             <div className={styles.detail}>
               <div className={styles.title}>적발장소</div>

@@ -78,7 +78,7 @@
 .details {
   width: 90%;
   height: 80%;
-  border: 2px red solid;
+  /* border: 2px red solid; */
   font-weight: 600;
 }
 .title {
@@ -92,11 +92,21 @@
 }
 .data {
   width: 50%;
-  padding-left: 2%;
   height:30px;
   padding-left: 5%;
   padding-top: 2%;
   border-bottom: 2px solid lightgray;
+}
+.data1 {
+  width: 50%;
+  height:30px;
+  padding-left: 5%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  border-bottom: 2px solid lightgray;
+  display: flex;
+  flex-direction:row;
+  /* border: 2px red solid; */
 }
 .detail {
   display: flex;
@@ -106,6 +116,10 @@
   flex-direction: row;
   /* margin-bottom: 2%; */
 }
+.input{
+ padding: 3%;
+ width: 80%;
+}
 
 .center {
   display: flex;
@@ -114,4 +128,13 @@
   justify-content: center;
   font-weight: 600;
   letter-spacing: 2px;
+}
+.button{
+  width:50px;
+  background-color: gray;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  color: white;
 }
