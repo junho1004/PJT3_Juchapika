@@ -1,7 +1,10 @@
 package com.svs.Supervision.service.record;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.net.http.HttpRequest;
 import com.svs.Supervision.dto.request.record.RecordDetailRequestDto;
 import com.svs.Supervision.dto.request.record.RecordRequestDto;
+import com.svs.Supervision.dto.request.sms.SmsSendRequestDto;
 import com.svs.Supervision.dto.response.record.RecordCarNumResponseDto;
 import com.svs.Supervision.dto.response.record.RecordDetailResponseDto;
 import com.svs.Supervision.dto.response.record.RecordStatisticsResponseDto;
@@ -18,9 +21,15 @@ import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.core.env.Environment;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -34,6 +43,28 @@ public class RecordService {
     private final RecordRepository recordRepository;
     private final CarRepository carRepository;
 
+
+    public void sendMsg(Car car, String msg) {
+        String url = "http://localhost:8081/api/sms/send-one";
+        HttpClient httpClient = HttpClient.newHttpClient();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            String jsonString = objectMapper.writeValueAsString(new SmsSendRequestDto(car.getPhoneNum(), msg));
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonString))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // 1. 입력박은 차량 번호판 정보를 통해 carId를 찾는다.
     // 2. carId를 통해 Record 를 조회한다.
     // 3. Record 가 여러개 존재할 경우.. date 기준 정렬 가장 첫 번째 idx
@@ -41,29 +72,51 @@ public class RecordService {
     // 4. 이미 Record 가 존재할 경우, 단속 횟수(cnt) 에 1을 더한다.
     // 4-1. 만약 단속 횟수(cnt) 가 1 이상일 경우에는 pass.
     // 12시에 초기화 (Scheduler)
-    public String addRecord(RecordRequestDto recordRequestDto) {
+    public void addRecord(RecordRequestDto recordRequestDto) {
         String carNum = recordRequestDto.getCarNum();
         Car car = carRepository.findByCarNum(carNum);
         List<Record> recordList = recordRepositoryQdslRepository.findAllRecordByCarNumWhereCntZero(carNum);
 
-        // Record 가 존재하지 않을경우, 첫 번째(새로운) 단속이므로 Database 에 저장한다.
+        // Record 가 존재하지 않을경우 (단속이 되지 않은 기록만 조회한다), 첫 번째(새로운) 단속이므로 Database 에 저장한다.
         if (recordList.size() == 0) {
+
+            System.out.println("단속 확정이 아니므로, 차량을 이동해달라는 SMS 를 전송한다.");
             // 단속 확정이 아니므로, 차량을 이동해달라는 SMS 를 전송한다.
+            sendMsg(car,
+                    "[JUCHAPIKA] 단속 알리미 \n" +
+                            "주정차 위반 금지구역에 차량이 확인되었습니다. \n 기준시간내에 차량을 이동시켜주세요 \n" +
+                            "- 성명 : " + car.getName() + "\n" +
+                            "- 차종 : " + car.getModel() + "\n" +
+                            "- 번호판 : " + car.getCarNum()
+            );
+
             recordRepository.save(Record.build(recordRequestDto, car));
-            return "save";
-        } else { // Record 가 여러개 존재할 경우.. date 기준 정렬 가장 첫 번째 idx
+
+        } else { // Record 가 여러개 존재할 경우.. date 기준 정렬 가장 첫 번째 idx 의 기록의 cnt 가 0 인 경우, 1 이상인 경우..
             Record record = recordList.get(0);
 
-            // 5 분뒤 또 단속에 걸리는 경우,
-            // 단속으로 확정하며, 단속내용을 고지하는 SMS 를 전송한다.
+            // 현재 시간을 구합니다.
+            LocalDateTime now = LocalDateTime.now();
+            // 해당 기록의 date와 현재 시간의 차이를 구합니다.
+            Duration duration = Duration.between(record.getDate(), now);
 
+            System.out.println(now);
+            System.out.println(record.getDate());
+            System.out.println(duration.toMinutes());
 
-            if (record.getCnt() == 0) {
+            if (duration.toMinutes() >= 5) {
+                System.out.println("단속 확정.");
+                // 5 분뒤 또 단속에 걸리는 경우,
+                sendMsg(car,"[JUCHAPIKA] 단속 알리미 \n" +
+                                "단속 기준시간 초과로 확인되었습니다. \n" +
+                                "- 성명 : " + car.getName() + "\n" +
+                                "- 차종 : " + car.getModel() + "\n" +
+                                "- 번호판 : " + car.getCarNum()
+                );
+
                 Long carId = record.getCar().getId();
-                recordRepository.updateCnt(carId);
+                recordRepository.updateCnt(carId, record.getId());
             }
-
-            return "update";
         }
     }
 
@@ -87,6 +140,21 @@ public class RecordService {
         } else { // 단속 차량이 없는 경우
             return null;
         }
+    }
+
+    public List<RecordCarNumResponseDto> searchLiveReport() {
+        List<RecordCarNumResponseDto> recordCarNumResponseDtoList = new ArrayList<>();
+
+        List<Record> recordList = recordRepositoryQdslRepository.findAllRecordByWhereCntZero();
+
+        // record 의 carNum 들을 DTO 에 넣자!
+        for (Record record : recordList) {
+            recordCarNumResponseDtoList.add(RecordCarNumResponseDto.builder()
+                    .carNum(record.getCar().getCarNum())
+                    .build());
+        }
+
+        return recordCarNumResponseDtoList;
     }
 
     public List<RecordDetailResponseDto> searchDetail(RecordDetailRequestDto recordDetailRequestDto) {
