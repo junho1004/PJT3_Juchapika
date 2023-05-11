@@ -43,12 +43,7 @@ import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOG
 @CrossOrigin(origins = "http://localhost:3000") // 컨트롤러에서 설정
 @RequiredArgsConstructor
 public class RecordController {
-<<<<<<< HEAD
-
-    // test
-=======
     private RestTemplate restTemplate;
->>>>>>> 461439df328fced9509afb561ba84eebfa857cbd
     private final RecordService recordService;
 
     // 1. 입력박은 차량 번호판 정보를 통해 carId를 찾는다.

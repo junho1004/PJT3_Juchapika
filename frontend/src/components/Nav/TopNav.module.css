@@ -35,16 +35,12 @@
   width: 10%;
   color: white;
   font-size: 0.8em;
-<<<<<<< HEAD
-}
-=======
   transition: font-weight ease-in-out;
 }
 .block:hover {
   font-weight: bold;
 }
 
->>>>>>> 461439df328fced9509afb561ba84eebfa857cbd
 .blocklogout {
   align-content: flex-end;
   align-items: flex-end;

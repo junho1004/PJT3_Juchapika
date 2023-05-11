@@ -2,13 +2,10 @@ flask
 flask_cors
 uwsgi
 pymysql
-<<<<<<< HEAD
 opencv-python
 Pillow
 av
 numpy
 boto3
-=======
->>>>>>> 461439df328fced9509afb561ba84eebfa857cbd
 
 

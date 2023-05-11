@@ -17,9 +17,5 @@
         "react"
     ],
     "rules": {
-<<<<<<< HEAD
-=======
-        // "no-undef": "off"
->>>>>>> 461439df328fced9509afb561ba84eebfa857cbd
     }
 }
