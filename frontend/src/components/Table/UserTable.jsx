@@ -43,6 +43,7 @@ function UserTable({ tableData = [] }) {
     },
     body: {
       fontSize: 14,
+      borderRight: "1px solid #ddd"
     },
   }))(TableCell);
 
@@ -80,11 +81,14 @@ function UserTable({ tableData = [] }) {
 
     console.log(tableData.length);
     console.log(users.length);
+
+    // console.log(tableData)
+    // console.log(tableData[0].date);
   }
 
   return (
     <div>
-      <div onClick={btn} style={{ fontSize: "0.7em" }}>총 {users.length}개</div>
+      <div onClick={btn} style={{ fontSize: "1em" }}>총 {users.length}개</div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

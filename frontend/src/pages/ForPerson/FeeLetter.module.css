@@ -39,6 +39,7 @@
   padding: 5% 0% 20% 0%;
   font-weight: normal;
   transition: font-weight ease-in-out;
+  cursor : pointer;
 }
 .content:hover {
   font-weight: bold;
@@ -119,6 +120,7 @@
   font-weight: 600;
   font-size: 0.8em;
   transition: background-color ease-in-out;
+  cursor : pointer;
 }
 .btn:hover {
   background-color: rgba(253, 185, 15, 1);
