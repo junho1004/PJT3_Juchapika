@@ -31,7 +31,7 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
 
         return jpaQueryFactory.selectFrom(record)
                 .join(car).on(car.id.eq(record.car.id))
-                .where(car.carNum.eq(carNum), record.cnt.eq(0L))
+                .where(car.carNum.eq(carNum))
                 .orderBy(record.date.desc())
                 .fetch()
                 ;

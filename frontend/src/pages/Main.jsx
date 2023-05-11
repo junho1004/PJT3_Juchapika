@@ -17,7 +17,6 @@ import UserTable from "../components/Table/UserTable";
 
 export default function Main() {
   const [statistic, setstatistic] = useState(false);
-
   let [search, Setsearch] = useState({
     startDate: "",
     endDate: "",
@@ -29,13 +28,37 @@ export default function Main() {
   const [location, Setlocation] = useState("전체");
   const [area, Setarea] = useState([{ value: "전체", name: "전체" }]);
   const [selectedArea, SetselectedArea] = useState("전체");
-  const today = new Date();
+  const today = new Date();// 오늘 0시 0분 0초
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
 
-  // const [down,Setdown] = useState(null)
+  useEffect(() => {
+    
+    const data = {
+      startDate: format(startDate, "yyyy-MM-dd'T'00:00:00.SSSSSS"),
+      endDate: format(endDate, "yyyy-MM-dd'T'23:59:59.SSSSSS"),
+      county: location,
+      dong: selectedArea,
+    };
+    console.log(data)
+    Setsearch(data);
 
-  useEffect(() => {}, []);
+    // axios로 폼 데이터 전송
+    axios
+      .post("http://localhost:8081/api/record/search-by-detail", data)
+      .then((res) => {
+        console.log(res.data.responseData[0]);
+        console.log(typeof res.data.responseData[0]);
+        setTableData(res.data.responseData);
+
+        console.log(tableData);
+
+        // res.data
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const locations = [
     { value: "전체", name: "전체" },
@@ -49,6 +72,9 @@ export default function Main() {
   const locationChange = (e) => {
     console.log(e.target.value);
     Setlocation(e.target.value);
+    change(e);
+  };
+  const change = (e) => {
     if (e.target.value === "광산구") {
       Setarea([
         { value: "전체", name: "전체" },
@@ -97,26 +123,25 @@ export default function Main() {
 
   const areaChange = (e) => {
     console.log(e.target.value);
-    Setarea([{ value: e.target.value, name: e.target.value }]);
+    // Setarea([{ value: e.target.value, name: e.target.value }]);
     SetselectedArea(e.target.value);
   };
 
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+
     if (!endDate) {
-      alert("날짜를 잘못 선택하였습니다! 다시 선택해주세요")
+      alert("날짜를 잘못 선택하였습니다! 다시 선택해주세요");
       return;
     }
 
     const data = {
-      startDate: format(startDate, "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"),
-      endDate: format(endDate, "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"),
+      startDate: format(startDate, "yyyy-MM-dd'T'00:00:00.SSSSSS"),
+      endDate: format(endDate, "yyyy-MM-dd'T'23:59:59.SSSSSS"),
       county: location,
       dong: selectedArea,
     };
-
+    // console.log(endDate)
     Setsearch(data);
 
     // axios로 폼 데이터 전송
@@ -128,12 +153,14 @@ export default function Main() {
         setTableData(res.data.responseData);
 
         console.log(tableData);
+
         // res.data
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
   const convertExcel = () => {
     console.log("asd");
     const data = Array(tableData.length)
@@ -256,6 +283,7 @@ export default function Main() {
                   maxDate={maxDate}
                   dateFormat="yyyy/MM/dd"
                   className={styles.calendar}
+                  todayButton="Today"
                 />
               </div>
               <div
@@ -278,12 +306,14 @@ export default function Main() {
 
               <div style={{ marginRight: "30px", paddingTop: "3px" }}>동</div>
               <select onChange={areaChange} className={styles.localist}>
-                {area &&
+                {
+                  // area &&
                   area.map((option) => (
                     <option key={option.value} value={option.value}>
                       {option.name}
                     </option>
-                  ))}
+                  ))
+                }
               </select>
               <div onClick={handleSubmit} className={styles.btn}>
                 <div>조회</div>
