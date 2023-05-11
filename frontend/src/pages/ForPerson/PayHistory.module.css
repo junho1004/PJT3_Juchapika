@@ -72,6 +72,7 @@
 
 .videos {
   width: 100%;
+  cursor : pointer;
 }
 .video1 {
   display: flex;

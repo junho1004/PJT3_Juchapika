@@ -1,6 +1,7 @@
 .background {
   width: 100%;
   height: 100vh;
+  padding-top: 5%;
   /* background-color: yellow; */
 }
 .body {
@@ -37,11 +38,13 @@
   /* border-color: red ; */
   padding: 2% 5% 2% 4%;
   margin-right: 50px;
+  cursor : pointer;
 }
 .calendarimg {
   position: absolute;
   margin-left: 245px;
   margin-top: 5px;
+  cursor : pointer;
 }
 
 .container {
@@ -62,22 +65,6 @@
   /* overflow-y: scroll; */
 }
 
-.modal {
-  padding: 0% 0% 5% 0%;
-  position: fixed;
-  z-index: 5;
-  width: 50%;
-  height: 60%;
-  background-color: white;
-  top: 50vh;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 2px lightgray solid;
-}
 .modal1 {
   padding: 1%;
   position: fixed;
@@ -101,20 +88,7 @@
   align-content: center;
   display: flex;
 }
-.size1 {
-  height: 50%;
-  width: 20%;
-}
 
-.in {
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  display: flex;
-  width: 90%;
-  height: 100%;
-  /* justify-content: space-between; */
-}
 .x {
   justify-content: right;
   display: flex;
@@ -122,9 +96,7 @@
   width: 80%;
   /* margin: 5%; */
 }
-.carimage {
-  width: 150px;
-}
+
 .modaltext1 {
   align-items: center;
   display: flex;
@@ -134,59 +106,10 @@
   /* margin: auto; */
 }
 
-.contenttext {
-  /* border: 2px solid red; */
-  width: 200px;
-}
-.name {
-  font-size: 0.7em;
-  font-weight: 600;
-  margin-bottom: 3px;
-  display: flex;
-}
-.texts {
-  font-size: 0.6em;
-  font-weight: 500;
-  margin-bottom: 5px;
-}
-.button {
-  background-color: rgba(252, 234, 43, 1);
-  width: 80%;
-  margin: 5% 0 0 0;
-  padding: 2%;
-  border-radius: 20px;
-  font-size: 0.7em;
-}
-.else {
-  margin-top: 4%;
-  align-items: left;
-  align-content: left;
-  width: 70%;
-  font-size: 0.8em;
-}
-.else1 {
-  display: flex;
-  flex-direction: row;
-}
-
-.loca {
-  background-color: white;
-  border: 1px solid gray;
-  padding: 2% 7% 2% 7%;
-  align-items: center;
-  align-content: center;
-  width: 200px;
-  color: gray;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-}
-
 .localist {
   width: 200px;
   margin-right: 30px;
+  cursor : pointer;
 }
 .btn {
   width: 80px;
@@ -199,6 +122,7 @@
   font-size: 0.8em;
   margin-left: 10px;
   transition: font-weight ease-in-out;
+  cursor : pointer;
 }
 .btn:hover {
   font-weight: bold;
@@ -219,6 +143,7 @@
 }
 .excel {
   background-color: rgba(107, 106, 106, 1);
+  cursor : pointer;
   width: 140px;
   color: white;
   display: flex;
