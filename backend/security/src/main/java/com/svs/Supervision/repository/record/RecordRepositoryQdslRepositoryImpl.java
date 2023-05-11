@@ -37,6 +37,23 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
                 ;
     }
 
+
+    @Override
+    public List<Record> findAllRecordByWhereCntZero() {
+        QRecord record = QRecord.record;
+        QCar car = QCar.car;
+
+        // 번호판 기준으로 Car 를 찾는다.
+        // Car_Id 를 기준으로 Record 를 찾는다.
+
+        return jpaQueryFactory.selectFrom(record)
+                .join(car).on(car.id.eq(record.car.id))
+                .where(record.cnt.eq(0L))
+                .orderBy(record.date.desc())
+                .fetch()
+                ;
+    }
+
     @Override
     public List<Record> findAllRecordByDetail(RecordDetailRequestDto recordDetailRequestDto) {
         QRecord record = QRecord.record;
@@ -49,6 +66,8 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
 
 
         List<Record> list;
+
+        System.out.println(startDate + ", " + endDate);
 
         System.out.println(district + ", " + dong);
 
@@ -94,6 +113,18 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
         }
 
         return list;
+    }
+
+    @Override
+    public List<Record> findAllRecordByDateForStatistics(RecordDetailRequestDto recordDetailRequestDto) {
+        QRecord record = QRecord.record;
+
+        LocalDateTime startDate = recordDetailRequestDto.getStartDate();// 시작시간
+        LocalDateTime endDate = recordDetailRequestDto.getEndDate();// 끝시간
+
+        return jpaQueryFactory.selectFrom(record)
+                .where(record.date.between(startDate, endDate))
+                .fetch();
     }
 
 }

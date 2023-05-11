@@ -9,12 +9,14 @@ import com.svs.Supervision.dto.request.record.RecordRequestDto;
 import com.svs.Supervision.dto.response.api.ApiResponseDto;
 import com.svs.Supervision.dto.response.record.RecordCarNumResponseDto;
 import com.svs.Supervision.dto.response.record.RecordDetailResponseDto;
+import com.svs.Supervision.dto.response.record.RecordStatisticsResponseDto;
 import com.svs.Supervision.entity.user.User;
 import com.svs.Supervision.service.record.RecordService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -26,9 +28,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOGGER;
@@ -36,10 +40,15 @@ import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOG
 @Tag(name = "Record", description = "기록 관련 API")
 @RestController
 @RequestMapping("/record")
+@CrossOrigin(origins = "http://localhost:3000") // 컨트롤러에서 설정
 @RequiredArgsConstructor
 public class RecordController {
+<<<<<<< HEAD
 
     // test
+=======
+    private RestTemplate restTemplate;
+>>>>>>> 461439df328fced9509afb561ba84eebfa857cbd
     private final RecordService recordService;
 
     // 1. 입력박은 차량 번호판 정보를 통해 carId를 찾는다.
@@ -56,8 +65,9 @@ public class RecordController {
                                        @Parameter(hidden = true)
                                        @AuthenticationPrincipal User user) {
         LOGGER.info("addRecord() 호출 : " + recordRequestDto);
-        recordService.addRecord(recordRequestDto);
 
+        // 정상적으로 저장이 된 경우,
+        recordService.addRecord(recordRequestDto);
         return new ResponseEntity(new ApiResponseDto(true, "addRecord successfully@", null), HttpStatus.CREATED);
     }
 
@@ -86,13 +96,46 @@ public class RecordController {
     @Operation(summary = "단속 현황 조회", description = "날짜, 지역, 동을 기준으로 단속 기록들을 조회합니다.")
     public ResponseEntity<?> searchDetail(@RequestBody RecordDetailRequestDto recordDetailRequestDto,
                                            @Parameter(hidden = true)
-                                           @AuthenticationPrincipal User user) throws IOException {
+                                           @AuthenticationPrincipal User user) {
 
         LOGGER.info("searchDetail() 호출 : " + recordDetailRequestDto);
 
         List<RecordDetailResponseDto> recordDetailResponseDtoList = recordService.searchDetail(recordDetailRequestDto);
 
         return new ResponseEntity(new ApiResponseDto(true, "searchDetail successfully@", recordDetailResponseDtoList), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/live-report-list")
+    @Operation(summary = "실시간 단속 목록 조회", description = "단속이 확정된 차량들의 리스트를 조회합니다.")
+    public ResponseEntity<?> searchLiveReport(@Parameter(hidden = true)
+                                              @AuthenticationPrincipal User user) {
+
+        LOGGER.info("searchDetail() 호출");
+
+        List<RecordCarNumResponseDto> recordCarNumResponseDtoList = recordService.searchLiveReport();
+        return new ResponseEntity(new ApiResponseDto(true, "searchLiveReport successfully@", recordCarNumResponseDtoList), HttpStatus.OK);
+    }
+
+
+
+
+    // 1. 전달받은 starDate 와 endDate 를 기준으로 Record 에서 데이터를 조회한다.
+    // 2. 조회한 데이터들 중, 5개의 지역별로 개수를 새어 HashMap 형태로 저장한다.
+    // ex) 날짜: Date, 통계: {"광산구" : 5, "xx구" : 1, "xx구" : 7}
+    @PostMapping("/statistics")
+    @Operation(summary = "단속 차량 통계", description = "날짜 기준으로 단속된 차량의 단속 기록들에 대한 통계 기록을 확인합니다.")
+    public ResponseEntity<?> searchStatistics(@RequestBody RecordDetailRequestDto recordDetailRequestDto,
+                                           @Parameter(hidden = true)
+                                           @AuthenticationPrincipal User user) throws IOException {
+
+        LOGGER.info("searchStatistics() 호출 : " + recordDetailRequestDto);
+
+        List<RecordStatisticsResponseDto> recordStatisticsResponseDtoList = recordService.searchStatistics(recordDetailRequestDto);
+
+        System.out.println(recordStatisticsResponseDtoList.get(0).getCounty());
+
+        return new ResponseEntity(new ApiResponseDto(true, "searchStatistics successfully@", recordStatisticsResponseDtoList), HttpStatus.OK);
     }
 
 
@@ -111,15 +154,17 @@ public class RecordController {
         headerRow.createCell(3).setCellValue("단속위치");
         headerRow.createCell(4).setCellValue("차량번호");
 
-
-        for (ExcelRequestDto dto : excelRequestDtoList) {
-            Row dataRow = sheet.createRow(excelRequestDtoList.size());
+        
+        for (int i = 0; i < excelRequestDtoList.size(); i++) {
+            ExcelRequestDto dto = excelRequestDtoList.get(i);
+            Row dataRow = sheet.createRow(i + 1); // 행의 인덱스를 i + 1로 지정
             dataRow.createCell(0).setCellValue(dto.getId());
             dataRow.createCell(1).setCellValue(dto.getDate());
             dataRow.createCell(2).setCellValue(dto.getTime());
             dataRow.createCell(3).setCellValue(dto.getLocation());
             dataRow.createCell(4).setCellValue(dto.getCarNum());
         }
+
 
         // 엑셀 파일 저장
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -135,4 +180,7 @@ public class RecordController {
                 .contentLength(bytes.length)
                 .body(resource);
     }
+
+
+
 }

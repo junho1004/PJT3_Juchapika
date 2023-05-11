@@ -9,6 +9,9 @@ import java.util.List;
 @Repository
 public interface RecordRepositoryQdslRepository {
     List<Record> findAllRecordByCarNumWhereCntZero(String carNum);
+    List<Record> findAllRecordByWhereCntZero();
 
     List<Record> findAllRecordByDetail(RecordDetailRequestDto recordDetailRequestDto);
+
+    List<Record> findAllRecordByDateForStatistics(RecordDetailRequestDto recordDetailRequestDto);
 }

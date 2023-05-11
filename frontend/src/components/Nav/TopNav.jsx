@@ -3,10 +3,9 @@ import { useNavigate } from "react-router-dom";
 import styles from "./TopNav.module.css";
 import logo from "../../assets/logo.png";
 import magnifier from "../../assets/magnifier.png";
-// import { markerdata } from "./Markerdata";
 
 // eslint-disable-next-line react/prop-types
-export default function TopNav({setSearchcar}) {
+export default function TopNav({Searchcar1}) {
   const navigate = useNavigate();
   const [InputText, setInputText] = useState("");
   
@@ -18,10 +17,21 @@ export default function TopNav({setSearchcar}) {
   const handleSubmit = (e) => {
       const data=InputText
       e.preventDefault();
-      setSearchcar(data)
+      Searchcar1(data)
       setInputText("");
+
+      
+      axios
+        .post("http://localhost:8081/api/record/search-by-carnum", carNum)
+        .then((res) => {
+          console.log(res.data.responseData)
+          setCarDetails(res.data.responseData)
+        })
+        .catch((error) => {
+          console.log(error);
+      });
       // console.log(data)
-    }
+  }
   
 
   return (
@@ -39,7 +49,7 @@ export default function TopNav({setSearchcar}) {
           <div
             className={styles.block}
             onClick={() => {
-              navigate("/");
+              navigate("/live");
             }}
           >
             LIVE
@@ -47,7 +57,7 @@ export default function TopNav({setSearchcar}) {
           <div
             className={styles.block}
             onClick={() => {
-              navigate("/");
+              navigate("/videostorage");
             }}
           >
             VIDEO STORAGE
