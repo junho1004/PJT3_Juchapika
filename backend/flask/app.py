@@ -8,7 +8,7 @@ import cv2
 import os
 
 app = Flask(__name__)
-
+app.config['JSON_AS_ASCII'] = False
 os.environ['AWS_ACCESS_KEY_ID'] = 'AKIAQVY7NV32G734VFPX'
 os.environ['AWS_SECRET_ACCESS_KEY'] = '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'
 os.environ['AWS_REGION'] = 'ap-northeast-2'
