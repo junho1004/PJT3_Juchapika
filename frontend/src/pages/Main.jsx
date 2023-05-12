@@ -45,7 +45,7 @@ export default function Main() {
 
     // axios로 폼 데이터 전송
     axios
-      .post("http://52.79.199.205:8081/api/record/search-by-detail", data)
+      .post("https://juchapika.site/api/record/search-by-detail", data)
       .then((res) => {
         console.log(res.data.responseData[0]);
         console.log(typeof res.data.responseData[0]);
@@ -146,7 +146,7 @@ export default function Main() {
 
     // axios로 폼 데이터 전송
     axios
-      .post("http://52.79.199.205:8081/api/record/search-by-detail", data)
+      .post("https://juchapika.site/api/record/search-by-detail", data)
       .then((res) => {
         console.log(res.data.responseData[0]);
         console.log(typeof res.data.responseData[0]);
@@ -178,7 +178,7 @@ export default function Main() {
     });
 
     axios
-      .post("http://52.79.199.205:8081/api/record/download", data, {
+      .post("https://juchapika.site/api/record/download", data, {
         responseType: "blob", // blob 형태로 데이터를 받아옴
       })
       .then((res) => {
@@ -222,7 +222,7 @@ export default function Main() {
     console.log(data);
 
     axios
-      .post("http://52.79.199.205:8081/api/record/statistics", data)
+      .post("https://juchapika.site/api/record/statistics", data)
       .then((res) => {
         console.log("12345");
         console.log(res.data.responseData[0]);
