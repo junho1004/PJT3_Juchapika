@@ -5,6 +5,7 @@ import logo from "../../assets/logo.png";
 import magnifier from "../../assets/magnifier.png";
 import { useEffect } from "react";
 import axios from "axios";
+// import { cardetails } from "../../components/cardetails";
 
 // eslint-disable-next-line react/prop-types
 export default function TopNav() {
@@ -12,11 +13,11 @@ export default function TopNav() {
   const [InputText, setInputText] = useState("");
 
   const [modal, Setmodal] = useState(false);
-  let [nowindex, setnowindex] = useState(0);
+
   const [searchCar, setSearchcar] = useState([]);
   let [address, setAddress] = useState("");
   let [carImageUrl, setCarImageUrl] = useState("");
-  const [carNum2, setCarNum] = useState("");
+  const [carNum, setCarNum] = useState("");
   // let [color, setColor] = useState("");
   let [date, setDate] = useState("");
   // let [fine, setFine] = useState("");
@@ -26,127 +27,69 @@ export default function TopNav() {
   let [pay, setPay] = useState("");
   let [phoneNum, setPhoneNum] = useState("");
   let [plateImageUrl, setPlateImageUrl] = useState("");
-  // let [binnum, setbinnum]=useState([])
-  const [restNumList, setRestNumList] = useState([]);
-  // let [now, setnow] = useState("");
 
-  // useEffect(() => {}, [searchCar]);
-
-  useEffect(
-    () => {
-      // if(InputText!==""){
-      // handleSubmit()}
-      // again()
-      again()
-    },
-    [
-      nowindex
-    ]
-  );
+  useEffect(() => {}, [searchCar]);
 
   const closeModal = () => {
     Setmodal(false);
-    setRestNumList([])
   };
   const onChange = (e) => {
     setInputText(e.target.value);
-
-    const carNum1 = {
+    const carNum = {
       carNum: e.target.value,
     };
     axios
-      .post("http://localhost:8081/api/record/search-by-carnum", carNum1)
+      .post("http://52.79.199.205:8081/api/record/search-by-carnum", carNum)
       .then((res) => {
         console.log(res.data.responseData);
         setSearchcar(res.data.responseData);
-        // return
       })
       .catch((error) => {
-        // setSearchcar("");
-        // alert("등록된 차량이 없습니다");
         console.log(error);
-        // return;
       });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    let arr = new Array(searchCar.length).fill().map((_, i) => i);
+    // handelSubmit 차량 검색
+    // 무조건 0 번째
 
-    let restNum = arr.filter((item) => {
-      return item != nowindex;
-    });
-    // print(restNum)  // [1, 2]
-    setRestNumList(restNum);
+    // 근데, const anotherSubmit
+    // 누른 배열의 index를 보내
 
-    
     if (InputText !== "") {
       let foundCar = false;
-      if (InputText === searchCar[nowindex].carNum) {
-        let info = searchCar[nowindex];
+      for (let i = 0; i < searchCar.length; i++) {
+          if (i === 0) {
+            // 메인 컴포넌트에 뿌릴거
+          } else {
+            // 그 외 단속이력
+          }
 
-        Setmodal(true);
-        setCarNum(info.carNum);
-        setAddress(info.address);
-        setCarImageUrl(info.carImageUrl);
-        setDate(info.date);
-        // setFine(info["fine"])
-        setDlocation(info.location);
-        // setModel(info["model"])
-        setName(info.name);
-        setPay(info.pay);
-        setPhoneNum(info.phoneNum);
-        setPlateImageUrl(info.plateImageUrl);
+          Setmodal(true);
+          setCarNum(searchCar[i]["carNum"]);
+          setAddress(searchCar[i]["address"]);
+          setCarImageUrl(searchCar[i]["carImageUrl"]);
+          setDate(searchCar[i]["date"]);
+          // setFine(info["fine"])
+          setDlocation(searchCar[i]["location"]);
+          // setModel(info["model"])
+          setName(searchCar[i]["name"]);
+          setPay(searchCar[i]["pay"]);
+          setPhoneNum(searchCar[i]["phoneNum"]);
+          setPlateImageUrl(searchCar[i]["plateImageUrl"]);
+          setInputText("");
+          // setbin("");
+          foundCar = true;
+      }
+      if (!foundCar) {
+        alert("등록된 차량이 없습니다");
         setInputText("");
-        foundCar = true;
         return;
       }
-     if (!foundCar) {
-      alert("등록된 차량이 없습니다");
-      setInputText("");
-      return;
-    }}}
-
-
-  const updateNow = (i) => {
-    setnowindex(i);
-    again();
-  };
-
-  const again = () => {
-    if (searchCar.length>0){
-    let arr = new Array(searchCar.length).fill().map((_, i) => i);
-
-    let restNum = arr.filter((item) => {
-      return item != nowindex;
-    });
-    // print(restNum)  // [1, 2]
-    setRestNumList(restNum);
-
-    // let foundCar = false;
-
-    {
-      let info = searchCar[nowindex];
-
-      Setmodal(true);
-      setCarNum(info.carNum);
-      setAddress(info.address);
-      setCarImageUrl(info.carImageUrl);
-      setDate(info.date);
-      // setFine(info["fine"])
-      setDlocation(info.location);
-      // setModel(info["model"])
-      setName(info.name);
-      setPay(info.pay);
-      setPhoneNum(info.phoneNum);
-      setPlateImageUrl(info.plateImageUrl);
-      setInputText("");
-      return;
-      // foundCar = true;
     }
-  }};
-
+  };
   return (
     <div>
       <nav className={styles.body}>
@@ -211,12 +154,12 @@ export default function TopNav() {
             </div>
             <div>
               <div className={styles.modaltext}>
-                <div style={{ fontSize: "1.7em", fontWeight: "800" }}>
-                  {carNum2}
+                <div style={{ fontSize: "1.5em", fontWeight: "800" }}>
+                  {carNum}
                 </div>
               </div>
               <div className={styles.modaltext}>
-                <div style={{ fontSize: "0.9em", marginBottom: "5px" }}>
+                <div style={{ fontSize: "0.7em", marginBottom: "10px" }}>
                   {date} {dlocation}
                 </div>
               </div>
@@ -229,7 +172,7 @@ export default function TopNav() {
                   src={carImageUrl}
                   alt="go"
                   className={styles.carimage}
-                  style={{ width: "180px", height:"120px", marginRight: "20px" }}
+                  style={{ width: "150px", marginRight: "20px" }}
                 />
 
                 {/* </div> */}
@@ -274,26 +217,18 @@ export default function TopNav() {
               <div style={{ fontWeight: "800", marginBottom: "2%" }}>
                 그 외 단속이력
               </div>
-              {/* <div className={styles.else1}> */}
-                {restNumList.map((item) => {
-                  return (
-                    <div key={item} onClick={() => updateNow(item)}>
-                      <div className={styles.else1}>
-                      <div style={{ marginRight: "5px" }}> <span style={{marginRight: "10px"}}>-</span> {searchCar[item]["location"]}</div>
-                      <div style={{ marginRight: "25px" }}>{searchCar[item]["date"]}</div>
-                      <div>
+              <div className={styles.else1}>
+                <div style={{ marginRight: "5px" }}>{date}</div>
+                <div style={{ marginRight: "25px" }}>{dlocation}</div>
+                <div>
                   {" "}
-                  {searchCar[item]["pay"] === "납부완료" ? (
+                  {pay === "납부완료" ? (
                     <span style={{ color: "blue" }}>납부완료</span>
                   ) : (
                     <span style={{ color: "red" }}>미납</span>
                   )}
-                </div> 
-                    </div>
-                    </div>
-                  );
-                })}
-              {/* </div> */}
+                </div>
+              </div>
             </div>
           </div>
           <div className={styles.back} onClick={closeModal}></div>
