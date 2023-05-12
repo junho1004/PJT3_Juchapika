@@ -6,11 +6,16 @@ import styles from "./EnrollmentCar.module.css";
 // import car from "../../assets/car3.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function EnrollmentCar() {
   const [posts, setPosts] = useState([]);
-  const [InputText, setInputText] = useState("");
+  const location = useLocation();
+  const { data1 } = location.state ?? { data1: "" }; // feeletter에서 차 넘버로 받아옴 이거는 feeletter 고지서미리보기 버튼을 누르지 않으면 실행 nono
+  const { data2 } = location.state ?? { data2: "" }; /// feeletter에서 받아온 id임 이걸로 axios에서 받아오면돼 다시 
+  const [InputText, setInputText] = useState(data1); //고지서미리보기 버튼을 누르지 않았으면 data가 null값 이니깐 작동 가능
   const [nail, setsumnail] = useState(null);
+  const [id, setid] = useState(data2 || "");
   // const [carnum, setcarnum] = useState(InputText);
   let navigate = useNavigate();
 
@@ -23,16 +28,21 @@ export default function EnrollmentCar() {
       .catch((error) => {
         console.error(error);
       });
+    
+  }, [InputText]);
+  useEffect(() => {
   }, []);
-
+  
   const clickitem = (title, id) => {
     setInputText(title);
-
-    const post1 = posts.find((post) => post.id === id);
-    const thumbnailUrl = post1 ? post1.thumbnailUrl : "";
-    setsumnail(thumbnailUrl);
-  };
-  // thumbnailUrl을 이용한 로직 처리
+    // 이부분 axios로 받아와야함
+    setid(id);
+    // postsss(id)
+    const post = posts.find((post) => post.id === id); //id가 같으면 그 객체가 가지고 있는 사진
+    const thumbnailUrl = post ? post.thumbnailUrl : "";
+    setsumnail(thumbnailUrl); ///사진을 받아온거임
+    }
+  
 
   const onChange = (e) => {
     setInputText(e.target.value);
@@ -102,8 +112,11 @@ export default function EnrollmentCar() {
               <div
                 className={styles.button1}
                 onClick={() => {
-                  navigate("/feeletter", { state: { data: InputText } });
+                  navigate("/feeletter", {
+                    state: { data1: InputText, data2: id },
+                  });
                 }}
+                // "inputtext"(=즉 carnum) 이부분에 들어간 걸 feeletter로 보내는 거임 id는 id
               >
                 고지서 미리보기
               </div>

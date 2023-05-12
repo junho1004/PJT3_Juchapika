@@ -151,7 +151,6 @@ export default function Main() {
         console.log(res.data.responseData[0]);
         console.log(typeof res.data.responseData[0]);
         setTableData(res.data.responseData);
-
         console.log(tableData);
 
         // res.data
