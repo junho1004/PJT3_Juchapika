@@ -113,7 +113,7 @@ public class RecordController {
     }
 
 
-    // test test test test test test test test test test test test test test test test 
+    // test test test test test test test test test test test test test test test test
 
     // 1. 전달받은 starDate 와 endDate 를 기준으로 Record 에서 데이터를 조회한다.
     // 2. 조회한 데이터들 중, 5개의 지역별로 개수를 새어 HashMap 형태로 저장한다.
