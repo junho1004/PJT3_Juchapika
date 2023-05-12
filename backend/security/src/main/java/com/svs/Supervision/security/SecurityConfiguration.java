@@ -30,7 +30,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/signin","/user/signup").permitAll()
+                .anyRequest().permitAll() //이거 한줄 추가
+//                .antMatchers("/user/signin","/user/signup").permitAll() //이거없애고
                 .and()
                 .exceptionHandling().accessDeniedHandler(new CustomAcessDeniedHandler())
                 .and()
