@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import car from "../../assets/car1.png";
 import carlicense from "../../assets/car1license.png";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 // import axios from "axios";
 // import { useState, useEffect } from "react";
 
 export default function Feeletter() {
+  const location = useLocation();
+  const { data } = location.state;
   const [modal, Setmodal] = useState(false);
   const navigate = useNavigate();
   const openModal = () => {
@@ -26,10 +29,8 @@ export default function Feeletter() {
         <div className={styles.mininav}>
           <div className={styles.content1}>
             <div className={styles.center}>
-              <div style={{ fontWeight: "700", fontSize: "1.8em" }}>
-                231 가 2475
-              </div>
-              <div>차량소유자: 정우영</div>
+              <div style={{ fontWeight: "700", fontSize: "1.8em" }}>{data}</div>
+              <div style={{ marginTop: "5px" }}>차량소유자: 정우영</div>
             </div>
             <hr style={{ marginTop: "30px", width: "100%" }}></hr>
           </div>
@@ -50,6 +51,7 @@ export default function Feeletter() {
           >
             납부이력
           </div>
+          <div className={styles.btn1}>고지서 확인완료</div>
         </div>
         <div className={styles.area}>
           <div style={{ fontWeight: "600", fontSize: "1.1em" }}>

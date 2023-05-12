@@ -32,21 +32,13 @@ export default function TopNav() {
 
   // useEffect(() => {}, [searchCar]);
 
-  useEffect(
-    () => {
-      // if(InputText!==""){
-      // handleSubmit()}
-      // again()
-      again()
-    },
-    [
-      nowindex
-    ]
-  );
+  useEffect(() => {
+    again();
+  }, [nowindex]);
 
   const closeModal = () => {
     Setmodal(false);
-    setRestNumList([])
+    setRestNumList([]);
   };
   const onChange = (e) => {
     setInputText(e.target.value);
@@ -80,10 +72,54 @@ export default function TopNav() {
     // print(restNum)  // [1, 2]
     setRestNumList(restNum);
 
-    
     if (InputText !== "") {
       let foundCar = false;
       if (InputText === searchCar[nowindex].carNum) {
+        let info = searchCar[nowindex];
+
+        Setmodal(true);
+        setCarNum(info.carNum);
+        setAddress(info.address);
+        setCarImageUrl(info.carImageUrl);
+        setDate(info.date);
+
+        // setFine(info["fine"])
+        setDlocation(info.location);
+        // setModel(info["model"])
+        setName(info.name);
+        setPay(info.pay);
+        setPhoneNum(info.phoneNum);
+        setPlateImageUrl(info.plateImageUrl);
+        setInputText("");
+        foundCar = true;
+        return;
+      }
+      if (!foundCar) {
+        alert("등록된 차량이 없습니다");
+        setInputText("");
+        return;
+      }
+    }
+  };
+
+  const updateNow = (i) => {
+    setnowindex(i);
+    again();
+  };
+
+  const again = () => {
+    if (searchCar.length > 0) {
+      let arr = new Array(searchCar.length).fill().map((_, i) => i);
+
+      let restNum = arr.filter((item) => {
+        return item != nowindex;
+      });
+      // print(restNum)  // [1, 2]
+      setRestNumList(restNum);
+
+      // let foundCar = false;
+
+      {
         let info = searchCar[nowindex];
 
         Setmodal(true);
@@ -99,53 +135,13 @@ export default function TopNav() {
         setPhoneNum(info.phoneNum);
         setPlateImageUrl(info.plateImageUrl);
         setInputText("");
-        foundCar = true;
         return;
+        // foundCar = true;
       }
-     if (!foundCar) {
-      alert("등록된 차량이 없습니다");
-      setInputText("");
-      return;
-    }}}
-
-
-  const updateNow = (i) => {
-    setnowindex(i);
-    again();
+    }
   };
 
-  const again = () => {
-    if (searchCar.length>0){
-    let arr = new Array(searchCar.length).fill().map((_, i) => i);
-
-    let restNum = arr.filter((item) => {
-      return item != nowindex;
-    });
-    // print(restNum)  // [1, 2]
-    setRestNumList(restNum);
-
-    // let foundCar = false;
-
-    {
-      let info = searchCar[nowindex];
-
-      Setmodal(true);
-      setCarNum(info.carNum);
-      setAddress(info.address);
-      setCarImageUrl(info.carImageUrl);
-      setDate(info.date);
-      // setFine(info["fine"])
-      setDlocation(info.location);
-      // setModel(info["model"])
-      setName(info.name);
-      setPay(info.pay);
-      setPhoneNum(info.phoneNum);
-      setPlateImageUrl(info.plateImageUrl);
-      setInputText("");
-      return;
-      // foundCar = true;
-    }
-  }};
+  let fordate = date.replace("T", " ");
 
   return (
     <div>
@@ -217,7 +213,7 @@ export default function TopNav() {
               </div>
               <div className={styles.modaltext}>
                 <div style={{ fontSize: "0.9em", marginBottom: "5px" }}>
-                  {date} {dlocation}
+                  : {fordate} {dlocation}
                 </div>
               </div>
               <hr></hr>
@@ -229,7 +225,11 @@ export default function TopNav() {
                   src={carImageUrl}
                   alt="go"
                   className={styles.carimage}
-                  style={{ width: "180px", height:"120px", marginRight: "20px" }}
+                  style={{
+                    width: "180px",
+                    height: "120px",
+                    marginRight: "20px",
+                  }}
                 />
 
                 {/* </div> */}
@@ -271,29 +271,41 @@ export default function TopNav() {
               </div>
             </div>
             <div className={styles.else}>
-              <div style={{ fontWeight: "800", marginBottom: "2%" }}>
-                그 외 단속이력
+              <div style={{ fontWeight: "800", marginBottom: "1%" }}>
+                그 외 <span style={{color:'red'}}> {restNumList.length}개  </span> 단속이력{" "} 
+                <span style={{ fontSize: "0.5em" }}>
+                  ( 클릭시 상세정보를 볼 수 있습니다 )
+                </span>
               </div>
-              {/* <div className={styles.else1}> */}
-                {restNumList.map((item) => {
+              <div className={styles.else2}>
+              {restNumList.length === 0 ? (
+                <div>그 외 단속기록이 없습니다</div>
+              ) : (
+                restNumList.map((item) => {
                   return (
                     <div key={item} onClick={() => updateNow(item)}>
                       <div className={styles.else1}>
-                      <div style={{ marginRight: "5px" }}> <span style={{marginRight: "10px"}}>-</span> {searchCar[item]["location"]}</div>
-                      <div style={{ marginRight: "25px" }}>{searchCar[item]["date"]}</div>
-                      <div>
-                  {" "}
-                  {searchCar[item]["pay"] === "납부완료" ? (
-                    <span style={{ color: "blue" }}>납부완료</span>
-                  ) : (
-                    <span style={{ color: "red" }}>미납</span>
-                  )}
-                </div> 
-                    </div>
+                        <div style={{ marginRight: "5px" }}>
+                          <span style={{ marginRight: "10px" }}>-</span>{" "}
+                          {searchCar[item]["location"]}
+                        </div>
+                        <div style={{ marginRight: "25px" }}>
+                          {searchCar[item]["date"].replace("T", " ")}
+                        </div>
+                        <div>
+                          {" "}
+                          {searchCar[item]["pay"] === "납부완료" ? (
+                            <span style={{ color: "blue" }}>납부완료</span>
+                          ) : (
+                            <span style={{ color: "red" }}>미납</span>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   );
-                })}
-              {/* </div> */}
+                })
+              )}
+              </div>
             </div>
           </div>
           <div className={styles.back} onClick={closeModal}></div>
