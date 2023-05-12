@@ -61,6 +61,9 @@ FROM openjdk:11.0.11-jdk-slim-buster
 # 작업 디렉토리를 설정합니다.
 WORKDIR /var/jenkins_home/workspace/juchapika/backend/security
 
+# build/libs 폴더 내용 삭제
+RUN rm -rf build/libs/*
+
 # Gradle 빌드 스크립트 파일을 복사합니다.
 COPY build.gradle .
 COPY gradlew .
