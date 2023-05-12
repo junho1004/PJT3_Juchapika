@@ -2,10 +2,7 @@
 package com.svs.Supervision.controller;
 
 
-import com.svs.Supervision.dto.request.record.RecordCarNumRequestDto;
-import com.svs.Supervision.dto.request.record.ExcelRequestDto;
-import com.svs.Supervision.dto.request.record.RecordDetailRequestDto;
-import com.svs.Supervision.dto.request.record.RecordRequestDto;
+import com.svs.Supervision.dto.request.record.*;
 import com.svs.Supervision.dto.response.api.ApiResponseDto;
 import com.svs.Supervision.dto.response.record.RecordCarNumResponseDto;
 import com.svs.Supervision.dto.response.record.RecordDetailResponseDto;
@@ -73,7 +70,7 @@ public class RecordController {
 
     @PostMapping("/search-by-carnum")
     @Operation(summary = "단속 차량 조회", description = "번호판 기준으로 단속된 차량의 단속 기록들을 조회합니다.")
-    public ResponseEntity<?> searchRecord(@RequestBody RecordCarNumRequestDto recordCarNumRequestDto,
+    public ResponseEntity<?> searchRecordByCarNum(@RequestBody RecordCarNumRequestDto recordCarNumRequestDto,
                                           @Parameter(hidden = true)
                                           @AuthenticationPrincipal User user) {
         LOGGER.info("searchRecord() 호출 : " + recordCarNumRequestDto);
@@ -85,6 +82,32 @@ public class RecordController {
             return new ResponseEntity(new ApiResponseDto(true, "searchRecord successfully@", recordCarNumResponseDtoList), HttpStatus.OK);
         }
     }
+
+
+    @PostMapping("/search-by-id")
+    @Operation(summary = "단속 차량 조회", description = "기록 Id 기준으로 단속된 차량의 단속 기록들을 조회합니다.")
+    public ResponseEntity<?> searchRecordById(@RequestBody RecordCarIdRequestDto recordCarIdRequestDto,
+                                          @Parameter(hidden = true)
+                                          @AuthenticationPrincipal User user) {
+        LOGGER.info("searchRecordById() 호출 : " + recordCarIdRequestDto);
+        RecordCarNumResponseDto recordCarNumResponseDto = recordService.searchRecordById(recordCarIdRequestDto.getId());
+
+        return new ResponseEntity(new ApiResponseDto(true, "searchRecordById successfully@", recordCarNumResponseDto), HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/delete-by-id")
+    @Operation(summary = "단속 기록 삭제", description = "기록 Id 기준으로 단속된 차량의 단속 기록들을 조회합니다.")
+    public ResponseEntity<?> deleteRecordById(@RequestBody RecordCarIdRequestDto recordCarIdRequestDto,
+                                              @Parameter(hidden = true)
+                                              @AuthenticationPrincipal User user) {
+
+        LOGGER.info("deleteRecordById() 호출 : " + recordCarIdRequestDto);
+        recordService.deleteRecordById(recordCarIdRequestDto.getId());
+
+        return new ResponseEntity(new ApiResponseDto(true, "deleteRecordById successfully@", null), HttpStatus.OK);
+    }
+
 
 
     @PostMapping("/search-by-detail")

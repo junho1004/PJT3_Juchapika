@@ -142,6 +142,30 @@ public class RecordService {
         }
     }
 
+    public RecordCarNumResponseDto searchRecordById(Long id) {
+
+        Record record = recordRepository.findById(id).orElseThrow();
+        Car car = record.getCar();
+
+        return RecordCarNumResponseDto.builder()
+                .id(record.getId())
+                .date(record.getDate())
+                .location(record.getLocation())
+                .plateImageUrl(record.getPlateImageUrl())
+                .carImageUrl(record.getCarImageUrl())
+                .fine(record.getFine())
+                .pay(record.getPay())
+                .carNum(car.getCarNum())
+                .phoneNum(car.getPhoneNum())
+                .name(car.getName())
+                .address(car.getAddress())
+                .model(car.getModel())
+                .color(car.getColor())
+                .build();
+    }
+
+
+
     public List<RecordCarNumResponseDto> searchLiveReport() {
         List<RecordCarNumResponseDto> recordCarNumResponseDtoList = new ArrayList<>();
 
@@ -150,6 +174,7 @@ public class RecordService {
         // record 의 carNum 들을 DTO 에 넣자!
         for (Record record : recordList) {
             recordCarNumResponseDtoList.add(RecordCarNumResponseDto.builder()
+                    .id(record.getId())
                     .carNum(record.getCar().getCarNum())
                     .build());
         }
@@ -215,5 +240,9 @@ public class RecordService {
         recordStatisticsResponseDtoList.add(RecordStatisticsResponseDto.build(newMap));
 
         return recordStatisticsResponseDtoList;
+    }
+
+    public void deleteRecordById(Long id) {
+        recordRepository.deleteById(id);
     }
 }
