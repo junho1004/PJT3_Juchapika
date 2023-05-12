@@ -39,7 +39,7 @@ export default function TopNav() {
       carNum: e.target.value,
     };
     axios
-      .post("https://52.79.199.205:8081/api/record/search-by-carnum", carNum)
+      .post("http://52.79.199.205:8081/api/record/search-by-carnum", carNum)
       .then((res) => {
         console.log(res.data.responseData);
         setSearchcar(res.data.responseData);
