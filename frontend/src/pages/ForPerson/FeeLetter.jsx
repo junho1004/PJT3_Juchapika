@@ -6,8 +6,8 @@ import carlicense from "../../assets/car1license.png";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import Payhistory from "./PayHistory";
-
-// import axios from "axios";
+import { useEffect} from "react";
+import axios from "axios";
 // import { useState, useEffect } from "react";
 
 export default function Feeletter() {
@@ -18,14 +18,36 @@ export default function Feeletter() {
   let id = data2
   const [modal, Setmodal] = useState(false);
   const [payhistory, setpayhistory] = useState(false);
-  // const [carnum, setCarnum] = useState(data);
+  const [detail, setdetail] = useState([]);
+  // let [name, setName] = useState(null);
 
-  
+  useEffect(() => {
+////////////////여기 recordid로 찾아야함 carnum으로 찾으면 기록이 너무 많음
+    const carNum1 = {
+      carNum: "331우7799",
+    };
+    axios
+      .post("http://localhost:8081/api/record/search-by-carnum", carNum1)
+      .then((res) => {
+        console.log(res.data.responseData);
+        setdetail(res.data.responseData);
+        // return
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    // callall()
+  }, [detail]);
   
   // const navigate = useNavigate();
   
+  
   const openModal = () => {
     Setmodal(true);
+    console.log("-----------------")
+    console.log(detail)
+    console.log(data1)
+    console.log(data2)
   };
   const closeModal = () => {
     Setmodal(false);
@@ -41,7 +63,7 @@ export default function Feeletter() {
           <div className={styles.content1}>
             <div className={styles.center}>
               <div style={{ fontWeight: "700", fontSize: "1.8em" }}>{id}{carnum}</div>
-              <div style={{ marginTop: "5px" }}>차량소유자: 정우영</div>
+              <div style={{ marginTop: "5px" }}>차량소유자: 정주영</div>
             </div>
             <hr style={{ marginTop: "30px", width: "100%" }}></hr>
           </div>

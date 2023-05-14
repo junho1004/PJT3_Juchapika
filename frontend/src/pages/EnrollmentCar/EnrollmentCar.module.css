@@ -176,7 +176,6 @@
   color: black;
   cursor: pointer;
   transition: background-color ease-in-out;
-  cursor: pointer;
 }
 .button1:hover {
   background-color: rgba(182, 182, 182, 1);

@@ -13,8 +13,7 @@ import {
   Paper,
   // Button,
 } from "@material-ui/core";
-// import ExcelJS from "exceljs";
-// import Main from "../../pages/Main"
+// import TopNav from "../../components/Nav/TopNav";
 
 function UserTable({ tableData = [] }) {
   // columns 기본값을 빈 배열로 설정
@@ -24,14 +23,14 @@ function UserTable({ tableData = [] }) {
 
   useEffect(() => {
     const updatedUsers = Array(tableData.length)
-    .fill()
-    .map((_, i) => ({
-      id: i + 1,
-      date: tableData[i].date,
-      time: tableData[i].time,
-      location: tableData[i].location,
-      carNum: tableData[i].carNum,
-    }))
+      .fill()
+      .map((_, i) => ({
+        id: i + 1,
+        date: tableData[i].date,
+        time: tableData[i].time,
+        location: tableData[i].location,
+        carNum: tableData[i].carNum,
+      }));
 
     setUsers(updatedUsers);
   }, [tableData]);
@@ -43,7 +42,7 @@ function UserTable({ tableData = [] }) {
     },
     body: {
       fontSize: 14,
-      borderRight: "1px solid #ddd"
+      borderRight: "1px solid #ddd",
     },
   }))(TableCell);
 
@@ -54,7 +53,6 @@ function UserTable({ tableData = [] }) {
       },
     },
   }))(TableRow);
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -68,27 +66,17 @@ function UserTable({ tableData = [] }) {
     setPage(0);
   };
 
-  const btn =()=>{
-    console.log("========");
-
-    tableData.forEach( test => {
-      console.log(test);
-    });
-
-    users.forEach( test => {
-      console.log(test);
-    });
-
-    console.log(tableData.length);
-    console.log(users.length);
-
-    // console.log(tableData)
-    // console.log(tableData[0].date);
-  }
+  const totopnav = (i) => {
+    // TopNav({ carNumfromtable: i });
+    console.log("sssssssssssssssssssssssssssssssss")
+    console.log(i)
+  };
 
   return (
     <div>
-      <div onClick={btn} style={{ fontSize: "1em" }}>총 {users.length}개</div>
+      <div style={{ fontSize: "1em" }}>
+        총 {users.length}개
+      </div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -112,26 +100,29 @@ function UserTable({ tableData = [] }) {
           </TableHead>
           <TableBody>
             {users
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((user) => (
-                  <StyledTableRow key={user.id}>
-                    <StyledTableCell align="center" width="10%">
-                      {user.id}
-                    </StyledTableCell>
-                    <StyledTableCell align="center" width="20%">
-                      {user.date}
-                    </StyledTableCell>
-                    <StyledTableCell align="center" width="20%">
-                      {user.time}
-                    </StyledTableCell>
-                    <StyledTableCell align="center" width="40%">
-                      {user.location}
-                    </StyledTableCell>
-                    <StyledTableCell align="center" width="10%">
-                      {user.carNum}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((user) => (
+                <StyledTableRow
+                  key={user.id}
+                  onClick={() => totopnav(user.carNum)}
+                >
+                  <StyledTableCell align="center" width="10%">
+                    {user.id}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" width="20%">
+                    {user.date}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" width="20%">
+                    {user.time}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" width="40%">
+                    {user.location}
+                  </StyledTableCell>
+                  <StyledTableCell align="center" width="10%">
+                    {user.carNum}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
           </TableBody>
           <TableFooter>
             <TableRow>
@@ -166,7 +157,7 @@ function UserTable({ tableData = [] }) {
 
 UserTable.propTypes = {
   // columns: PropTypes.arrayOf(PropTypes.string),
-  tableData: PropTypes.array.isRequired
+  tableData: PropTypes.array.isRequired,
   // Setdown: PropTypes.func.isRequired,
 };
 

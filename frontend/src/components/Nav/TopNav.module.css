@@ -169,6 +169,9 @@ input:focus::placeholder {
   font-size: 0.9em;
   font-weight: 500;
   margin-bottom: 5px;
+  /* height: auto; */
+  width: 60%;
+  word-wrap: break-word;
 }
 
 .else {

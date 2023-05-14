@@ -7,10 +7,10 @@ import { useEffect } from "react";
 import axios from "axios";
 
 // eslint-disable-next-line react/prop-types
-export default function TopNav() {
+export default function TopNav({ carNumfromtable }) {
   const navigate = useNavigate();
   const [InputText, setInputText] = useState("");
-
+  let byclick = carNumfromtable////테이블 눌러서 가져온것
   const [modal, Setmodal] = useState(false);
   let [nowindex, setnowindex] = useState(0);
   const [searchCar, setSearchcar] = useState([]);
@@ -25,7 +25,7 @@ export default function TopNav() {
   let [name, setName] = useState("");
   let [pay, setPay] = useState("");
   let [phoneNum, setPhoneNum] = useState("");
-  let [plateImageUrl, setPlateImageUrl] = useState("");
+  // let [plateImageUrl, setPlateImageUrl] = useState("");
   // let [binnum, setbinnum]=useState([])
   const [restNumList, setRestNumList] = useState([]);
   // let [now, setnow] = useState("");
@@ -44,7 +44,7 @@ export default function TopNav() {
     setInputText(e.target.value);
 
     const carNum1 = {
-      carNum: e.target.value,
+      carNum: e.target.value || byclick,
     };
     axios
       .post("http://localhost:8081/api/record/search-by-carnum", carNum1)
@@ -89,7 +89,7 @@ export default function TopNav() {
         setName(info.name);
         setPay(info.pay);
         setPhoneNum(info.phoneNum);
-        setPlateImageUrl(info.plateImageUrl);
+        // setPlateImageUrl(info.plateImageUrl);
         setInputText("");
         foundCar = true;
         return;
@@ -133,7 +133,7 @@ export default function TopNav() {
         setName(info.name);
         setPay(info.pay);
         setPhoneNum(info.phoneNum);
-        setPlateImageUrl(info.plateImageUrl);
+        // setPlateImageUrl(info.plateImageUrl);
         setInputText("");
         return;
         // foundCar = true;
@@ -171,14 +171,6 @@ export default function TopNav() {
               }}
             >
               실시간화면
-            </div>
-            <div
-              className={styles.block}
-              onClick={() => {
-                navigate("/videostorage");
-              }}
-            >
-              영상저장소
             </div>
           </div>
           <form onSubmit={handleSubmit}>
@@ -243,10 +235,10 @@ export default function TopNav() {
                     <span className={styles.texts}> {phoneNum}</span>
                   </div>
                   <div className={styles.name}>
-                    <span style={{ width: "40%" }}>주소</span>
+                    <div style={{ width: "40%" }}>소유주 주소</div>
                     <span className={styles.texts}> {address}</span>
                   </div>
-                  <div className={styles.name}>
+                  {/* <div className={styles.name}>
                     <span style={{ width: "40%" }}>번호판</span>
                     <span className={styles.texts}>
                       {" "}
@@ -256,7 +248,7 @@ export default function TopNav() {
                         style={{ width: "100px" }}
                       />
                     </span>
-                  </div>
+                  </div> */}
                   <div className={styles.name}>
                     <span style={{ width: "40%" }}>납부유무</span>
                     <span className={styles.texts}>
@@ -272,39 +264,41 @@ export default function TopNav() {
             </div>
             <div className={styles.else}>
               <div style={{ fontWeight: "800", marginBottom: "1%" }}>
-                그 외 <span style={{color:'red'}}> {restNumList.length}개  </span> 단속이력{" "} 
+                그 외{" "}
+                <span style={{ color: "red" }}> {restNumList.length}개 </span>{" "}
+                단속이력{" "}
                 <span style={{ fontSize: "0.5em" }}>
                   ( 클릭시 상세정보를 볼 수 있습니다 )
                 </span>
               </div>
               <div className={styles.else2}>
-              {restNumList.length === 0 ? (
-                <div>그 외 단속기록이 없습니다</div>
-              ) : (
-                restNumList.map((item) => {
-                  return (
-                    <div key={item} onClick={() => updateNow(item)}>
-                      <div className={styles.else1}>
-                        <div style={{ marginRight: "5px" }}>
-                          <span style={{ marginRight: "10px" }}>-</span>{" "}
-                          {searchCar[item]["location"]}
-                        </div>
-                        <div style={{ marginRight: "25px" }}>
-                          {searchCar[item]["date"].replace("T", " ")}
-                        </div>
-                        <div>
-                          {" "}
-                          {searchCar[item]["pay"] === "납부완료" ? (
-                            <span style={{ color: "blue" }}>납부완료</span>
-                          ) : (
-                            <span style={{ color: "red" }}>미납</span>
-                          )}
+                {restNumList.length === 0 ? (
+                  <div>그 외 단속기록이 없습니다</div>
+                ) : (
+                  restNumList.map((item) => {
+                    return (
+                      <div key={item} onClick={() => updateNow(item)}>
+                        <div className={styles.else1}>
+                          <div style={{ marginRight: "5px" }}>
+                            <span style={{ marginRight: "10px" }}>-</span>{" "}
+                            {searchCar[item]["location"]}
+                          </div>
+                          <div style={{ marginRight: "25px" }}>
+                            {searchCar[item]["date"].replace("T", " ")}
+                          </div>
+                          <div>
+                            {" "}
+                            {searchCar[item]["pay"] === "납부완료" ? (
+                              <span style={{ color: "blue" }}>납부완료</span>
+                            ) : (
+                              <span style={{ color: "red" }}>미납</span>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })
-              )}
+                    );
+                  })
+                )}
               </div>
             </div>
           </div>
