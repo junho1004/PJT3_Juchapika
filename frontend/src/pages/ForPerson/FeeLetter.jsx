@@ -16,7 +16,6 @@ export default function Feeletter() {
   const { data1, data2 } = location.state; ///enrollmentcar에서 받아온 carnum 임!!
   let carnum = data1
   let id = data2
-  const [modal, Setmodal] = useState(false);
   const [payhistory, setpayhistory] = useState(false);
   const [detail, setdetail] = useState([]);
   // let [name, setName] = useState(null);
@@ -41,17 +40,6 @@ export default function Feeletter() {
   
   // const navigate = useNavigate();
   
-  
-  const openModal = () => {
-    Setmodal(true);
-    console.log("-----------------")
-    console.log(detail)
-    console.log(data1)
-    console.log(data2)
-  };
-  const closeModal = () => {
-    Setmodal(false);
-  };
 
   return (
     <div className={styles.background}>
@@ -133,11 +121,6 @@ export default function Feeletter() {
                     />
                   </div>
                 </div>
-                <div className={styles.e}>
-                  <div className={styles.btn} onClick={openModal}>
-                    <div>단속녹화시청</div>
-                  </div>
-                </div>
               </div>
             </div>
             <div style={{ fontWeight: "600", fontSize: "1.1em" }}>부과내역</div>
@@ -204,27 +187,6 @@ export default function Feeletter() {
           </div>
         )}
       </div>
-      {modal && (
-        <div className={styles.container}>
-          <div className={styles.modal}>
-            <div onClick={closeModal} className={styles.x}>
-              <div>x</div>
-            </div>
-            <div className={styles.modalin}>
-              <div className={styles.centre}>영상플레이</div>
-              <div className={styles.centre} style={{ padding: "2%" }}>
-                <video
-                  src="https://www.w3schools.com/html/mov_bbb.mp4"
-                  width="500"
-                  height="300"
-                  controls
-                />
-              </div>
-            </div>
-          </div>
-          <div className={styles.back} onClick={closeModal}></div>
-        </div>
-      )}
     </div>
   );
 }

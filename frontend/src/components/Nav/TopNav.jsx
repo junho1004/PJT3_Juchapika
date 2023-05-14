@@ -7,34 +7,31 @@ import { useEffect } from "react";
 import axios from "axios";
 
 // eslint-disable-next-line react/prop-types
-export default function TopNav({ carNumfromtable }) {
+export default function TopNav( ) {
   const navigate = useNavigate();
   const [InputText, setInputText] = useState("");
-  let byclick = carNumfromtable////테이블 눌러서 가져온것
   const [modal, Setmodal] = useState(false);
   let [nowindex, setnowindex] = useState(0);
   const [searchCar, setSearchcar] = useState([]);
   let [address, setAddress] = useState("");
   let [carImageUrl, setCarImageUrl] = useState("");
   const [carNum2, setCarNum] = useState("");
-  // let [color, setColor] = useState("");
   let [date, setDate] = useState("");
-  // let [fine, setFine] = useState("");
   let [dlocation, setDlocation] = useState("");
-  // let [model, setModel] = useState("");
   let [name, setName] = useState("");
   let [pay, setPay] = useState("");
   let [phoneNum, setPhoneNum] = useState("");
-  // let [plateImageUrl, setPlateImageUrl] = useState("");
-  // let [binnum, setbinnum]=useState([])
   const [restNumList, setRestNumList] = useState([]);
-  // let [now, setnow] = useState("");
-
-  // useEffect(() => {}, [searchCar]);
 
   useEffect(() => {
     again();
   }, [nowindex]);
+
+  useEffect(() => {
+    // if (byclick !== []) {
+    //   Byclick();
+    // }
+  }, []);
 
   const closeModal = () => {
     Setmodal(false);
@@ -44,13 +41,15 @@ export default function TopNav({ carNumfromtable }) {
     setInputText(e.target.value);
 
     const carNum1 = {
-      carNum: e.target.value || byclick,
+      carNum: e.target.value,
     };
     axios
       .post("http://localhost:8081/api/record/search-by-carnum", carNum1)
       .then((res) => {
         console.log(res.data.responseData);
         setSearchcar(res.data.responseData);
+        console.log("이게뭔지모르아너어럼이");
+
         // return
       })
       .catch((error) => {
@@ -60,6 +59,7 @@ export default function TopNav({ carNumfromtable }) {
         // return;
       });
   };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
