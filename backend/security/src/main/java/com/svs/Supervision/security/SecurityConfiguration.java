@@ -30,14 +30,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/signin","/user/signup").permitAll()
+//                    .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/webjars/**", "/api/swagger-ui/index.html").permitAll()
+//                    .anyRequest().authenticated()
+                .anyRequest().permitAll() //이거 한줄 추가
+//                .antMatchers("/user/signin","/user/signup").permitAll()
                 .and()
                 .exceptionHandling().accessDeniedHandler(new CustomAcessDeniedHandler())
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
 
         //super.configure(http);
@@ -48,6 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**","/swagger-ui.html", "/webjars/**","/swagger/**", "sign-api/exception");
 //        super.configure(web);
     }
+
 }
 
 
