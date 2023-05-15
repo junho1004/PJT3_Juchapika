@@ -204,7 +204,7 @@ public class RecordService {
         }
 
         Record record = recordRepository.getById(id);
-        record.updateRecord(2L,car);
+        record.updateRecord(1L,car);
 
         return true;
     }
