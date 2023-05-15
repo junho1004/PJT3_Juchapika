@@ -203,12 +203,9 @@ def detectKi():
                 else :
                     print('실패')
         # 이미지 출력
-        cv2.imshow('frame', cv2.resize(im, (1024, 768)))
+       
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    cv2.destroyAllWindows()
+    return 'end'
 
 @app.route('/')
 def extra():
