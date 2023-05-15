@@ -19,7 +19,7 @@ async def start_websocket_server():
 
 # Define the React server address and port
 REACT_SERVER_ADDRESS = "52.79.199.205"
-REACT_SERVER_PORT = 443
+REACT_SERVER_PORT = 80
 
 
 # Create a WebSocket connection to the React server
