@@ -22,6 +22,6 @@ COPY webSocketServer.py .
 EXPOSE 8083
 
 # Start the WebSocket server
-CMD ["python", "app.py"]
+CMD ["python", "webSocketServer.py"]
 
 #fixed
