@@ -30,6 +30,8 @@ function UserTable({ tableData = [] }) {
   let [name, setName] = useState("");
   let [pay, setPay] = useState("");
   let [phoneNum, setPhoneNum] = useState("");
+  let [time, settime] = useState("");
+  let [PlateImageUrl,setPlateImageUrl]=useState(null);
 
   useEffect(() => {
     const updatedUsers = Array(tableData.length)
@@ -40,9 +42,11 @@ function UserTable({ tableData = [] }) {
         time: tableData[i].time,
         location: tableData[i].location,
         carNum: tableData[i].carNum,
+        
       }));
 
     setUsers(updatedUsers);
+    return
   }, [tableData]);
 
   const StyledTableCell = withStyles((theme) => ({
@@ -83,7 +87,9 @@ function UserTable({ tableData = [] }) {
     setCarImageUrl(info.carImageUrl); ///찍힌 차 이미지 넣어야함
     setDate(info.date); ///언제 걸렸는지
     setDlocation(info.location); ///어디서 걸렸는지 넣어야함
-    setPay(info.pay); ///얼마인지
+    setPay(info.pay);
+    settime(info.time);
+    setPlateImageUrl(info.plateImageUrl); ///얼마인지
 
     const carNum1 = {
       carNum: j,
@@ -97,6 +103,7 @@ function UserTable({ tableData = [] }) {
         setName(info1.name);
         setCarNum(info1.carNum);
         setPhoneNum(info1.phoneNum);
+        return
       })
       .catch((error) => {
         console.log(error);
@@ -198,7 +205,8 @@ function UserTable({ tableData = [] }) {
               </div>
               <div className={styles.modaltext}>
                 <div style={{ fontSize: "0.9em", marginBottom: "5px" }}>
-                  : {fordate} {dlocation}
+                  : {fordate} {time} 
+                  <div style={{ width: "100%", textAlign: "center" }}>{dlocation} </div>
                 </div>
               </div>
               <hr></hr>
@@ -226,6 +234,17 @@ function UserTable({ tableData = [] }) {
                   <div className={styles.name}>
                     <div style={{ width: "40%" }}>소유주 주소</div>
                     <span className={styles.texts}> {address}</span>
+                  </div>
+                  <div className={styles.name}>
+                    <span style={{ width: "40%" }}>번호판</span>
+                    <span className={styles.texts}>
+                      {" "}
+                      <img
+                        src={PlateImageUrl}
+                        alt="go"
+                        style={{ width: "100px" }}
+                      />
+                    </span>
                   </div>
 
                   <div className={styles.name}>

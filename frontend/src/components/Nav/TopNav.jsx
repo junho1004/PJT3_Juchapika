@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import axios from "axios";
 
 // eslint-disable-next-line react/prop-types
-export default function TopNav( ) {
+export default function TopNav() {
   const navigate = useNavigate();
   const [InputText, setInputText] = useState("");
   const [modal, Setmodal] = useState(false);
@@ -22,6 +22,7 @@ export default function TopNav( ) {
   let [pay, setPay] = useState("");
   let [phoneNum, setPhoneNum] = useState("");
   const [restNumList, setRestNumList] = useState([]);
+  let [PlateImageUrl,setPlateImageUrl]=useState(null);
 
   useEffect(() => {
     again();
@@ -50,7 +51,7 @@ export default function TopNav( ) {
         setSearchcar(res.data.responseData);
         console.log("이게뭔지모르아너어럼이");
 
-        // return
+        return
       })
       .catch((error) => {
         // setSearchcar("");
@@ -87,7 +88,7 @@ export default function TopNav( ) {
         setName(info.name);
         setPay(info.pay);
         setPhoneNum(info.phoneNum);
-        // setPlateImageUrl(info.plateImageUrl);
+        setPlateImageUrl(info.plateImageUrl);
         setInputText("");
         foundCar = true;
         return;
@@ -131,7 +132,7 @@ export default function TopNav( ) {
         setName(info.name);
         setPay(info.pay);
         setPhoneNum(info.phoneNum);
-        // setPlateImageUrl(info.plateImageUrl);
+        setPlateImageUrl(info.plateImageUrl);
         setInputText("");
         return;
         // foundCar = true;
@@ -203,7 +204,10 @@ export default function TopNav( ) {
               </div>
               <div className={styles.modaltext}>
                 <div style={{ fontSize: "0.9em", marginBottom: "5px" }}>
-                  : {fordate} {dlocation}
+                  : {fordate}
+                  <div style={{ width: "100%", textAlign: "center" }}>
+                    {dlocation}{" "}
+                  </div>
                 </div>
               </div>
               <hr></hr>
@@ -236,17 +240,17 @@ export default function TopNav( ) {
                     <div style={{ width: "40%" }}>소유주 주소</div>
                     <span className={styles.texts}> {address}</span>
                   </div>
-                  {/* <div className={styles.name}>
+                  <div className={styles.name}>
                     <span style={{ width: "40%" }}>번호판</span>
                     <span className={styles.texts}>
                       {" "}
                       <img
-                        src={plateImageUrl}
+                        src={PlateImageUrl}
                         alt="go"
                         style={{ width: "100px" }}
                       />
                     </span>
-                  </div> */}
+                  </div>
                   <div className={styles.name}>
                     <span style={{ width: "40%" }}>납부유무</span>
                     <span className={styles.texts}>

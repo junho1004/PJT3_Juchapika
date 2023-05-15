@@ -24,16 +24,21 @@ export default function MessageFine() {
       .then((res) => {
         console.log(res.data.responseData);
         setdetail(res.data.responseData);
-        // return
+        
+        return
+        
       })
       .catch((error) => {
         console.log(error);
       });
     // callall()
-  }, [detail]);
+  }, [
+    // detail
+  ]);
 
   const openside = () => {
     setmodal(!modal);
+    console.log(detail)
   };
   const closeModal = () => {
     setmodal(false);
