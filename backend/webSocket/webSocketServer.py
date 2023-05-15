@@ -13,12 +13,12 @@ async def handle_message(websocket, path):
 
 
 async def start_websocket_server():
-    async with websockets.serve(handle_message, "172.26.15.201", 8083):
+    async with websockets.serve(handle_message, "52.79.199.205", 8082):
         await asyncio.Future()  # Run forever
 
 
 # Define the React server address and port
-REACT_SERVER_ADDRESS = "172.26.15.201"
+REACT_SERVER_ADDRESS = "52.79.199.205"
 REACT_SERVER_PORT = 80
 
 
