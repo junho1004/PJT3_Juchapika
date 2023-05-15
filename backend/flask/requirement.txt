@@ -13,4 +13,4 @@ coolsms_python_sdk
 pandas
 psutil
 tqdm
-
+yolov5
