@@ -13,7 +13,7 @@ async def handle_message(websocket, path):
 
 
 async def start_websocket_server():
-    async with websockets.serve(handle_message, "52.79.199.205", 8082):
+    async with websockets.serve(handle_message, "52.79.199.205", 8083):
         await asyncio.Future()  # Run forever
 
 
