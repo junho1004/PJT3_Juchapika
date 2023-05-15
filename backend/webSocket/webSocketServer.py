@@ -23,16 +23,17 @@ REACT_SERVER_PORT = 443
 
 
 # Create a WebSocket connection to the React server
-async def connect_to_react_server():
-    global react_server
-    async with websockets.connect(f"ws://{REACT_SERVER_ADDRESS}:{REACT_SERVER_PORT}") as websocket:
-        react_server = websocket
-        print("Connected to React server")
+# async def connect_to_react_server():
+#     global react_server
+#     async with websockets.connect(f"ws://{REACT_SERVER_ADDRESS}:{REACT_SERVER_PORT}") as websocket:
+#         react_server = websocket
+#         print("Connected to React server")
 
 
 # Start the WebSocket server and connect to the React server
 async def main():
-    await asyncio.gather(start_websocket_server(), connect_to_react_server())
+    # await asyncio.gather(start_websocket_server(), connect_to_react_server())
+    await asyncio.gather(start_websocket_server())
 
 
 asyncio.run(main())
