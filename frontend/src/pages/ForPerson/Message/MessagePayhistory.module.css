@@ -1,15 +1,9 @@
 .area {
   width: 100%;
-<<<<<<< HEAD:frontend/src/pages/VideoStorage/VideoStorage.module.css
-  height: 100vh;
-  padding-top: 5%;
-  /* background-color: yellow; */
-=======
   height: 100%;
   /* padding: 0% 0% 0% 5%; */
   overflow-y: scroll;
   scroll-behavior: smooth;
->>>>>>> feature/search_frontend:frontend/src/pages/ForPerson/Message/MessagePayhistory.module.css
 }
 
 .area::-webkit-scrollbar {
@@ -44,12 +38,8 @@
 
 .videos {
   width: 100%;
-<<<<<<< HEAD:frontend/src/pages/VideoStorage/VideoStorage.module.css
-  cursor : pointer;
-=======
   word-wrap: break-word;
   cursor: pointer;
->>>>>>> feature/search_frontend:frontend/src/pages/ForPerson/Message/MessagePayhistory.module.css
 }
 .video1 {
   display: flex;
@@ -134,12 +124,6 @@
   width: 80%;
   /* margin: 5%; */
 }
-.centre {
-  display: flex;
-  justify-content: center;
-}
-<<<<<<< HEAD:frontend/src/pages/VideoStorage/VideoStorage.module.css
-=======
 .center {
   display: flex;
   justify-content: center;
@@ -147,4 +131,3 @@
   align-content: center;
   flex-direction: column;
 }
->>>>>>> feature/search_frontend:frontend/src/pages/ForPerson/Message/MessagePayhistory.module.css
