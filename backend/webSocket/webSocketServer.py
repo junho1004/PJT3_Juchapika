@@ -29,7 +29,7 @@ async def connect_to_websocket_server():
         react_server = websocket
         print("Connected to WebSocket server")
 
-
+#
 # Start the WebSocket server and connect to the WebSocket server
 async def main():
     await asyncio.gather(start_websocket_server(), connect_to_websocket_server())
