@@ -176,6 +176,17 @@ public class RecordService {
         for (Record record : recordList) {
             recordCarNumResponseDtoList.add(RecordCarNumResponseDto.builder()
                     .id(record.getId())
+                    .date(record.getDate())
+                    .location(record.getLocation())
+                    .plateImageUrl(record.getPlateImageUrl())
+                    .carImageUrl(record.getCarImageUrl())
+                    .fine(record.getFine())
+                    .pay(record.getPay())
+                    .name(record.getCar().getName())
+                    .phoneNum(record.getCar().getPhoneNum())
+                    .address(record.getCar().getAddress())
+                    .model(record.getCar().getModel())
+                    .color(record.getCar().getColor())
                     .carNum(record.getCar().getCarNum())
                     .build());
         }

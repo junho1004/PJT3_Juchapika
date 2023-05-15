@@ -12,38 +12,40 @@ export default function EnrollmentCar() {
   const [posts, setPosts] = useState([]);
   const location = useLocation();
   const { data1 } = location.state ?? { data1: "" }; // feeletter에서 차 넘버로 받아옴 이거는 feeletter 고지서미리보기 버튼을 누르지 않으면 실행 nono
-  const { data2 } = location.state ?? { data2: "" }; /// feeletter에서 받아온 id임 이걸로 axios에서 받아오면돼 다시 
+  const { data2 } = location.state ?? { data2: "" }; /// feeletter에서 받아온 id임 이걸로 axios에서 받아오면돼 다시
   const [InputText, setInputText] = useState(data1); //고지서미리보기 버튼을 누르지 않았으면 data가 null값 이니깐 작동 가능
-  const [nail, setsumnail] = useState(null);
+  // const [nail, setsumnail] = useState(null);
   const [id, setid] = useState(data2 || "");
-  // const [carnum, setcarnum] = useState(InputText);
-  let navigate = useNavigate();
+  let [carImageUrl, setCarImageUrl] = useState("");
 
+  let navigate = useNavigate();
+  const sessionStorage = window.sessionStorage;
+  const token = sessionStorage.getItem("token");
   useEffect(() => {
+    console.log(token);
     axios
-      .get("https://jsonplaceholder.typicode.com/photos")
-      .then((response) => {
-        setPosts(response.data);
+      .get("http://localhost:8081/api/record/live-report-list", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.responseData);
+        setPosts(res.data.responseData);
       })
       .catch((error) => {
         console.error(error);
       });
-    
   }, [InputText]);
-  
-  useEffect(() => {
-  }, []);
-  
+
   const clickitem = (title, id) => {
     setInputText(title);
     // 이부분 axios로 받아와야함
     setid(id);
     // postsss(id)
     const post = posts.find((post) => post.id === id); //id가 같으면 그 객체가 가지고 있는 사진
-    const thumbnailUrl = post ? post.thumbnailUrl : "";
-    setsumnail(thumbnailUrl); ///사진을 받아온거임
-    }
-  
+    setCarImageUrl(post.carImageUrl); ///사진을 받아온거임
+  };
 
   const onChange = (e) => {
     setInputText(e.target.value);
@@ -52,6 +54,7 @@ export default function EnrollmentCar() {
   const button = (e) => {
     e.preventDefault();
     setInputText(InputText);
+
   };
 
   return (
@@ -60,13 +63,13 @@ export default function EnrollmentCar() {
       <div className={styles.body}>
         <div className={styles.now}>
           <div className={styles.now1}>
-            {posts.map((post) => (
+            {posts.map((post, index) => (
               <div
                 className={styles.nums}
-                key={post.id}
-                onClick={() => clickitem(post.title, post.id)}
+                key={index}
+                onClick={() => clickitem(post.carNum, post.id)}
               >
-                <div className={styles.num}>{post.title}</div>
+                <div className={styles.num}>{post.carNum}</div>
                 <hr></hr>
               </div>
             ))}
@@ -74,8 +77,8 @@ export default function EnrollmentCar() {
         </div>
 
         <div className={styles.imgcon}>
-          {!nail && <div>리스트에서 차량 번호를 선택해주세요</div>}
-          {nail && <img src={nail} alt="logo" className={styles.img} />}
+          {!carImageUrl && <div>리스트에서 차량 번호를 선택해주세요</div>}
+          {carImageUrl && <img src={carImageUrl} alt="logo" className={styles.img} />}
         </div>
 
         <div className={styles.detailscon}>
