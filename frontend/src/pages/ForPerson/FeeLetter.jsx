@@ -18,6 +18,7 @@ export default function Feeletter() {
   let id = data2
   const [payhistory, setpayhistory] = useState(false);
   const [detail, setdetail] = useState([]);
+  const sessionStorage = window.sessionStorage;
   // let [name, setName] = useState(null);
 
   useEffect(() => {
@@ -25,8 +26,14 @@ export default function Feeletter() {
     const carNum1 = {
       carNum: "331우7799",
     };
+    let token = sessionStorage.getItem("token")
     axios
-      .post("http://localhost:8081/api/record/search-by-carnum", carNum1)
+      .post("http://localhost:8081/api/record/search-by-carnum", carNum1,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+  },
+      })
       .then((res) => {
         console.log(res.data.responseData);
         setdetail(res.data.responseData);

@@ -27,25 +27,30 @@ export default function Main() {
   const [location, Setlocation] = useState("전체");
   const [area, Setarea] = useState([{ value: "전체", name: "전체" }]);
   const [selectedArea, SetselectedArea] = useState("전체");
-  const today = new Date();// 오늘 0시 0분 0초
+  const today = new Date(); // 오늘 0시 0분 0초
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
   const [statistic, setstatistic] = useState(false);
+  const sessionStorage = window.sessionStorage;
 
   useEffect(() => {
-    
     const data = {
       startDate: format(startDate, "yyyy-MM-dd'T'00:00:00.SSSSSS"),
       endDate: format(endDate, "yyyy-MM-dd'T'23:59:59.SSSSSS"),
       county: location,
       dong: selectedArea,
     };
-    console.log(data)
+    console.log(data);
     Setsearch(data);
 
-    // axios로 폼 데이터 전송
+    let token = sessionStorage.getItem("token");
+
     axios
-      .post("http://localhost:8081/api/record/search-by-detail", data)
+      .post("http://localhost:8081/api/record/search-by-detail", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         console.log(res.data.responseData[0]);
         console.log(typeof res.data.responseData[0]);
@@ -143,10 +148,14 @@ export default function Main() {
     };
     // console.log(endDate)
     Setsearch(data);
+    let token = sessionStorage.getItem("token");
 
-    // axios로 폼 데이터 전송
     axios
-      .post("http://localhost:8081/api/record/search-by-detail", data)
+      .post("http://localhost:8081/api/record/search-by-detail", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         console.log(res.data.responseData[0]);
         console.log(typeof res.data.responseData[0]);
@@ -175,10 +184,14 @@ export default function Main() {
     data.forEach((test) => {
       console.log(test);
     });
+    let token = sessionStorage.getItem("token")
 
     axios
       .post("http://localhost:8081/api/record/download", data, {
         responseType: "blob", // blob 형태로 데이터를 받아옴
+        headers: {
+          Authorization: `Bearer ${token}`,
+  },
       })
       .then((res) => {
         // Blob 데이터를 이용해 엑셀 파일 생성
@@ -219,9 +232,14 @@ export default function Main() {
     };
 
     console.log(data);
-
+    let token = sessionStorage.getItem("token")
     axios
-      .post("http://localhost:8081/api/record/statistics", data)
+      .post("http://localhost:8081/api/record/statistics", data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+  },
+      })
       .then((res) => {
         console.log("12345");
         console.log(res.data.responseData[0]);

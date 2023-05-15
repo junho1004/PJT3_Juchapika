@@ -14,13 +14,20 @@ export default function MessageFine() {
   const [payhistory, setpayhistory] = useState(false);
   const [detail, setdetail] = useState([]);
   const [modal, setmodal] = useState(false);
+  const sessionStorage = window.sessionStorage;
 
   useEffect(() => {
     const carNum1 = {
       carNum: "331우7799",
     };
+    let token = sessionStorage.getItem("token")
     axios
-      .post("http://localhost:8081/api/record/search-by-carnum", carNum1)
+      .post("http://localhost:8081/api/record/search-by-carnum", carNum1,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+  },
+      })
       .then((res) => {
         console.log(res.data.responseData);
         setdetail(res.data.responseData);

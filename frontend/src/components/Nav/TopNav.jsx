@@ -23,6 +23,8 @@ export default function TopNav() {
   let [phoneNum, setPhoneNum] = useState("");
   const [restNumList, setRestNumList] = useState([]);
   let [PlateImageUrl,setPlateImageUrl]=useState(null);
+  const sessionStorage = window.sessionStorage;
+  
 
   useEffect(() => {
     again();
@@ -44,14 +46,20 @@ export default function TopNav() {
     const carNum1 = {
       carNum: e.target.value,
     };
+    let token = sessionStorage.getItem("token")
+
     axios
-      .post("http://localhost:8081/api/record/search-by-carnum", carNum1)
+      .post("http://localhost:8081/api/record/search-by-carnum", carNum1,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+  },
+      })
+      
       .then((res) => {
         console.log(res.data.responseData);
         setSearchcar(res.data.responseData);
         console.log("이게뭔지모르아너어럼이");
-
-        return
       })
       .catch((error) => {
         // setSearchcar("");

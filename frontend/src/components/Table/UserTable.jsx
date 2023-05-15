@@ -32,6 +32,7 @@ function UserTable({ tableData = [] }) {
   let [phoneNum, setPhoneNum] = useState("");
   let [time, settime] = useState("");
   let [PlateImageUrl,setPlateImageUrl]=useState(null);
+  const sessionStorage = window.sessionStorage;
 
   useEffect(() => {
     const updatedUsers = Array(tableData.length)
@@ -94,9 +95,15 @@ function UserTable({ tableData = [] }) {
     const carNum1 = {
       carNum: j,
     };
-    ////기본 소유주 정보
+    let token = sessionStorage.getItem("token")
+
     axios
-      .post("http://localhost:8081/api/record/search-by-carnum", carNum1)
+      .post("http://localhost:8081/api/record/search-by-carnum", carNum1,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+  },
+      })
       .then((res) => {
         const info1 = res.data.responseData[0];
         setAddress(info1.address);
