@@ -14,3 +14,4 @@ pandas
 psutil
 tqdm
 yolov5
+ultralytics
