@@ -121,15 +121,15 @@ def detectKi():
                 data = open(origin, 'rb') 
                 data1 = open(zoom,'rb')
 
-                originPath =nowDate+"/"+carNum+".jpg"
-                zoomPath=nowDate+"/"+carNum+"_1.jpg"
+                originPath =nowDate+"/"+carNum+"._1jpg"
+                zoomPath=nowDate+"/"+carNum+"_2.jpg"
 
                 ret = s3_put_object(s3, BUCKET_NAME, data, originPath,"image/jpeg")
                 ret1 =  s3_put_object(s3, BUCKET_NAME, data1, zoomPath,"image/jpeg")
                 if ret and ret1:
                     print("파일 저장 성공")
-                    image_url = f'https://{BUCKET_NAME}.s3.{AWS_S3_BUCKET_REGION}.amazonaws.com/{origin}'
-                    image_url1 = f'https://{BUCKET_NAME}.s3.{AWS_S3_BUCKET_REGION}.amazonaws.com/{zoom}'
+                    image_url = f'https://{BUCKET_NAME}.s3.{AWS_S3_BUCKET_REGION}.amazonaws.com/{originPath}'
+                    image_url1 = f'https://{BUCKET_NAME}.s3.{AWS_S3_BUCKET_REGION}.amazonaws.com/{zoomPath}'
 
                     sql="INSERT INTO record (`car_image_url`, `cnt`, `date`, `location`, `pay`, `plate_image_url`, `video_url`, `car_id`,`fine`)\
               VALUES ('"+image_url+"', '"+"0"+"', '"+str(now)+"', '"+location+"', '"+"0"+"', '"+image_url1+"', '"+"no"+"', '"+carId+"','40000');"
@@ -188,59 +188,66 @@ def detectKi():
                 data = open(origin, 'rb') 
                 data1 = open(zoom,'rb')
 
-                originPath =nowDate+"/"+carNum+".jpg"
-                zoomPath=nowDate+"/"+carNum+"_1.jpg"
+                originPath =nowDate+"/"+carNum+"_1.jpg"
+                zoomPath=nowDate+"/"+carNum+"_2.jpg"
 
                 ret = s3_put_object(s3, BUCKET_NAME, data, originPath,"image/jpeg")
                 ret1 =  s3_put_object(s3, BUCKET_NAME, data1, zoomPath,"image/jpeg")
                 
                 if ret and ret1:
                     print("파일 저장 성공")
-                    image_url = f'https://{BUCKET_NAME}.s3.{AWS_S3_BUCKET_REGION}.amazonaws.com/{origin}'
-                    image_url1 = f'https://{BUCKET_NAME}.s3.{AWS_S3_BUCKET_REGION}.amazonaws.com/{zoom}'
+                    image_url = f'https://{BUCKET_NAME}.s3.{AWS_S3_BUCKET_REGION}.amazonaws.com/{originPath}'
+                    image_url1 = f'https://{BUCKET_NAME}.s3.{AWS_S3_BUCKET_REGION}.amazonaws.com/{zoomPath}'
                     sql=f"update record set cnt=1,`car_image_url`='{image_url}',`plate_image_url`='{image_url1}' where id = '{detectId}';"
                     db_class.executeAll(sql);
                 else :
                     print('실패')
         # 이미지 출력
-       
+    return 'detect'
+    #     cv2.imshow('frame', cv2.resize(im, (1024, 768)))
 
-    return 'end'
+    #     if cv2.waitKey(1) & 0xFF == ord('q'):
+    #         break
 
+    # cv2.destroyAllWindows()
 @app.route('/')
 def extra():
-    db_class = dbModule.Database()
-    sql="select date from record where id='8'";
-    date=db_class.executeAll(sql)[0]['date']
-    print(date)
-    now = datetime.datetime.now()
-    print(now)
-    print(now + datetime.timedelta(minutes=-5))
-    if(date < now + datetime.timedelta(minutes=-5)):
-        print('aa')
-    api_key = "NCSCOGUYJX1YCUB9"
-    api_secret = "FAAQGUZSFSYHSJXL5SUBEZWGVIJUBMJG"
-    params = dict()
-    params['type'] = 'sms' # Message type ( sms, lms, mms, ata )
-    params['to'] = '01042229234' # Recipients Number '01000000000,01000000001'
-    params['from'] = '01041193220' # Sender number
-    params['text'] = 'test' # Message
-    cool = Message(api_key, api_secret)
+    return 'running'
+# @app.route('/')
+# def extra():
+#     db_class = dbModule.Database()
+#     sql="select date from record where id='9'";
+#     info=db_class.executeAll(sql)
+#     date = info[0]['date']
+#     print(date)
+#     now = datetime.datetime.now()
+#     print(now)
+#     print(now + datetime.timedelta(minutes=-5))
+#     if(date < now + datetime.timedelta(minutes=-5)):
+#         print('aa')
+#     api_key = "NCSCOGUYJX1YCUB9"
+#     api_secret = "FAAQGUZSFSYHSJXL5SUBEZWGVIJUBMJG"
+#     params = dict()
+#     params['type'] = 'sms' # Message type ( sms, lms, mms, ata )
+#     params['to'] = '01042229234' # Recipients Number '01000000000,01000000001'
+#     params['from'] = '01041193220' # Sender number
+#     params['text'] = 'test' # Message
+#     cool = Message(api_key, api_secret)
 
-    try:
-        response = cool.send(params)
-        print("Success Count : %s" % response['success_count'])
-        print("Error Count : %s" % response['error_count'])
-        print("Group ID : %s" % response['group_id'])
+#     try:
+#         response = cool.send(params)
+#         print("Success Count : %s" % response['success_count'])
+#         print("Error Count : %s" % response['error_count'])
+#         print("Group ID : %s" % response['group_id'])
 
-        if "error_list" in response:
-            print("Error List : %s" % response['error_list'])
+#         if "error_list" in response:
+#             print("Error List : %s" % response['error_list'])
 
-    except CoolsmsException as e:
-        print("Error Code : %s" % e.code)
-        print("Error Message : %s" % e.msg)
+#     except CoolsmsException as e:
+#         print("Error Code : %s" % e.code)
+#         print("Error Message : %s" % e.msg)
 
-    return 'a'
+#     return 'a'
 
 
 
