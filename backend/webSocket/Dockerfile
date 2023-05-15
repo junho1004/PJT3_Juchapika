@@ -19,7 +19,7 @@ RUN pip install asyncio websockets
 COPY app.py .
 
 # Expose the port number
-EXPOSE 8082
+EXPOSE 8083
 
 # Start the WebSocket server
 CMD ["python", "app.py"]
