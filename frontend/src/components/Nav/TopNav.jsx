@@ -22,19 +22,13 @@ export default function TopNav() {
   let [pay, setPay] = useState("");
   let [phoneNum, setPhoneNum] = useState("");
   const [restNumList, setRestNumList] = useState([]);
-  let [PlateImageUrl,setPlateImageUrl]=useState(null);
+  let [PlateImageUrl, setPlateImageUrl] = useState(null);
   const sessionStorage = window.sessionStorage;
-  
 
   useEffect(() => {
     again();
   }, [nowindex]);
-
-  useEffect(() => {
-    // if (byclick !== []) {
-    //   Byclick();
-    // }
-  }, []);
+  useEffect(() => {}, []);
 
   const closeModal = () => {
     Setmodal(false);
@@ -46,16 +40,15 @@ export default function TopNav() {
     const carNum1 = {
       carNum: e.target.value,
     };
-    let token = sessionStorage.getItem("token")
+    let token = sessionStorage.getItem("token");
 
     axios
-      .post("http://localhost:8081/api/record/search-by-carnum", carNum1,
-      {
+      .post("http://localhost:8081/api/record/search-by-carnum", carNum1, {
         headers: {
           Authorization: `Bearer ${token}`,
-  },
+        },
       })
-      
+
       .then((res) => {
         console.log(res.data.responseData);
         setSearchcar(res.data.responseData);
@@ -63,7 +56,6 @@ export default function TopNav() {
       })
       .catch((error) => {
         // setSearchcar("");
-        // alert("등록된 차량이 없습니다");
         console.log(error);
         // return;
       });
@@ -71,7 +63,6 @@ export default function TopNav() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     let arr = new Array(searchCar.length).fill().map((_, i) => i);
 
     let restNum = arr.filter((item) => {
@@ -81,7 +72,13 @@ export default function TopNav() {
     setRestNumList(restNum);
 
     if (InputText !== "") {
+      if (searchCar.length === 0) {
+        alert("등록된 차량이 없습니다");
+        setInputText("");
+        return;
+      }
       let foundCar = false;
+
       if (InputText === searchCar[nowindex].carNum) {
         let info = searchCar[nowindex];
 

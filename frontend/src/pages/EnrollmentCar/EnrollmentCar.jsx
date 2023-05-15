@@ -17,6 +17,9 @@ export default function EnrollmentCar() {
   // const [nail, setsumnail] = useState(null);
   const [id, setid] = useState(data2 || "");
   let [carImageUrl, setCarImageUrl] = useState("");
+  let [date,setdate]=useState("")
+  let [locations,setlocation]=useState("")
+  let [fine,setfine]=useState("")
 
   let navigate = useNavigate();
   const sessionStorage = window.sessionStorage;
@@ -44,7 +47,11 @@ export default function EnrollmentCar() {
     setid(id);
     // postsss(id)
     const post = posts.find((post) => post.id === id); //id가 같으면 그 객체가 가지고 있는 사진
-    setCarImageUrl(post.carImageUrl); ///사진을 받아온거임
+    setCarImageUrl(post.carImageUrl);
+    setdate(post.date)
+    ///사진을 받아온거임
+    setlocation(post.location)
+    setfine(post.fine)
   };
 
   const onChange = (e) => {
@@ -56,6 +63,8 @@ export default function EnrollmentCar() {
     setInputText(InputText);
 
   };
+  
+  let fordate = date.replace("T", " ");
 
   return (
     <div className={styles.background}>
@@ -102,15 +111,15 @@ export default function EnrollmentCar() {
 
             <div className={styles.detail}>
               <div className={styles.title}>적발일시</div>
-              <div className={styles.data}>{InputText}</div>
+              <div className={styles.data}>{fordate}</div>
             </div>
             <div className={styles.detail}>
               <div className={styles.title}>적발장소</div>
-              <div className={styles.data}>적발장소</div>
+              <div className={styles.data}>{locations}</div>
             </div>
             <div className={styles.detail}>
               <div className={styles.title}>납부금액</div>
-              <div className={styles.data}>납부금액</div>
+              <div className={styles.data}>{fine}</div>
             </div>
             <div className={styles.bill}>
               <div
