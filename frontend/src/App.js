@@ -19,6 +19,7 @@ import PayHistory from "./pages/ForPerson/PayHistory"
 // // Kinesis video stream
 // import LiveStream from "./pages/LiveStream/LiveStream";
 import Livepage from "./pages/LiveStream/LivePage";
+import Test from "./pages/Test";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         {/* <Header/> */}
         <Routes>
           <Route exact path="/" element={<Login />} />
+          <Route exact path="/test" element={<Test />} />
           <Route exact path="/main" element={<Main />} />
           <Route exact path="/videostorage" element={<VideoStorage />} />
           <Route exact path="/feeletter" element={<Feeletter />} />
