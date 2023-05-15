@@ -1,13 +1,28 @@
+.area {
+  width: 100%;
+<<<<<<< HEAD:frontend/src/pages/VideoStorage/VideoStorage.module.css
+  height: 100vh;
+  padding-top: 5%;
+  /* background-color: yellow; */
+=======
+  height: 100%;
+  /* padding: 0% 0% 0% 5%; */
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+>>>>>>> feature/search_frontend:frontend/src/pages/ForPerson/Message/MessagePayhistory.module.css
+}
 
+.area::-webkit-scrollbar {
+  width: 15px;
+  height: 20px;
+}
 
-.area{
-  /* display: flex;
-  justify-content: center; */
-  /* border: 2px red solid; */
-    width: 90%;
-    height:100%;
-    padding: 0% 0% 0% 5%;
-    overflow: auto;
+.area::-webkit-scrollbar-thumb {
+  background-color: black;
+}
+
+.area::-webkit-scrollbar-track {
+  background-color: whitesmoke;
 }
 
 .starts {
@@ -29,21 +44,20 @@
 
 .videos {
   width: 100%;
+<<<<<<< HEAD:frontend/src/pages/VideoStorage/VideoStorage.module.css
   cursor : pointer;
+=======
+  word-wrap: break-word;
+  cursor: pointer;
+>>>>>>> feature/search_frontend:frontend/src/pages/ForPerson/Message/MessagePayhistory.module.css
 }
 .video1 {
   display: flex;
-  position: relative;
   padding: 5px;
 }
 .video {
-  display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-  /* border: 2px red solid; */
-  position: absolute;
-  width: 100%;
+  text-align: left;
+  width: 90%;
 }
 /* 모달부분 */
 .container {
@@ -65,7 +79,7 @@
   padding: 2% 2% 2% 2%;
   position: fixed;
   z-index: 5;
-  width: 50%;
+  width: 100%;
   height: 60%;
   background-color: white;
   top: 50vh;
@@ -86,25 +100,30 @@
   display: flex;
 }
 .modaltext1 {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
+    text-align: center;
+  /* display: flex; */
   width: 100%;
-  /* border: 2px solid red; */
-  /* margin: auto; */
 }
 .contenttext {
   /* border: 2px solid red; */
-  width: 200px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10%;
+  font-size: 1em;
 }
 .name {
-  font-size: 0.7em;
+  /* font-size: 0.7em; */
   font-weight: 600;
   margin-bottom: 3px;
   display: flex;
+  width:80%;
 }
 .texts {
-  font-size: 0.6em;
+  /* font-size: 0.6em; */
   font-weight: 500;
   margin-bottom: 5px;
 }
@@ -119,6 +138,8 @@
   display: flex;
   justify-content: center;
 }
+<<<<<<< HEAD:frontend/src/pages/VideoStorage/VideoStorage.module.css
+=======
 .center {
   display: flex;
   justify-content: center;
@@ -126,3 +147,4 @@
   align-content: center;
   flex-direction: column;
 }
+>>>>>>> feature/search_frontend:frontend/src/pages/ForPerson/Message/MessagePayhistory.module.css

@@ -1,10 +1,10 @@
 import React from "react";
-import styles from "./PayHistory.module.css";
+import styles from "./MessagePayhistory.module.css";
 import axios from "axios";
 // import axios from "axios";
 import { useState, useEffect } from "react";
 
-export default function PayHistory() {
+export default function MessagePayhistory() {
   const [posts, setPosts] = useState([]);
   const [modal, Setmodal] = useState(false);
 
@@ -40,7 +40,7 @@ export default function PayHistory() {
                       key={post.id}
                     >
                       <div className={styles.video1}>
-                        {post.id}
+                        <div style={{width:"20%"}}>{post.id}</div>
                         <div className={styles.video}>{post.title}</div>
                       </div>
                       <hr></hr>
@@ -68,43 +68,25 @@ export default function PayHistory() {
                 <div className={styles.modaltext1}>
                 <video
                   src="https://www.w3schools.com/html/mov_bbb.mp4"
-                  width="500"
-                  height="300"
                   controls
                 />
-                  {/* <img
-                    src={pic}
-                    alt="go"
-                    className={styles.carimage}
-                    style={{ width: "150px", marginRight: "20px" }}
-                  /> */}
 
                   <div className={styles.contenttext}>
+                    
                     <div className={styles.name}>
-                      <span style={{ width: "40%" }}>소유주</span>
+                      <span style={{ width: "50%" }}>소유주</span>
                       <span className={styles.texts}> 이름</span>
                     </div>
                     <div className={styles.name}>
-                      <span style={{ width: "40%" }}>전화번호</span>
+                      <span style={{ width: "50%" }}>전화번호</span>
                       <span className={styles.texts}> 번호</span>
                     </div>
                     <div className={styles.name}>
-                      <span style={{ width: "40%" }}>주소</span>
+                      <span style={{ width: "50%" }}>주소</span>
                       <span className={styles.texts}>주소</span>
                     </div>
                     <div className={styles.name}>
-                      <span style={{ width: "40%" }}>번호판</span>
-                      <span className={styles.texts}>
-                        {" "}
-                        {/* <img
-                          src={carnumber}
-                          alt="go"
-                          style={{ width: "100px" }}
-                        /> */}
-                      </span>
-                    </div>
-                    <div className={styles.name}>
-                      <span style={{ width: "40%" }}>납부유무</span>
+                      <span style={{ width: "50%" }}>납부유무</span>
                       <span className={styles.texts}>
                         {/* {fee === "납부완료" ? (
                           <span style={{ color: "blue" }}>납부완료</span>
@@ -114,6 +96,7 @@ export default function PayHistory() {
                       </span>
                     </div>
                   </div>
+               
                 </div>
               </div>
             </div>

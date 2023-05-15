@@ -7,46 +7,35 @@ import { useEffect } from "react";
 import axios from "axios";
 
 // eslint-disable-next-line react/prop-types
-export default function TopNav() {
+export default function TopNav( ) {
   const navigate = useNavigate();
   const [InputText, setInputText] = useState("");
-
   const [modal, Setmodal] = useState(false);
   let [nowindex, setnowindex] = useState(0);
   const [searchCar, setSearchcar] = useState([]);
   let [address, setAddress] = useState("");
   let [carImageUrl, setCarImageUrl] = useState("");
   const [carNum2, setCarNum] = useState("");
-  // let [color, setColor] = useState("");
   let [date, setDate] = useState("");
-  // let [fine, setFine] = useState("");
   let [dlocation, setDlocation] = useState("");
-  // let [model, setModel] = useState("");
   let [name, setName] = useState("");
   let [pay, setPay] = useState("");
   let [phoneNum, setPhoneNum] = useState("");
-  let [plateImageUrl, setPlateImageUrl] = useState("");
-  // let [binnum, setbinnum]=useState([])
   const [restNumList, setRestNumList] = useState([]);
-  // let [now, setnow] = useState("");
 
-  // useEffect(() => {}, [searchCar]);
+  useEffect(() => {
+    again();
+  }, [nowindex]);
 
-  useEffect(
-    () => {
-      // if(InputText!==""){
-      // handleSubmit()}
-      // again()
-      again()
-    },
-    [
-      nowindex
-    ]
-  );
+  useEffect(() => {
+    // if (byclick !== []) {
+    //   Byclick();
+    // }
+  }, []);
 
   const closeModal = () => {
     Setmodal(false);
-    setRestNumList([])
+    setRestNumList([]);
   };
   const onChange = (e) => {
     setInputText(e.target.value);
@@ -59,6 +48,8 @@ export default function TopNav() {
       .then((res) => {
         console.log(res.data.responseData);
         setSearchcar(res.data.responseData);
+        console.log("이게뭔지모르아너어럼이");
+
         // return
       })
       .catch((error) => {
@@ -80,7 +71,6 @@ export default function TopNav() {
     // print(restNum)  // [1, 2]
     setRestNumList(restNum);
 
-    
     if (InputText !== "") {
       let foundCar = false;
       if (InputText === searchCar[nowindex].carNum) {
@@ -97,17 +87,18 @@ export default function TopNav() {
         setName(info.name);
         setPay(info.pay);
         setPhoneNum(info.phoneNum);
-        setPlateImageUrl(info.plateImageUrl);
+        // setPlateImageUrl(info.plateImageUrl);
         setInputText("");
         foundCar = true;
         return;
       }
-     if (!foundCar) {
-      alert("등록된 차량이 없습니다");
-      setInputText("");
-      return;
-    }}}
-
+      if (!foundCar) {
+        alert("등록된 차량이 없습니다");
+        setInputText("");
+        return;
+      }
+    }
+  };
 
   const updateNow = (i) => {
     setnowindex(i);
@@ -115,37 +106,40 @@ export default function TopNav() {
   };
 
   const again = () => {
-    if (searchCar.length>0){
-    let arr = new Array(searchCar.length).fill().map((_, i) => i);
+    if (searchCar.length > 0) {
+      let arr = new Array(searchCar.length).fill().map((_, i) => i);
 
-    let restNum = arr.filter((item) => {
-      return item != nowindex;
-    });
-    // print(restNum)  // [1, 2]
-    setRestNumList(restNum);
+      let restNum = arr.filter((item) => {
+        return item != nowindex;
+      });
+      // print(restNum)  // [1, 2]
+      setRestNumList(restNum);
 
-    // let foundCar = false;
+      // let foundCar = false;
 
-    {
-      let info = searchCar[nowindex];
+      {
+        let info = searchCar[nowindex];
 
-      Setmodal(true);
-      setCarNum(info.carNum);
-      setAddress(info.address);
-      setCarImageUrl(info.carImageUrl);
-      setDate(info.date);
-      // setFine(info["fine"])
-      setDlocation(info.location);
-      // setModel(info["model"])
-      setName(info.name);
-      setPay(info.pay);
-      setPhoneNum(info.phoneNum);
-      setPlateImageUrl(info.plateImageUrl);
-      setInputText("");
-      return;
-      // foundCar = true;
+        Setmodal(true);
+        setCarNum(info.carNum);
+        setAddress(info.address);
+        setCarImageUrl(info.carImageUrl);
+        setDate(info.date);
+        // setFine(info["fine"])
+        setDlocation(info.location);
+        // setModel(info["model"])
+        setName(info.name);
+        setPay(info.pay);
+        setPhoneNum(info.phoneNum);
+        // setPlateImageUrl(info.plateImageUrl);
+        setInputText("");
+        return;
+        // foundCar = true;
+      }
     }
-  }};
+  };
+
+  let fordate = date.replace("T", " ");
 
   return (
     <div>
@@ -175,14 +169,6 @@ export default function TopNav() {
               }}
             >
               실시간화면
-            </div>
-            <div
-              className={styles.block}
-              onClick={() => {
-                navigate("/videostorage");
-              }}
-            >
-              영상저장소
             </div>
           </div>
           <form onSubmit={handleSubmit}>
@@ -217,7 +203,7 @@ export default function TopNav() {
               </div>
               <div className={styles.modaltext}>
                 <div style={{ fontSize: "0.9em", marginBottom: "5px" }}>
-                  {date} {dlocation}
+                  : {fordate} {dlocation}
                 </div>
               </div>
               <hr></hr>
@@ -229,7 +215,11 @@ export default function TopNav() {
                   src={carImageUrl}
                   alt="go"
                   className={styles.carimage}
-                  style={{ width: "180px", height:"120px", marginRight: "20px" }}
+                  style={{
+                    width: "180px",
+                    height: "120px",
+                    marginRight: "20px",
+                  }}
                 />
 
                 {/* </div> */}
@@ -243,10 +233,10 @@ export default function TopNav() {
                     <span className={styles.texts}> {phoneNum}</span>
                   </div>
                   <div className={styles.name}>
-                    <span style={{ width: "40%" }}>주소</span>
+                    <div style={{ width: "40%" }}>소유주 주소</div>
                     <span className={styles.texts}> {address}</span>
                   </div>
-                  <div className={styles.name}>
+                  {/* <div className={styles.name}>
                     <span style={{ width: "40%" }}>번호판</span>
                     <span className={styles.texts}>
                       {" "}
@@ -256,7 +246,7 @@ export default function TopNav() {
                         style={{ width: "100px" }}
                       />
                     </span>
-                  </div>
+                  </div> */}
                   <div className={styles.name}>
                     <span style={{ width: "40%" }}>납부유무</span>
                     <span className={styles.texts}>
@@ -271,29 +261,43 @@ export default function TopNav() {
               </div>
             </div>
             <div className={styles.else}>
-              <div style={{ fontWeight: "800", marginBottom: "2%" }}>
-                그 외 단속이력
+              <div style={{ fontWeight: "800", marginBottom: "1%" }}>
+                그 외{" "}
+                <span style={{ color: "red" }}> {restNumList.length}개 </span>{" "}
+                단속이력{" "}
+                <span style={{ fontSize: "0.5em" }}>
+                  ( 클릭시 상세정보를 볼 수 있습니다 )
+                </span>
               </div>
-              {/* <div className={styles.else1}> */}
-                {restNumList.map((item) => {
-                  return (
-                    <div key={item} onClick={() => updateNow(item)}>
-                      <div className={styles.else1}>
-                      <div style={{ marginRight: "5px" }}> <span style={{marginRight: "10px"}}>-</span> {searchCar[item]["location"]}</div>
-                      <div style={{ marginRight: "25px" }}>{searchCar[item]["date"]}</div>
-                      <div>
-                  {" "}
-                  {searchCar[item]["pay"] === "납부완료" ? (
-                    <span style={{ color: "blue" }}>납부완료</span>
-                  ) : (
-                    <span style={{ color: "red" }}>미납</span>
-                  )}
-                </div> 
-                    </div>
-                    </div>
-                  );
-                })}
-              {/* </div> */}
+              <div className={styles.else2}>
+                {restNumList.length === 0 ? (
+                  <div>그 외 단속기록이 없습니다</div>
+                ) : (
+                  restNumList.map((item) => {
+                    return (
+                      <div key={item} onClick={() => updateNow(item)}>
+                        <div className={styles.else1}>
+                          <div style={{ marginRight: "5px" }}>
+                            <span style={{ marginRight: "10px" }}>-</span>{" "}
+                            {searchCar[item]["location"]}
+                          </div>
+                          <div style={{ marginRight: "25px" }}>
+                            {searchCar[item]["date"].replace("T", " ")}
+                          </div>
+                          <div>
+                            {" "}
+                            {searchCar[item]["pay"] === "납부완료" ? (
+                              <span style={{ color: "blue" }}>납부완료</span>
+                            ) : (
+                              <span style={{ color: "red" }}>미납</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
             </div>
           </div>
           <div className={styles.back} onClick={closeModal}></div>

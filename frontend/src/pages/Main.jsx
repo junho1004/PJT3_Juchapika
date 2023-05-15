@@ -16,7 +16,6 @@ import UserTable from "../components/Table/UserTable";
 // import {downloadExcel} from "../components/Table/UserTable";
 
 export default function Main() {
-  const [statistic, setstatistic] = useState(false);
   let [search, Setsearch] = useState({
     startDate: "",
     endDate: "",
@@ -31,6 +30,7 @@ export default function Main() {
   const today = new Date();// 오늘 0시 0분 0초
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
+  const [statistic, setstatistic] = useState(false);
 
   useEffect(() => {
     
@@ -151,7 +151,6 @@ export default function Main() {
         console.log(res.data.responseData[0]);
         console.log(typeof res.data.responseData[0]);
         setTableData(res.data.responseData);
-
         console.log(tableData);
 
         // res.data
