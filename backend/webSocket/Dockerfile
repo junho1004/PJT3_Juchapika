@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install asyncio websockets
 
 # Copy application files
-COPY app.py .
+COPY webSocketServer.py .
 
 # Expose the port number
 EXPOSE 8083
