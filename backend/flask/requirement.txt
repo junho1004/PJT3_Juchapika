@@ -11,5 +11,5 @@ easyocr
 torch
 coolsms_python_sdk
 pandas
-
+psutil
 
