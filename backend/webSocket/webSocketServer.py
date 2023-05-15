@@ -19,7 +19,7 @@ async def start_websocket_server():
 
 # Define the WebSocket server address and port
 WEBSOCKET_SERVER_ADDRESS = "52.79.199.205"
-WEBSOCKET_SERVER_PORT = 80
+WEBSOCKET_SERVER_PORT = 443
 
 
 # Create a WebSocket connection to the WebSocket server
