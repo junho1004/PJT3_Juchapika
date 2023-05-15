@@ -72,5 +72,10 @@ public class Record {
                 .build();
     }
 
+    public void updateRecord(Long cnt, Car car){
+        this.cnt=cnt;
+        this.car=car;
+    }
+
 
 }

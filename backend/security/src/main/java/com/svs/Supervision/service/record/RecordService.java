@@ -3,6 +3,7 @@ package com.svs.Supervision.service.record;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.http.HttpRequest;
 import com.svs.Supervision.dto.request.record.RecordDetailRequestDto;
+import com.svs.Supervision.dto.request.record.RecordIdCarNumRequestDto;
 import com.svs.Supervision.dto.request.record.RecordRequestDto;
 import com.svs.Supervision.dto.request.sms.SmsSendRequestDto;
 import com.svs.Supervision.dto.response.record.RecordCarNumResponseDto;
@@ -192,6 +193,20 @@ public class RecordService {
         }
 
         return recordCarNumResponseDtoList;
+    }
+    @Transactional
+    public boolean updateRecord(RecordIdCarNumRequestDto recordIdCarNumRequestDto){
+        String carNum = recordIdCarNumRequestDto.getCarNum();
+        Long id = recordIdCarNumRequestDto.getId();
+        Car car = carRepository.findByCarNum(carNum);
+        if(car == null){
+            return false;
+        }
+
+        Record record = recordRepository.getById(id);
+        record.updateRecord(2L,car);
+
+        return true;
     }
 
     public List<RecordDetailResponseDto> searchDetail(RecordDetailRequestDto recordDetailRequestDto) {
