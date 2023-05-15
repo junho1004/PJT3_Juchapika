@@ -69,7 +69,7 @@ public class RecordController {
     // 3. carNum을 기준으로 car의 정보를 찾아온다.
     // 4. car의 정보가 있으면 car의 정보를 조회하고 없으면 실패 요청 보낸다.
     // 5. record테이블의 정보를 cnt=2, car 정보를 새로 조회한 정보로 update 한다.
-    @PutMapping("/fine")
+    @PostMapping("/fine")
     @Operation(summary = "단속 차량 최종 등록", description = "recordId와 번호판을 기준으로 단속된 차량의 단속 기록을 저장합니다.")
     public ResponseEntity<?> updateRecord(@RequestBody RecordIdCarNumRequestDto recordIdCarNumRequestDto,
                                        @Parameter(hidden = true)
