@@ -4,6 +4,10 @@ import websockets
 # Define the global variable
 react_server = None
 
+ssl_context = ssl.create_default_context()
+ssl_context.check_hostname = False
+ssl_context.verify_mode = ssl.CERT_NONE
+
 
 async def handle_message(websocket, path):
     async for message in websocket:
@@ -19,7 +23,7 @@ async def start_websocket_server():
 
 # Define the WebSocket server address and port
 WEBSOCKET_SERVER_ADDRESS = "52.79.199.205"
-WEBSOCKET_SERVER_PORT = 443
+WEBSOCKET_SERVER_PORT = 8082
 
 
 # Create a WebSocket connection to the WebSocket server
