@@ -137,9 +137,9 @@ class ApexChart extends Component {
   }
   generateCategories = (startDate, endDate) => {
     const start = new Date(startDate);
-    start.setDate(start.getDate() + 1)
+    start.setDate(start.getDate()+1)
     const end = new Date(endDate);
-    end.setDate(end.getDate() + 1)
+    end.setDate(end.getDate())
     const categories = [];
 
     for (let date = start; date <= end; date.setDate(date.getDate() + 1)) {

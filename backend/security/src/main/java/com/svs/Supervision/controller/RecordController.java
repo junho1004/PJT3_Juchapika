@@ -2,10 +2,7 @@
 package com.svs.Supervision.controller;
 
 
-import com.svs.Supervision.dto.request.record.RecordCarNumRequestDto;
-import com.svs.Supervision.dto.request.record.ExcelRequestDto;
-import com.svs.Supervision.dto.request.record.RecordDetailRequestDto;
-import com.svs.Supervision.dto.request.record.RecordRequestDto;
+import com.svs.Supervision.dto.request.record.*;
 import com.svs.Supervision.dto.response.api.ApiResponseDto;
 import com.svs.Supervision.dto.response.record.RecordCarNumResponseDto;
 import com.svs.Supervision.dto.response.record.RecordDetailResponseDto;
@@ -28,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -42,7 +40,7 @@ import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOG
 @CrossOrigin(origins = "http://localhost:3000") // 컨트롤러에서 설정
 @RequiredArgsConstructor
 public class RecordController {
-
+    private RestTemplate restTemplate;
     private final RecordService recordService;
 
     // 1. 입력박은 차량 번호판 정보를 통해 carId를 찾는다.
@@ -59,8 +57,9 @@ public class RecordController {
                                        @Parameter(hidden = true)
                                        @AuthenticationPrincipal User user) {
         LOGGER.info("addRecord() 호출 : " + recordRequestDto);
-        recordService.addRecord(recordRequestDto);
 
+        // 정상적으로 저장이 된 경우,
+        recordService.addRecord(recordRequestDto);
         return new ResponseEntity(new ApiResponseDto(true, "addRecord successfully@", null), HttpStatus.CREATED);
     }
 
@@ -71,7 +70,7 @@ public class RecordController {
 
     @PostMapping("/search-by-carnum")
     @Operation(summary = "단속 차량 조회", description = "번호판 기준으로 단속된 차량의 단속 기록들을 조회합니다.")
-    public ResponseEntity<?> searchRecord(@RequestBody RecordCarNumRequestDto recordCarNumRequestDto,
+    public ResponseEntity<?> searchRecordByCarNum(@RequestBody RecordCarNumRequestDto recordCarNumRequestDto,
                                           @Parameter(hidden = true)
                                           @AuthenticationPrincipal User user) {
         LOGGER.info("searchRecord() 호출 : " + recordCarNumRequestDto);
@@ -85,11 +84,37 @@ public class RecordController {
     }
 
 
+    @PostMapping("/search-by-id")
+    @Operation(summary = "단속 차량 조회", description = "기록 Id 기준으로 단속된 차량의 단속 기록들을 조회합니다.")
+    public ResponseEntity<?> searchRecordById(@RequestBody RecordCarIdRequestDto recordCarIdRequestDto,
+                                          @Parameter(hidden = true)
+                                          @AuthenticationPrincipal User user) {
+        LOGGER.info("searchRecordById() 호출 : " + recordCarIdRequestDto);
+        RecordCarNumResponseDto recordCarNumResponseDto = recordService.searchRecordById(recordCarIdRequestDto.getId());
+
+        return new ResponseEntity(new ApiResponseDto(true, "searchRecordById successfully@", recordCarNumResponseDto), HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/delete-by-id")
+    @Operation(summary = "단속 기록 삭제", description = "기록 Id 기준으로 단속된 차량의 단속 기록들을 조회합니다.")
+    public ResponseEntity<?> deleteRecordById(@RequestBody RecordCarIdRequestDto recordCarIdRequestDto,
+                                              @Parameter(hidden = true)
+                                              @AuthenticationPrincipal User user) {
+
+        LOGGER.info("deleteRecordById() 호출 : " + recordCarIdRequestDto);
+        recordService.deleteRecordById(recordCarIdRequestDto.getId());
+
+        return new ResponseEntity(new ApiResponseDto(true, "deleteRecordById successfully@", null), HttpStatus.OK);
+    }
+
+
+
     @PostMapping("/search-by-detail")
     @Operation(summary = "단속 현황 조회", description = "날짜, 지역, 동을 기준으로 단속 기록들을 조회합니다.")
     public ResponseEntity<?> searchDetail(@RequestBody RecordDetailRequestDto recordDetailRequestDto,
                                            @Parameter(hidden = true)
-                                           @AuthenticationPrincipal User user) throws IOException {
+                                           @AuthenticationPrincipal User user) {
 
         LOGGER.info("searchDetail() 호출 : " + recordDetailRequestDto);
 
@@ -97,6 +122,20 @@ public class RecordController {
 
         return new ResponseEntity(new ApiResponseDto(true, "searchDetail successfully@", recordDetailResponseDtoList), HttpStatus.OK);
     }
+
+
+    @GetMapping("/live-report-list")
+    @Operation(summary = "실시간 단속 목록 조회", description = "단속이 확정된 차량들의 리스트를 조회합니다.")
+    public ResponseEntity<?> searchLiveReport(@Parameter(hidden = true)
+                                              @AuthenticationPrincipal User user) {
+
+        LOGGER.info("searchDetail() 호출");
+
+        List<RecordCarNumResponseDto> recordCarNumResponseDtoList = recordService.searchLiveReport();
+        return new ResponseEntity(new ApiResponseDto(true, "searchLiveReport successfully@", recordCarNumResponseDtoList), HttpStatus.OK);
+    }
+
+
 
 
     // 1. 전달받은 starDate 와 endDate 를 기준으로 Record 에서 데이터를 조회한다.

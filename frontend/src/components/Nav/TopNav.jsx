@@ -90,7 +90,6 @@ export default function TopNav() {
         setAddress(info.address);
         setCarImageUrl(info.carImageUrl);
         setDate(info.date);
-
         // setFine(info["fine"])
         setDlocation(info.location);
         // setModel(info["model"])

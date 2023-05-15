@@ -13,8 +13,8 @@ import java.util.List;
 @Repository
 public interface RecordRepository extends JpaRepository<Record, Long> {
     @Modifying
-    @Query("UPDATE Record r SET r.cnt = r.cnt + 1 WHERE r.car.id = :id")
-    void updateCnt(@Param("id") Long id);
+    @Query("UPDATE Record r SET r.cnt = r.cnt + 1 WHERE r.car.id = :carId AND r.id = :recordId")
+    void updateCnt(@Param("carId") Long carId, @Param("recordId") Long recordId);
 
     List<Record> findAllByCar_Id(Long carId);
 
