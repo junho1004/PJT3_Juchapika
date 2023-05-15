@@ -4,10 +4,6 @@ import websockets
 # Define the global variable
 react_server = None
 
-ssl_context = ssl.create_default_context()
-ssl_context.check_hostname = False
-ssl_context.verify_mode = ssl.CERT_NONE
-
 
 async def handle_message(websocket, path):
     async for message in websocket:
