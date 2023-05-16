@@ -39,6 +39,7 @@ const Test = () => {
 
     client.onopen = () => {
       console.log('WebSocket client connected');
+      console.log(client);
     };
 
 
