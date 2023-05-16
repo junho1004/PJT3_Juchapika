@@ -15,6 +15,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecordCarNumResponseDto {
+
+    private Long id;
     private LocalDateTime date;
     private String location;
     private String plateImageUrl;

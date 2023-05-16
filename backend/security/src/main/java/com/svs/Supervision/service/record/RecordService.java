@@ -3,6 +3,7 @@ package com.svs.Supervision.service.record;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.http.HttpRequest;
 import com.svs.Supervision.dto.request.record.RecordDetailRequestDto;
+import com.svs.Supervision.dto.request.record.RecordIdCarNumRequestDto;
 import com.svs.Supervision.dto.request.record.RecordRequestDto;
 import com.svs.Supervision.dto.request.sms.SmsSendRequestDto;
 import com.svs.Supervision.dto.response.record.RecordCarNumResponseDto;
@@ -123,6 +124,7 @@ public class RecordService {
     public List<RecordCarNumResponseDto> searchRecord(String carNum) {
         // 단속 기록에 해당 번호판 정보가 존재하는 경우..
 //        boolean isExists = recordRepository.existsByCarNum(carNum);
+        System.out.println(carNum);
         Car car = carRepository.findByCarNum(carNum);
         boolean isExists = recordRepository.existsByCar_Id(car.getId());
 
@@ -142,6 +144,30 @@ public class RecordService {
         }
     }
 
+    public RecordCarNumResponseDto searchRecordById(Long id) {
+
+        Record record = recordRepository.findById(id).orElseThrow();
+        Car car = record.getCar();
+
+        return RecordCarNumResponseDto.builder()
+                .id(record.getId())
+                .date(record.getDate())
+                .location(record.getLocation())
+                .plateImageUrl(record.getPlateImageUrl())
+                .carImageUrl(record.getCarImageUrl())
+                .fine(record.getFine())
+                .pay(record.getPay())
+                .carNum(car.getCarNum())
+                .phoneNum(car.getPhoneNum())
+                .name(car.getName())
+                .address(car.getAddress())
+                .model(car.getModel())
+                .color(car.getColor())
+                .build();
+    }
+
+
+
     public List<RecordCarNumResponseDto> searchLiveReport() {
         List<RecordCarNumResponseDto> recordCarNumResponseDtoList = new ArrayList<>();
 
@@ -150,11 +176,37 @@ public class RecordService {
         // record 의 carNum 들을 DTO 에 넣자!
         for (Record record : recordList) {
             recordCarNumResponseDtoList.add(RecordCarNumResponseDto.builder()
+                    .id(record.getId())
+                    .date(record.getDate())
+                    .location(record.getLocation())
+                    .plateImageUrl(record.getPlateImageUrl())
+                    .carImageUrl(record.getCarImageUrl())
+                    .fine(record.getFine())
+                    .pay(record.getPay())
+                    .name(record.getCar().getName())
+                    .phoneNum(record.getCar().getPhoneNum())
+                    .address(record.getCar().getAddress())
+                    .model(record.getCar().getModel())
+                    .color(record.getCar().getColor())
                     .carNum(record.getCar().getCarNum())
                     .build());
         }
 
         return recordCarNumResponseDtoList;
+    }
+    @Transactional
+    public boolean updateRecord(RecordIdCarNumRequestDto recordIdCarNumRequestDto){
+        String carNum = recordIdCarNumRequestDto.getCarNum();
+        Long id = recordIdCarNumRequestDto.getId();
+        Car car = carRepository.findByCarNum(carNum);
+        if(car == null){
+            return false;
+        }
+
+        Record record = recordRepository.getById(id);
+        record.updateRecord(1L,car);
+
+        return true;
     }
 
     public List<RecordDetailResponseDto> searchDetail(RecordDetailRequestDto recordDetailRequestDto) {
@@ -215,5 +267,9 @@ public class RecordService {
         recordStatisticsResponseDtoList.add(RecordStatisticsResponseDto.build(newMap));
 
         return recordStatisticsResponseDtoList;
+    }
+
+    public void deleteRecordById(Long id) {
+        recordRepository.deleteById(id);
     }
 }

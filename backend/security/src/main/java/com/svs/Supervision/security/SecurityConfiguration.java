@@ -30,68 +30,75 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .anyRequest().permitAll() //이거 한줄 추가
-//                .antMatchers("/user/signin","/user/signup").permitAll() //이거없애고
+                // .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs",
+                // "/webjars/**", "/api/swagger-ui/index.html").permitAll()
+                // .anyRequest().authenticated()
+                .anyRequest().permitAll() // 이거 한줄 추가
+                // .antMatchers("/user/signin","/user/signup").permitAll()
                 .and()
                 .exceptionHandling().accessDeniedHandler(new CustomAcessDeniedHandler())
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+                        UsernamePasswordAuthenticationFilter.class);
 
-
-        //super.configure(http);
+        http.cors();
+        // super.configure(http);
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**","/swagger-ui.html", "/webjars/**","/swagger/**", "sign-api/exception");
-//        super.configure(web);
+        web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**",
+                "/swagger/**", "sign-api/exception");
+        // super.configure(web);
     }
+
 }
 
-
-//@Configuration
-//public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+// @Configuration
+// public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //
-//    private final JwtTokenProvider jwtTokenProvider;
+// private final JwtTokenProvider jwtTokenProvider;
 //
-//    public SecurityConfiguration(JwtTokenProvider jwtTokenProvider) {
-//        this.jwtTokenProvider = jwtTokenProvider;
-//    }
+// public SecurityConfiguration(JwtTokenProvider jwtTokenProvider) {
+// this.jwtTokenProvider = jwtTokenProvider;
+// }
 //
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.httpBasic().disable()
-//                .csrf().disable()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/user/signin","/user/signup").permitAll()
-//                .and()
-//                .exceptionHandling()
-//                .accessDeniedHandler(new CustomAcessDeniedHandler())
-//                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-//                .and()
-//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),UsernamePasswordAuthenticationFilter.class)
-//    }
+// @Override
+// protected void configure(HttpSecurity http) throws Exception {
+// http.httpBasic().disable()
+// .csrf().disable()
+// .sessionManagement()
+// .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+// .and()
+// .authorizeRequests()
+// .antMatchers("/user/signin","/user/signup").permitAll()
+// .and()
+// .exceptionHandling()
+// .accessDeniedHandler(new CustomAcessDeniedHandler())
+// .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+// .and()
+// .addFilterBefore(new
+// JwtAuthenticationFilter(jwtTokenProvider),UsernamePasswordAuthenticationFilter.class)
+// }
 //
-//    // http://43.201.102.210:8080/api/swagger-ui/index.html?docExpansion=none&operationsSorter=alpha&tagsSorter=alpha&url=/api/
+// //
+// http://43.201.102.210:8080/api/swagger-ui/index.html?docExpansion=none&operationsSorter=alpha&tagsSorter=alpha&url=/api/
 //
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers(
-//                "/v2/api-docs",
-//                "/swagger-ui.html",
-//                "/swagger-resources/**",
-//                "/webjars/**",
-//                "/swagger/**",
-//                "/sign-api/exception",
-//                "/api/swagger-ui/**");
-////                .antMatchers("/v2/api-docs", "/swagger-ui/**", "/index.html", "/webjars/**", "/swagger/**", "sign-api/exception");
-////        super.configure(web);
-//    }
-//}
-
+// @Override
+// public void configure(WebSecurity web) throws Exception {
+// web.ignoring().antMatchers(
+// "/v2/api-docs",
+// "/swagger-ui.html",
+// "/swagger-resources/**",
+// "/webjars/**",
+// "/swagger/**",
+// "/sign-api/exception",
+// "/api/swagger-ui/**");
+//// .antMatchers("/v2/api-docs", "/swagger-ui/**", "/index.html",
+// "/webjars/**", "/swagger/**", "sign-api/exception");
+//// super.configure(web);
+// }
+// }
