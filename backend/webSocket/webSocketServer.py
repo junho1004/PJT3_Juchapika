@@ -1,15 +1,46 @@
+# import asyncio
+# import websockets
+# import ssl
+# import pathlib
+#
+#
+# ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+# ssl_context.load_cert_chain(
+#     pathlib.Path('/path/to/container/fullchain.pem'),
+#     pathlib.Path('/path/to/container/privkey.pem')
+# )
+# # , ssl=ssl_context
+#
+# async def handle_message(websocket, path):
+#     async for message in websocket:
+#         print(f"Received message: {message}")
+#         # Process the received message as needed
+#         # ...
+#
+#
+# async def start_websocket_server():
+#     async with websockets.serve(handle_message, "0.0.0.0", 8082, ssl=ssl_context):
+#         print("WebSocket server started")
+#         await asyncio.Future()  # Run forever
+#
+#
+# async def main():
+#     await start_websocket_server()
+#
+#
+# asyncio.run(main())
+
 import asyncio
 import websockets
 import ssl
 import pathlib
-
 
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 ssl_context.load_cert_chain(
     pathlib.Path('/path/to/container/fullchain.pem'),
     pathlib.Path('/path/to/container/privkey.pem')
 )
-# , ssl=ssl_context
+
 
 async def handle_message(websocket, path):
     async for message in websocket:
@@ -18,63 +49,41 @@ async def handle_message(websocket, path):
         # ...
 
 
+async def process_request(path, request_headers):
+    # Allow requests from the specified origin
+    origin = request_headers.get("Origin", "")
+    if origin != "https://juchapika.site":
+        return
+
+    # Allow the Upgrade header for WebSocket handshake
+    if "Upgrade" not in request_headers:
+        return
+
+    # Add the necessary CORS headers
+    headers = [
+        ("Access-Control-Allow-Origin", "https://juchapika.site"),
+        ("Access-Control-Allow-Headers", "Upgrade, Origin, Content-Type, Accept"),
+        ("Access-Control-Allow-Methods", "GET, POST, OPTIONS"),
+        ("Access-Control-Allow-Credentials", "true"),
+    ]
+
+    return headers
+
+
 async def start_websocket_server():
-    async with websockets.serve(handle_message, "0.0.0.0", 8082, ssl=ssl_context):
+    async with websockets.serve(
+            handle_message,
+            "0.0.0.0",
+            8082,
+            ssl=ssl_context,
+            process_request=process_request,
+    ):
         print("WebSocket server started")
         await asyncio.Future()  # Run forever
 
 
 async def main():
-    server = await start_websocket_server()
-
-    # Enable CORS
-    server.ws_server._available_handlers[0].extensions.append("permessage-deflate")
-    server.ws_server._available_handlers[0].response_headers.append(
-        ("Access-Control-Allow-Origin", "https://juchapika.site")
-    )
-
-    await server.wait_closed()
+    await start_websocket_server()
 
 
 asyncio.run(main())
-
-# import asyncio
-# import websockets
-#
-# # Define the global variable
-# react_server = None
-#
-#
-# async def handle_message(websocket, path):
-#     async for message in websocket:
-#         print(f"Received message: {message}")
-#         # Send message to WebSocket server
-#         await react_server.send(message)
-#
-#
-# async def start_websocket_server():
-#     async with websockets.serve(handle_message, "0.0.0.0", 8082):
-#         await asyncio.Future()  # Run forever
-#
-#
-# # Define the WebSocket server address and port
-# WEBSOCKET_SERVER_ADDRESS = "52.79.199.205"
-# WEBSOCKET_SERVER_PORT = 8082
-#
-#
-# # Create a WebSocket connection to the WebSocket server
-# async def connect_to_websocket_server():
-#     global react_server
-#
-#     await asyncio.sleep(1)  # Wait for the WebSocket server to start
-#     async with websockets.connect(f"wss://{WEBSOCKET_SERVER_ADDRESS}:{WEBSOCKET_SERVER_PORT}") as websocket:
-#         react_server = websocket
-#         print("Connected to WebSocket server")
-#
-#
-# # Start the WebSocket server and connect to the WebSocket server
-# async def main():
-#     await asyncio.gather(start_websocket_server(), connect_to_websocket_server())
-#
-#
-# asyncio.run(main())
