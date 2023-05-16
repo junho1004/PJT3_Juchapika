@@ -29,6 +29,7 @@ const Test = () => {
     const interval = setInterval(() => {
       // 주기적으로 패킷을 받기 위해 웹 소켓으로 요청합니다.
       client.send('Request packet');
+      console.log(client.onmessage);
     }, 1000);
 
     return () => {
