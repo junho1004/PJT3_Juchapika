@@ -37,7 +37,7 @@ import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOG
 @Tag(name = "Record", description = "기록 관련 API")
 @RestController
 @RequestMapping("/record")
-@CrossOrigin(origins = "http://localhost:3000") // 컨트롤러에서 설정
+@CrossOrigin(origins = "*", allowedHeaders="*") // 컨트롤러에서 설정
 @RequiredArgsConstructor
 public class RecordController {
     private RestTemplate restTemplate;
