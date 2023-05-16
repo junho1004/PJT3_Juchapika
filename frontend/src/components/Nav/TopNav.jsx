@@ -38,13 +38,13 @@ export default function TopNav() {
   }, [restNumList]);
 
   useEffect(() => {
-   
-  }, [InputText]);
+  }, [searchCar]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
-        setInputText("");
+        setSearchHis(false)
+        setInputText("")
       }
     };
 
@@ -76,9 +76,10 @@ export default function TopNav() {
       })
 
       .then((res) => {
-        if (res.data.responseData !== null) {
+          console.log("왜 한번에 안됨?")
           setSearchcar(res.data.responseData);
-        }
+          console.log(res.data.responseData)
+   
       })
       .catch((error) => {
         // setSearchcar("");
@@ -98,24 +99,23 @@ export default function TopNav() {
     });
     // print(restNum)  // [1, 2]
     setRestNumList(restNum);
-
-    
+ 
     if (InputText !== "") {
       sessionStorage.setItem(`${InputText}`, JSON.stringify(restNum));
+      sessionStorage.setItem(`${InputText}+c`, JSON.stringify(searchCar));
       if (searchCar.length === 0) {
         alert("등록된 차량이 없습니다");
         setInputText("");
         return;
       }
       let foundCar = false;
-
       if (InputText === searchCar[nowindex].carNum) {
+       
         let info = searchCar[nowindex];
         if (!searchHistory.includes(InputText)) {
-          const updatedHistory = [...searchHistory, InputText];
+          const updatedHistory = [InputText, ...searchHistory]; // InputText를 배열의 맨 앞에 추가
           setSearchHistory(updatedHistory);
           sessionStorage.setItem("keywords", JSON.stringify(updatedHistory));
-          
         }
         Setmodal(true);
         setCarNum(info.carNum);
@@ -135,6 +135,7 @@ export default function TopNav() {
       }
       if (!foundCar) {
         alert("등록된 차량이 없습니다");
+      
         setInputText("");
         return;
       }
@@ -192,14 +193,15 @@ export default function TopNav() {
   const clickme = (e) => {
     console.log(e);
     setRestNumList(JSON.parse(sessionStorage.getItem(`${e}`)))
-    console.log(JSON.parse(sessionStorage.getItem(`${e}`)))
-    const carNum1 = {
+    setSearchcar(JSON.parse(sessionStorage.getItem(`${e}+c`)))
+    
+    const carNum2 = {
       carNum: e,
     };
     let token = sessionStorage.getItem("token");
 
     axios
-      .post("http://localhost:8081/api/record/search-by-carnum", carNum1, {
+      .post("http://localhost:8081/api/record/search-by-carnum", carNum2, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

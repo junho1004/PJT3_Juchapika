@@ -114,7 +114,12 @@ export default function EnrollmentCar() {
             })
             .then((res) => {
               console.log(res.data.responseData);
-              setPosts(res.data.responseData);
+              setInputText("");
+              setfine("");
+              setdate("");
+              setCarImageUrl("");
+              setid("");
+              setlocation("");
             })
             .catch((error) => {
               console.error(error);
@@ -202,7 +207,16 @@ export default function EnrollmentCar() {
                     className={styles.input}
                   />
                 </form>
-                <div onClick={button} className={styles.button}>
+                <div
+                  className={styles.button}
+                  onClick={() => {
+                    if (carImageUrl) {
+                      button();
+                    } else {
+                      alert("등록하실 차량을 선택해주세요!");
+                    }
+                  }}
+                >
                   <div>수정</div>
                 </div>
               </div>
@@ -224,9 +238,13 @@ export default function EnrollmentCar() {
               <div
                 className={styles.button1}
                 onClick={() => {
-                  navigate("/feeletter", {
-                    state: { data1: InputText, data2: id },
-                  });
+                  if (carImageUrl) {
+                    navigate("/feeletter", {
+                      state: { data1: InputText, data2: id },
+                    });
+                  } else {
+                    alert("등록하실 차량을 선택해주세요!");
+                  }
                 }}
               >
                 고지서 미리보기
