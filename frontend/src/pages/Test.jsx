@@ -41,6 +41,7 @@ const Test = () => {
       console.log('WebSocket client connected');
     };
 
+
     client.onmessage = (message) => {
       const packet = message.data;
       console.log('Received packet:', packet);
@@ -51,6 +52,10 @@ const Test = () => {
 
     client.onclose = () => {
       console.log('WebSocket client disconnected');
+    };
+
+    client.onerror = (error) => {
+        console.log(error);
     };
 
     return () => {
