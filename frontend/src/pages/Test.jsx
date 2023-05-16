@@ -31,34 +31,34 @@
 
 
 import React, { useEffect } from 'react';
-import * as WebSocket from 'websocket';
-// test
+// import * as WebSocket from 'websocket';
+
 const Test = () => {
-    useEffect(() => {
-      const client = new WebSocket('wss://52.79.199.205:8082/');
-  
-      client.onopen = () => {
-        console.log('WebSocket client connected');
-      };
-  
-      client.onmessage = (message) => {
-        const packet = message.data;
-        console.log('Received packet:', packet);
-  
-        // Process the received packet as needed
-        // ...
-      };
-  
-      client.onclose = () => {
-        console.log('WebSocket client disconnected');
-      };
-  
-      return () => {
-        client.close();
-      };
-    }, []);
-  
-    return <div>React App</div>;
-  };
-  
-  export default Test;
+  useEffect(() => {
+    const client = new window.WebSocket('wss://52.79.199.205:8082/');
+
+    client.onopen = () => {
+      console.log('WebSocket client connected');
+    };
+
+    client.onmessage = (message) => {
+      const packet = message.data;
+      console.log('Received packet:', packet);
+
+      // Process the received packet as needed
+      // ...
+    };
+
+    client.onclose = () => {
+      console.log('WebSocket client disconnected');
+    };
+
+    return () => {
+      client.close();
+    };
+  }, []);
+
+  return <div>React App</div>;
+};
+
+export default Test;
