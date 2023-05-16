@@ -6,16 +6,16 @@ import styles from "./LivePage.module.css";
 import LiveStream from "./LiveStream";
 import micimg from "../../assets/mic.png"
 import offmic from "../../assets/offmic.png"
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
 const { kakao } = window;
-const socket = io('ws://52.79.199.205:8082');
+// const socket = io('ws://52.79.199.205:8082');
 
 export default function VideoStorage() {
   const [time, setTime] = useState(new Date());
   const [mic,setmic] = useState(false)
-  const [value1, setValue1] = useState(''); ///시간주행시간
-  const [value2, setValue2] = useState(0); ////배터리잔량
+  // const [value1, setValue1] = useState(''); ///시간주행시간
+  // const [value2, setValue2] = useState(0); ////배터리잔량
 
 
   useEffect(() => {
@@ -27,11 +27,11 @@ export default function VideoStorage() {
     return () => clearInterval(interval);
   }, []);
   useEffect(() => {
-    socket.on('message', (data) => {
-      const { value1, value2 } = JSON.parse(data);
-      setValue1(value1);
-      setValue2(value2);
-    });
+    // socket.on('message', (data) => {
+    //   const { value1, value2 } = JSON.parse(data);
+    //   setValue1(value1);
+    //   setValue2(value2);
+    // });
   }, []);
 
   const mapscript = () => {
@@ -53,8 +53,8 @@ export default function VideoStorage() {
 
 const clickmic=()=>{
   setmic(!mic)
-  console.log(value1)
-  console.log(value2)
+  // console.log(value1)
+  // console.log(value2)
 }
 
   return (
@@ -71,7 +71,9 @@ const clickmic=()=>{
               <div> : {time.toLocaleTimeString()}</div>
               <hr style={{width:"80%", margin:"10%"}}></hr>
               <div style={{ fontWeight: "600", marginBottom:"5%" }}>주행시간</div>
-              <div> : {time.toLocaleTimeString()} {value1}{value2}</div>
+              <div> : {time.toLocaleTimeString()} 
+              {/* {value1}{value2} */}
+              </div>
             </div>
             <div className={styles.time1} onClick={clickmic}>
               <div style={{ fontWeight: "600", marginBottom:"5%" }}>스피커</div>
