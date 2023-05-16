@@ -8,7 +8,6 @@ import axios from "axios";
 
 // eslint-disable-next-line react/prop-types
 export default function TopNav() {
-  let localStorage = window.localStorage;
   const navigate = useNavigate();
   const [InputText, setInputText] = useState("");
   const [modal, Setmodal] = useState(false);
@@ -26,7 +25,7 @@ export default function TopNav() {
   let [PlateImageUrl, setPlateImageUrl] = useState(null);
   const sessionStorage = window.sessionStorage;
   const [searchHistory, setSearchHistory] = useState(
-    JSON.parse(localStorage.getItem("keywords")) || []
+    JSON.parse(sessionStorage.getItem("keywords")) || []
   );
   const [searchhis, setSearchHis] = useState(false);
   const inputRef = useRef(null);
@@ -34,14 +33,12 @@ export default function TopNav() {
   useEffect(() => {
     again();
   }, [nowindex]);
-  // useEffect(() => {
-  //  clickme()
-  // }, [setRestNumList()]);
 
   useEffect(() => {
-    if (InputText === "") {
-      setSearchHis(false);
-    }
+  }, [restNumList]);
+
+  useEffect(() => {
+   
   }, [InputText]);
 
   useEffect(() => {
@@ -102,7 +99,9 @@ export default function TopNav() {
     // print(restNum)  // [1, 2]
     setRestNumList(restNum);
 
+    
     if (InputText !== "") {
+      sessionStorage.setItem(`${InputText}`, JSON.stringify(restNum));
       if (searchCar.length === 0) {
         alert("등록된 차량이 없습니다");
         setInputText("");
@@ -115,7 +114,8 @@ export default function TopNav() {
         if (!searchHistory.includes(InputText)) {
           const updatedHistory = [...searchHistory, InputText];
           setSearchHistory(updatedHistory);
-          localStorage.setItem("keywords", JSON.stringify(updatedHistory));
+          sessionStorage.setItem("keywords", JSON.stringify(updatedHistory));
+          
         }
         Setmodal(true);
         setCarNum(info.carNum);
@@ -153,7 +153,7 @@ export default function TopNav() {
       let restNum = arr.filter((item) => {
         return item != nowindex;
       });
-      // print(restNum)  // [1, 2]
+     
       setRestNumList(restNum);
 
       // let foundCar = false;
@@ -191,6 +191,8 @@ export default function TopNav() {
   };
   const clickme = (e) => {
     console.log(e);
+    setRestNumList(JSON.parse(sessionStorage.getItem(`${e}`)))
+    console.log(JSON.parse(sessionStorage.getItem(`${e}`)))
     const carNum1 = {
       carNum: e,
     };
@@ -204,8 +206,6 @@ export default function TopNav() {
       })
 
       .then((res) => {
-        console.log(res.data.responseData.length);
-
         Setmodal(true);
         let info = res.data.responseData[nowindex];
         setCarNum(info.carNum);
@@ -219,13 +219,7 @@ export default function TopNav() {
         setPay(info.pay);
         setPhoneNum(info.phoneNum);
         setPlateImageUrl(info.plateImageUrl);
-        // let a = res.data.responseData.length;
-        // const restNum = [...Array(a)]
-        //   .map((_, i) => i)
-        //   .filter((item) => item !== 0);
-        // setRestNumList(restNum);
-        // console.log(restNum);
-        // return restNum;
+        
       })
       .catch((error) => {
         // setSearchcar("");
@@ -293,6 +287,7 @@ export default function TopNav() {
       </nav>
       {modal && (
         <div className={styles.container}>
+          
           <div className={styles.modal}>
             <div onClick={closeModal} className={styles.x}>
               <div>x</div>
