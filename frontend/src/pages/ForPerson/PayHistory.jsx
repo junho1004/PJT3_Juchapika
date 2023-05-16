@@ -4,6 +4,8 @@ import axios from "axios";
 // import axios from "axios";
 import { useState, useEffect } from "react";
 
+const baseUrl = process.env.REACT_APP_API_URL;
+
 export default function PayHistory(data) {
   const carnum1 = data.data;
   const [posts, setPosts] = useState([]);
@@ -24,7 +26,7 @@ export default function PayHistory(data) {
     };
     let token = sessionStorage.getItem("token");
     axios
-      .post("http://localhost:8081/api/record/search-by-carnum", carnum, {
+      .post(`${baseUrl}/record/search-by-carnum`, carnum, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

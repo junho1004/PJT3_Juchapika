@@ -11,6 +11,8 @@ import axios from "axios";
 // import moment from 'moment';
 // import { useState, useEffect } from "react";
 
+const baseUrl = process.env.REACT_APP_API_URL;
+
 export default function Feeletter() {
   let navigate = useNavigate();
   const location = useLocation();
@@ -38,7 +40,7 @@ export default function Feeletter() {
     };
     let token = sessionStorage.getItem("token");
     axios
-      .post("http://localhost:8081/api/record/search-by-id", id1, {
+      .post(`${baseUrl}/record/search-by-id`, id1, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

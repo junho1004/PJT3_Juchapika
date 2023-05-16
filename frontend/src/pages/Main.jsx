@@ -15,6 +15,8 @@ import PropTypes from "prop-types";
 import UserTable from "../components/Table/UserTable";
 // import {downloadExcel} from "../components/Table/UserTable";
 
+const baseUrl = process.env.REACT_APP_API_URL;
+
 export default function Main() {
   let [search, Setsearch] = useState({
     startDate: "",
@@ -46,7 +48,7 @@ export default function Main() {
     let token = sessionStorage.getItem("token");
 
     axios
-      .post("http://localhost:8081/api/record/search-by-detail", data, {
+      .post(`${baseUrl}/record/search-by-detail`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -151,7 +153,7 @@ export default function Main() {
     let token = sessionStorage.getItem("token");
 
     axios
-      .post("http://localhost:8081/api/record/search-by-detail", data, {
+      .post(`${baseUrl}/record/search-by-detail`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -187,7 +189,7 @@ export default function Main() {
     let token = sessionStorage.getItem("token")
 
     axios
-      .post("http://localhost:8081/api/record/download", data, {
+      .post(`${baseUrl}/record/download`, data, {
         responseType: "blob", // blob 형태로 데이터를 받아옴
         headers: {
           Authorization: `Bearer ${token}`,
@@ -234,7 +236,7 @@ export default function Main() {
     console.log(data);
     let token = sessionStorage.getItem("token")
     axios
-      .post("http://localhost:8081/api/record/statistics", data,
+      .post(`${baseUrl}/record/statistics`, data,
       {
         headers: {
           Authorization: `Bearer ${token}`,

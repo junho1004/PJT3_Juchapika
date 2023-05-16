@@ -20,6 +20,9 @@ import MessagePayhistory from "./pages/ForPerson/Message/MessagePayhistory";
 // import LiveStream from "./pages/LiveStream/LiveStream";
 import Livepage from "./pages/LiveStream/LivePage";
 
+// WebSocket
+import Test from "./pages/Test";
+
 
 
 function App() {
@@ -30,6 +33,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Login />} />
           <Route exact path="/main" element={<Main />} />
+          <Route exact path="/test" element={<Test />} />
           <Route exact path="/feeletter" element={<Feeletter />} />
           <Route exact path="/payhistory" element={<PayHistory />} />
           <Route exact path="/messagefine" element={<MessageFine />} />

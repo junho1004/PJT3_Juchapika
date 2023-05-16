@@ -8,6 +8,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
+const baseUrl = process.env.REACT_APP_API_URL;
+
 export default function EnrollmentCar() {
   const [posts, setPosts] = useState([]);
   const location = useLocation();
@@ -27,7 +29,7 @@ export default function EnrollmentCar() {
   useEffect(() => {
     console.log(token);
     axios
-      .get("http://localhost:8081/api/record/live-report-list", {
+      .get(`${baseUrl}/record/live-report-list`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -53,7 +55,7 @@ export default function EnrollmentCar() {
     };
     let token = sessionStorage.getItem("token");
     axios
-      .post("http://localhost:8081/api/record/search-by-id", id1, {
+      .post(`${baseUrl}/record/search-by-id`, id1, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -93,7 +95,7 @@ export default function EnrollmentCar() {
     e.preventDefault();
 
     axios
-      .delete("http://localhost:8081/api/record/delete-by-id", {
+      .delete(`${baseUrl}record/delete-by-id`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -107,7 +109,7 @@ export default function EnrollmentCar() {
         } else {
           alert("삭제 완료되었습니다");
           axios
-            .get("http://localhost:8081/api/record/live-report-list", {
+            .get(`${baseUrl}/record/live-report-list`, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -133,7 +135,7 @@ export default function EnrollmentCar() {
     };
     console.log(data);
     axios
-      .put("http://localhost:8081/api/record/update", data, {
+      .put(`${baseUrl}/record/update`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -144,7 +146,7 @@ export default function EnrollmentCar() {
         } else {
           alert("수정 완료되었습니다");
           axios
-            .get("http://localhost:8081/api/record/live-report-list", {
+            .get(`${baseUrl}/record/live-report-list`, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },

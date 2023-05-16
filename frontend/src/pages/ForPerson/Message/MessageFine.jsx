@@ -10,6 +10,8 @@ import axios from "axios";
 import hamburger from "../../../assets/hamburger.png";
 // import { useState, useEffect } from "react";
 
+const baseUrl = process.env.REACT_APP_API_URL;
+
 export default function MessageFine() {
   const [payhistory, setpayhistory] = useState(false);
   const [detail, setdetail] = useState([]);
@@ -22,7 +24,7 @@ export default function MessageFine() {
     };
     let token = sessionStorage.getItem("token")
     axios
-      .post("http://localhost:8081/api/record/search-by-carnum", carNum1,
+      .post(`${baseUrl}/record/search-by-carnum`, carNum1,
       {
         headers: {
           Authorization: `Bearer ${token}`,
