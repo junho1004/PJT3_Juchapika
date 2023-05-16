@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import TopNav from "../../components/Nav/TopNav";
 import styles from "./VideoStorage.module.css";
 
-const baseUrl = process.env.REACT_APP_API_URL;
+// const baseUrl = process.env.REACT_APP_API_URL;
 
 export default function VideoStorage() {
   const [posts, setPosts] = useState([]);
