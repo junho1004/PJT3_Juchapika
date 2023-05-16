@@ -5,8 +5,8 @@ import pathlib
 
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 ssl_context.load_cert_chain(
-    pathlib.Path('/etc/nginx/certs/fullchain.pem'),
-    pathlib.Path('/etc/nginx/certs/privkey.pem')
+    pathlib.Path('/home/ubuntu/certbot/conf/live/juchapika.site/fullchain.pem'),
+    pathlib.Path('/home/ubuntu/certbot/conf/live/juchapika.site/privkey.pem')
 )
 
 
