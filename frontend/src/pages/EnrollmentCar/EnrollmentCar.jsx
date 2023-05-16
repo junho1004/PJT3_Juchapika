@@ -17,9 +17,9 @@ export default function EnrollmentCar() {
   // const [nail, setsumnail] = useState(null);
   const [id, setid] = useState(data2 || "");
   let [carImageUrl, setCarImageUrl] = useState("");
-  let [date,setdate]=useState("")
-  let [locations,setlocation]=useState("")
-  let [fine,setfine]=useState("")
+  let [date, setdate] = useState("")
+  let [locations, setlocation] = useState("")
+  let [fine, setfine] = useState("")
 
   let navigate = useNavigate();
   const sessionStorage = window.sessionStorage;
@@ -43,6 +43,7 @@ export default function EnrollmentCar() {
 
   const clickitem = (title, id) => {
     setInputText(title);
+
     // 이부분 axios로 받아와야함
     setid(id);
     // postsss(id)
@@ -58,12 +59,56 @@ export default function EnrollmentCar() {
     setInputText(e.target.value);
   };
 
+
+  const deleteButton = (e) => {
+    e.preventDefault();
+
+    axios.delete("http://localhost:8081/api/record/delete-by-id"
+      , {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        data: {
+          id: id
+        }
+      })
+      .then(data => {
+        if (!data.data.success) {
+          alert("삭제 실패.")
+        } else {
+          alert("삭제 완료!")
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
   const button = (e) => {
     e.preventDefault();
-    setInputText(InputText);
-
+    // setInputText(InputText);
+    const data = {
+      id: id,
+      carNum: InputText,
+    }
+    console.log(data);
+    axios.put("http://localhost:8081/api/record/fine"
+      , data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(data => {
+        if (!data.data.success) {
+          alert("등록된 차량이 없습니다.")
+        } else {
+          alert("수정 완료!")
+        }
+      })
+      .catch(err => console.log(err));
   };
-  
+
+
+
   let fordate = date.replace("T", " ");
 
   return (
@@ -129,7 +174,7 @@ export default function EnrollmentCar() {
                     state: { data1: InputText, data2: id },
                   });
                 }}
-                // "inputtext"(=즉 carnum) 이부분에 들어간 걸 feeletter로 보내는 거임 id는 id
+              // "inputtext"(=즉 carnum) 이부분에 들어간 걸 feeletter로 보내는 거임 id는 id
               >
                 고지서 미리보기
               </div>
@@ -138,7 +183,7 @@ export default function EnrollmentCar() {
           <div className={styles.button2} style={{ marginBottom: "3%" }}>
             납부 알림 메시지 전송
           </div>
-          <div className={styles.button2}>삭제</div>
+          <div onClick={deleteButton} className={styles.button2}>삭제</div>
         </div>
       </div>
     </div>
