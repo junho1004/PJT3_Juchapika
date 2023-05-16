@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import styles from "./TopNav.module.css";
 import logo from "../../assets/logo.png";
 import magnifier from "../../assets/magnifier.png";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import axios from "axios";
 
 // eslint-disable-next-line react/prop-types
 export default function TopNav() {
+  let localStorage = window.localStorage;
   const navigate = useNavigate();
   const [InputText, setInputText] = useState("");
   const [modal, Setmodal] = useState(false);
@@ -24,11 +25,38 @@ export default function TopNav() {
   const [restNumList, setRestNumList] = useState([]);
   let [PlateImageUrl, setPlateImageUrl] = useState(null);
   const sessionStorage = window.sessionStorage;
+  const [searchHistory, setSearchHistory] = useState(
+    JSON.parse(localStorage.getItem("keywords")) || []
+  );
+  const [searchhis, setSearchHis] = useState(false);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     again();
   }, [nowindex]);
-  useEffect(() => {}, []);
+  // useEffect(() => {
+  //  clickme()
+  // }, [setRestNumList()]);
+
+  useEffect(() => {
+    if (InputText === "") {
+      setSearchHis(false);
+    }
+  }, [InputText]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (inputRef.current && !inputRef.current.contains(event.target)) {
+        setInputText("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const closeModal = () => {
     Setmodal(false);
@@ -36,7 +64,8 @@ export default function TopNav() {
   };
   const onChange = (e) => {
     setInputText(e.target.value);
-
+    // settext(e.target.value)
+    setSearchHis(true);
     const carNum1 = {
       carNum: e.target.value,
     };
@@ -50,9 +79,9 @@ export default function TopNav() {
       })
 
       .then((res) => {
-        console.log(res.data.responseData);
-        setSearchcar(res.data.responseData);
-        console.log("이게뭔지모르아너어럼이");
+        if (res.data.responseData !== null) {
+          setSearchcar(res.data.responseData);
+        }
       })
       .catch((error) => {
         // setSearchcar("");
@@ -62,6 +91,8 @@ export default function TopNav() {
   };
 
   const handleSubmit = (e) => {
+    console.log(e);
+    setSearchHis(false);
     e.preventDefault();
     let arr = new Array(searchCar.length).fill().map((_, i) => i);
 
@@ -81,7 +112,11 @@ export default function TopNav() {
 
       if (InputText === searchCar[nowindex].carNum) {
         let info = searchCar[nowindex];
-
+        if (!searchHistory.includes(InputText)) {
+          const updatedHistory = [...searchHistory, InputText];
+          setSearchHistory(updatedHistory);
+          localStorage.setItem("keywords", JSON.stringify(updatedHistory));
+        }
         Setmodal(true);
         setCarNum(info.carNum);
         setAddress(info.address);
@@ -147,6 +182,58 @@ export default function TopNav() {
 
   let fordate = date.replace("T", " ");
 
+  const deletethis = (index) => {
+    setSearchHistory((prevHistory) => {
+      const updatedHistory = [...prevHistory];
+      updatedHistory.splice(index, 1);
+      return updatedHistory;
+    });
+  };
+  const clickme = (e) => {
+    console.log(e);
+    const carNum1 = {
+      carNum: e,
+    };
+    let token = sessionStorage.getItem("token");
+
+    axios
+      .post("http://localhost:8081/api/record/search-by-carnum", carNum1, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      .then((res) => {
+        console.log(res.data.responseData.length);
+
+        Setmodal(true);
+        let info = res.data.responseData[nowindex];
+        setCarNum(info.carNum);
+        setAddress(info.address);
+        setCarImageUrl(info.carImageUrl);
+        setDate(info.date);
+        // setFine(info["fine"])
+        setDlocation(info.location);
+        // setModel(info["model"])
+        setName(info.name);
+        setPay(info.pay);
+        setPhoneNum(info.phoneNum);
+        setPlateImageUrl(info.plateImageUrl);
+        // let a = res.data.responseData.length;
+        // const restNum = [...Array(a)]
+        //   .map((_, i) => i)
+        //   .filter((item) => item !== 0);
+        // setRestNumList(restNum);
+        // console.log(restNum);
+        // return restNum;
+      })
+      .catch((error) => {
+        // setSearchcar("");
+        console.log(error);
+        // return;
+      });
+  };
+
   return (
     <div>
       <nav className={styles.body}>
@@ -177,7 +264,7 @@ export default function TopNav() {
               실시간화면
             </div>
           </div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} ref={inputRef}>
             <div className={styles.blocklogout}>
               <input
                 type="text"
@@ -185,12 +272,21 @@ export default function TopNav() {
                 onChange={onChange}
                 className={styles.searchbox}
                 placeholder="  차량 조회"
-                // onKeyDown={onCheckEnter}
               />
               <div onClick={handleSubmit} className={styles.icon}>
                 {" "}
                 <img src={magnifier} alt="mag" style={{ width: "20px" }}></img>
               </div>
+              {searchhis && (
+                <div className={styles.searchHistory}>
+                  {searchHistory.map((history, index) => (
+                    <div key={index} className={styles.searchHis}>
+                      <div onClick={() => clickme(history)}>{history}</div>{" "}
+                      <div onClick={() => deletethis(index)}>X</div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </form>
         </div>
@@ -239,7 +335,10 @@ export default function TopNav() {
                   </div>
                   <div className={styles.name}>
                     <span style={{ width: "40%" }}>전화번호</span>
-                    <span className={styles.texts}> {phoneNum}</span>
+                    <span className={styles.texts}>
+                      {" "}
+                      {phoneNum.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}
+                    </span>
                   </div>
                   <div className={styles.name}>
                     <div style={{ width: "40%" }}>소유주 주소</div>
