@@ -1,5 +1,13 @@
 import asyncio
 import websockets
+import ssl
+import pathlib
+
+ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+ssl_context.load_cert_chain(
+    pathlib.Path('/etc/nginx/certs/fullchain.pem'),
+    pathlib.Path('/etc/nginx/certs/privkey.pem')
+)
 
 
 async def handle_message(websocket, path):
@@ -10,7 +18,7 @@ async def handle_message(websocket, path):
 
 
 async def start_websocket_server():
-    async with websockets.serve(handle_message, "0.0.0.0", 8082):
+    async with websockets.serve(handle_message, "0.0.0.0", 8082, ssl=ssl_context):
         print("WebSocket server started")
         await asyncio.Future()  # Run forever
 
