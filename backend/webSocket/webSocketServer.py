@@ -25,7 +25,15 @@ async def start_websocket_server():
 
 
 async def main():
-    await start_websocket_server()
+    server = await start_websocket_server()
+
+    # Enable CORS
+    server.ws_server._available_handlers[0].extensions.append("permessage-deflate")
+    server.ws_server._available_handlers[0].response_headers.append(
+        ("Access-Control-Allow-Origin", "https://juchapika.site")
+    )
+
+    await server.wait_closed()
 
 
 asyncio.run(main())
