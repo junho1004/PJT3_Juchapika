@@ -3,12 +3,13 @@ import websockets
 import ssl
 import pathlib
 
-ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-ssl_context.load_cert_chain(
-    pathlib.Path('/home/ubuntu/certbot/conf/live/juchapika.site/fullchain.pem'),
-    pathlib.Path('/home/ubuntu/certbot/conf/live/juchapika.site/privkey.pem')
-)
 
+# ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+# ssl_context.load_cert_chain(
+#     pathlib.Path('/home/ubuntu/certbot/conf/live/juchapika.site/fullchain.pem'),
+#     pathlib.Path('/home/ubuntu/certbot/conf/live/juchapika.site/privkey.pem')
+# )
+# , ssl=ssl_context
 
 async def handle_message(websocket, path):
     async for message in websocket:
@@ -18,7 +19,7 @@ async def handle_message(websocket, path):
 
 
 async def start_websocket_server():
-    async with websockets.serve(handle_message, "0.0.0.0", 8082, ssl=ssl_context):
+    async with websockets.serve(handle_message, "0.0.0.0", 8082):
         print("WebSocket server started")
         await asyncio.Future()  # Run forever
 
