@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 const Test = () => {
   const [packets, setPackets] = useState([]);
-  let client; // client 변수 정의
 
   useEffect(() => {
-    client = new window.WebSocket('wss://juchapika.site:8082/');
+    const client = new window.WebSocket('wss://juchapika.site:8082/');
 
     client.onopen = () => {
       console.log('WebSocket client connected');
@@ -27,10 +26,16 @@ const Test = () => {
       console.log(error);
     };
 
+    const interval = setInterval(() => {
+      // 주기적으로 패킷을 받기 위해 웹 소켓으로 요청합니다.
+      client.send('Request packet');
+    }, 1000);
+
     return () => {
+      clearInterval(interval); // clearInterval로 interval을 정리합니다.
       client.close();
     };
-  }, [client]); // client를 종속성 배열에 추가
+  }, []);
 
   return (
     <div>
