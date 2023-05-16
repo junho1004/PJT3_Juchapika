@@ -2,13 +2,15 @@ import asyncio
 import websockets
 import ssl
 import pathlib
-
+import requests
 
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 ssl_context.load_cert_chain(
     pathlib.Path('/path/to/container/fullchain.pem'),
     pathlib.Path('/path/to/container/privkey.pem')
 )
+
+
 # , ssl=ssl_context
 
 async def handle_message(websocket, path):
@@ -17,11 +19,25 @@ async def handle_message(websocket, path):
         # Process the received message as needed
         # ...
 
+        # Send the received message to the React server
+        send_message_to_react_server(message)
+
 
 async def start_websocket_server():
     async with websockets.serve(handle_message, "0.0.0.0", 8082, ssl=ssl_context):
         print("WebSocket server started")
         await asyncio.Future()  # Run forever
+
+
+def send_message_to_react_server(message):
+    url = 'https://juchapika.site/test'  # Replace with the endpoint URL of your React server
+    payload = {'message': message}
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(url, json=payload, headers=headers)
+    if response.status_code == 200:
+        print('Message sent to React server successfully')
+    else:
+        print('Failed to send message to React server')
 
 
 async def main():
