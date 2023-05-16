@@ -1,54 +1,21 @@
-// import React, { useState, useEffect } from 'react';
-// import io from 'socket.io-client';
-
-// //#
-// const socket = io('https://juchapika.site:8082'); // 웹소켓 서버 주소
-
-// export default function Test() {
-//   const [value1, setValue1] = useState('');
-//   const [value2, setValue2] = useState(0);
-
-//   useEffect(() => {
-//     socket.on('message', (data) => {
-//       const { battery, time } = JSON.parse(data); // 메시지 파싱
-//       setValue1(battery); // value1 상태 변수에 battery 값을 할당
-//       setValue2(time); // value2 상태 변수에 time 값을 할당
-//     });
-//     return () => {
-//       socket.off('message'); // 컴포넌트 언마운트 시 이벤트 리스너 정리
-//     };
-//   }, []);
-  
-
-//   return (
-//     <div>
-//       <h1>WebSocket Receiver Example</h1>
-//       <p>- battery: {value1}</p>
-//       <p>- time: {value2}</p>
-//     </div>
-//   );
-// }
-
-
-import React, { useEffect } from 'react';
-// import * as WebSocket from 'websocket';
+import React, { useEffect, useState } from 'react';
 
 const Test = () => {
+  const [packets, setPackets] = useState([]);
+
   useEffect(() => {
     const client = new window.WebSocket('wss://juchapika.site:8082/');
 
     client.onopen = () => {
       console.log('WebSocket client connected');
-      console.log(client);
     };
 
-
     client.onmessage = (message) => {
-      const packet = message.data;
+      const packet = JSON.parse(message.data);
       console.log('Received packet:', packet);
 
-      // Process the received packet as needed
-      // ...
+      // 실시간으로 패킷을 처리하거나 상태를 업데이트합니다.
+      setPackets((prevPackets) => [...prevPackets, packet]);
     };
 
     client.onclose = () => {
@@ -56,15 +23,22 @@ const Test = () => {
     };
 
     client.onerror = (error) => {
-        console.log(error);
+      console.log(error);
     };
 
     return () => {
       client.close();
     };
-  }, []);
+  }, [client]); // client를 종속성 배열에 추가
 
-  return <div>React App</div>;
+  return (
+    <div>
+      <h1>Real-time Packets</h1>
+      {packets.map((packet, index) => (
+        <div key={index}>Received packet: {JSON.stringify(packet)}</div>
+      ))}
+    </div>
+  );
 };
 
 export default Test;
