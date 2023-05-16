@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 const Test = () => {
   const [packets, setPackets] = useState([]);
+  let client; // client 변수 정의
 
   useEffect(() => {
-    const client = new window.WebSocket('wss://juchapika.site:8082/');
+    client = new window.WebSocket('wss://juchapika.site:8082/');
 
     client.onopen = () => {
       console.log('WebSocket client connected');
