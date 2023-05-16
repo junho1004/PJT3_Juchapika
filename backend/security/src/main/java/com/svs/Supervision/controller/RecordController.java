@@ -24,12 +24,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOGGER;
@@ -37,7 +47,11 @@ import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOG
 @Tag(name = "Record", description = "기록 관련 API")
 @RestController
 @RequestMapping("/record")
+<<<<<<< HEAD
 @CrossOrigin(origins = "*", allowedHeaders="*") // 컨트롤러에서 설정
+=======
+@CrossOrigin(origins = "*", allowedHeaders = "*") // 컨트롤러에서 설정
+>>>>>>> 577a44921a8a973b0c0165c00563d1e7907b8b2b
 @RequiredArgsConstructor
 public class RecordController {
     private RestTemplate restTemplate;
@@ -69,7 +83,11 @@ public class RecordController {
     // 3. carNum을 기준으로 car의 정보를 찾아온다.
     // 4. car의 정보가 있으면 car의 정보를 조회하고 없으면 실패 요청 보낸다.
     // 5. record테이블의 정보를 cnt=2, car 정보를 새로 조회한 정보로 update 한다.
+<<<<<<< HEAD
     @PutMapping("/update")
+=======
+    @PutMapping("/fine")
+>>>>>>> 577a44921a8a973b0c0165c00563d1e7907b8b2b
     @Operation(summary = "단속 차량 최종 등록", description = "recordId와 번호판을 기준으로 단속된 차량의 단속 기록을 저장합니다.")
     public ResponseEntity<?> updateRecord(@RequestBody RecordIdCarNumRequestDto recordIdCarNumRequestDto,
                                        @Parameter(hidden = true)
@@ -215,7 +233,6 @@ public class RecordController {
                 .contentLength(bytes.length)
                 .body(resource);
     }
-
 
 
 }
