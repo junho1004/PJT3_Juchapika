@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 
 //#
-const socket = io('https://52.79.199.205:8082'); // 웹소켓 서버 주소
+const socket = io('https://juchapika.site:8082'); // 웹소켓 서버 주소
 
 export default function Test() {
   const [value1, setValue1] = useState('');
