@@ -24,8 +24,11 @@ export default function EnrollmentCar() {
   let navigate = useNavigate();
   const sessionStorage = window.sessionStorage;
   const token = sessionStorage.getItem("token");
+
+
   useEffect(() => {
     console.log(token);
+    
     axios
       .get("http://localhost:8081/api/record/live-report-list", {
         headers: {
@@ -43,6 +46,11 @@ export default function EnrollmentCar() {
   useEffect(() => {
     clickitem();
   }, []);
+  useEffect(() => {
+    // send()
+    console.log(posts)
+    return
+    }, [posts]);
 
   const clickitem = (title, id) => {
     setInputText(title);
@@ -166,6 +174,36 @@ export default function EnrollmentCar() {
       .catch((err) => console.log(err));
   };
 
+  const Send = () => {
+    console.log(id)
+    
+    console.log(posts)
+    const data = {
+      id: id,
+    };
+    console.log(data);
+    axios
+      .put("http://localhost:8081/api/record/fine", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.responseData);
+        console.log(res)
+        console.log("등록으로 보내짐");
+        setInputText("");
+              setfine("");
+              setdate("");
+              setCarImageUrl("");
+              setid("");
+              setlocation("");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   let fordate = date.replace("T", " ");
 
   return (
@@ -251,7 +289,11 @@ export default function EnrollmentCar() {
               </div>
             </div>
           </div>
-          <div className={styles.button2} style={{ marginBottom: "3%" }}>
+          <div
+            className={styles.button2}
+            style={{ marginBottom: "3%" }}
+            onClick={Send}
+          >
             납부 알림 메시지 전송
           </div>
           <div onClick={deleteButton} className={styles.button2}>
