@@ -34,24 +34,23 @@
 
 import React, { useEffect } from 'react';
 // import * as WebSocket from 'websocket';
-//
+
+client.onmessage = (message) => {
+  console.log("메시지 도착!");
+  const packet = message.data;
+  console.log('Received packet :', packet);
+
+  // Process the received packet As needed
+  // ...
+};
+
 const Test = () => {
   useEffect(() => {
-    const client = new window.WebSocket('wss://juchapika.site:8082');
+    const client = new WebSocket('wss://juchapika.site:8082');
 
     client.onopen = () => {
       console.log('WebSocket client connected');
       console.log(client);
-    };
-
-
-    client.onmessage = (message) => {
-      console.log("메시지 도착!");
-      const packet = message.data;
-      console.log('Received packet :', packet);
-
-      // Process the received packet As needed
-      // ...
     };
 
     client.onclose = () => {
