@@ -20,7 +20,7 @@ async def handle_message(websocket, path):
         # ...
 
         # Send the received message to the React server
-        send_message_to_react_server(message)
+        await send_message_to_react_server(message)
 
 
 async def start_websocket_server():
