@@ -33,37 +33,41 @@
 
 
 import React, { useEffect } from 'react';
-import io from 'socket.io-client';
-
-const Fire = () => {
+// import * as WebSocket from 'websocket';
+//
+const Test = () => {
   useEffect(() => {
-    const socket = io('wss://juchapika.site:8082'); // HTTPS를 사용한 서버 주소
+    const client = new window.WebSocket('wss://juchapika.site:8082');
 
-    socket.on('connect', () => {
+    client.onopen = () => {
       console.log('WebSocket client connected');
-    });
+      console.log(client);
+    };
 
-    socket.on('message', (message) => {
-      console.log('Received message:', message);
 
-      // 받은 메시지 처리 로직
+    client.onmessage = (message) => {
+      console.log("메시지 도착!");
+      const packet = message.data;
+      console.log('Received packet :', packet);
+
+      // Process the received packet As needed
       // ...
-    });
+    };
 
-    socket.on('disconnect', () => {
+    client.onclose = () => {
       console.log('WebSocket client disconnected');
-    });
+    };
 
-    socket.on('error', (error) => {
-      console.log(error);
-    });
+    client.onerror = (error) => {
+        console.log(error);
+    };
 
     return () => {
-      socket.disconnect();
+      client.close();
     };
   }, []);
 
   return <div>React App</div>;
 };
 
-export default Fire;
+export default Test;
