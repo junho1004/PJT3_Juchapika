@@ -40,7 +40,7 @@ export default function Login() {
       password: loginpassword,
     };
     axios
-      .post(`${baseUrl}/user/signin`, data)
+      .post("https://juchapika.site/api/user/signin", data)
       .then((res) => {
         sessionStorage.setItem("token", res.data.responseData.token);
         navigate("/main");
