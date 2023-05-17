@@ -35,7 +35,7 @@ import React, { useEffect } from 'react';
 
 const Test = () => {
   useEffect(() => {
-    const client = new window.WebSocket('ws://juchapika.site:8082/');
+    const client = new window.WebSocket('wss://juchapika.site:8082/');
 
     client.onopen = () => {
       console.log('WebSocket client connected');
