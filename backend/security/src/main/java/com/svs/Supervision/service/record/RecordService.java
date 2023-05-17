@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.http.HttpRequest;
 import com.svs.Supervision.dto.request.record.RecordDetailRequestDto;
 import com.svs.Supervision.dto.request.record.RecordIdCarNumRequestDto;
+import com.svs.Supervision.dto.request.record.RecordIdRequestDto;
 import com.svs.Supervision.dto.request.record.RecordRequestDto;
 import com.svs.Supervision.dto.request.sms.SmsSendRequestDto;
 import com.svs.Supervision.dto.response.record.RecordCarNumResponseDto;
@@ -119,6 +120,18 @@ public class RecordService {
                 recordRepository.updateCnt(carId, record.getId());
             }
         }
+    }
+    public void fineRecord(RecordIdRequestDto recordIdRequestDto){
+        Record record = recordRepository.getById(recordIdRequestDto.getId());
+        Car car = record.getCar();
+        System.out.println(car.getPhoneNum());
+        record.cntUpdate(2L);
+        sendMsg(car,"[JUCHAPIKA] 단속 알리미 \n" +
+                "단속 기준시간 초과로 확인되었습니다. \n" +
+                "- 성명 : " + car.getName() + "\n" +
+                "- 차종 : " + car.getModel() + "\n" +
+                "- 번호판 : " + car.getCarNum()
+        );
     }
 
     public List<RecordCarNumResponseDto> searchRecord(String carNum) {

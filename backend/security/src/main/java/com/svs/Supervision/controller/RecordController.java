@@ -70,14 +70,24 @@ public class RecordController {
         return new ResponseEntity(new ApiResponseDto(true, "addRecord successfully@", null), HttpStatus.CREATED);
     }
 
+    @PutMapping("/fine")
+    @Operation(summary = "단속 차량 최종등록", description = "recordId를 기준으로 최종 등록")
+    public ResponseEntity<?> updateRecord(@RequestBody RecordIdRequestDto recordIdRequestDto,
+                                          @Parameter(hidden = true)
+                                          @AuthenticationPrincipal User user) {
+        recordService.fineRecord(recordIdRequestDto);
+        return new ResponseEntity(new ApiResponseDto(true, "fineRecord successfully@", null), HttpStatus.CREATED);
+    }
+
+
     // 단속 차량 최종 등록
     // 1. request에서 id과 carNum 값을 받는다.
     // 2. recordId를 기준으로 record의 기록을 찾아온다.
     // 3. carNum을 기준으로 car의 정보를 찾아온다.
     // 4. car의 정보가 있으면 car의 정보를 조회하고 없으면 실패 요청 보낸다.
     // 5. record테이블의 정보를 cnt=2, car 정보를 새로 조회한 정보로 update 한다.
-    @PutMapping("/fine")
-    @Operation(summary = "단속 차량 최종 등록", description = "recordId와 번호판을 기준으로 단속된 차량의 단속 기록을 저장합니다.")
+    @PutMapping("/update")
+    @Operation(summary = "단속 차량 수정", description = "recordId와 번호판을 기준으로 단속된 차량을 수정합니다.")
     public ResponseEntity<?> updateRecord(@RequestBody RecordIdCarNumRequestDto recordIdCarNumRequestDto,
             @Parameter(hidden = true) @AuthenticationPrincipal User user) {
         boolean update = recordService.updateRecord(recordIdCarNumRequestDto);
