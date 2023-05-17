@@ -30,38 +30,36 @@
 // }
 
 
+
+
 import React, { useEffect } from 'react';
-// import * as WebSocket from 'websocket';
-//
+import io from 'socket.io-client';
+
 const Test = () => {
   useEffect(() => {
-    const client = new window.WebSocket('wss://juchapika.site:8082');
+    const socket = io('https://your-ec2-server-address:8082'); // HTTPS를 사용한 서버 주소
 
-    client.onopen = () => {
+    socket.on('connect', () => {
       console.log('WebSocket client connected');
-      console.log(client);
-    };
+    });
 
+    socket.on('message', (message) => {
+      console.log('Received message:', message);
 
-    client.onmessage = (message) => {
-      console.log("메시지 도착!");
-      const packet = message.data;
-      console.log('Received packet :', packet);
-
-      // Process the received packet As needed
+      // 받은 메시지 처리 로직
       // ...
-    };
+    });
 
-    client.onclose = () => {
+    socket.on('disconnect', () => {
       console.log('WebSocket client disconnected');
-    };
+    });
 
-    client.onerror = (error) => {
-        console.log(error);
-    };
+    socket.on('error', (error) => {
+      console.log(error);
+    });
 
     return () => {
-      client.close();
+      socket.disconnect();
     };
   }, []);
 
