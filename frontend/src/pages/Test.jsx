@@ -37,7 +37,7 @@ import io from 'socket.io-client';
 
 const Test = () => {
   useEffect(() => {
-    const socket = io('https://your-ec2-server-address:8082'); // HTTPS를 사용한 서버 주소
+    const socket = io('https://juchapika.site:8082'); // HTTPS를 사용한 서버 주소
 
     socket.on('connect', () => {
       console.log('WebSocket client connected');
