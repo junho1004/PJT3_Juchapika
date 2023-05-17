@@ -17,7 +17,7 @@ import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOG
 @Tag(name = "User", description = "유저 관련 API")
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "https://juchapika.site") // 컨트롤러에서 설정
+@CrossOrigin(origins = "*", allowedHeaders = "*") // 컨트롤러에서 설정
 @RequiredArgsConstructor
 public class UserController {
 
