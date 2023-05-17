@@ -46,11 +46,6 @@ export default function EnrollmentCar() {
   useEffect(() => {
     clickitem();
   }, []);
-  useEffect(() => {
-    // send()
-    console.log(posts)
-    return
-    }, [posts]);
 
   const clickitem = (title, id) => {
     setInputText(title);
