@@ -3,56 +3,50 @@ import styles from "./MessageFine.module.css";
 // import { useNavigate } from "react-router-dom";
 import car from "../../../assets/car1.png";
 import { useState } from "react";
-// import { useLocation } from "react-router-dom";
+// import { useParams  } from "react-router-dom";
 import MessagePayhistory from "./MessagePayhistory";
-import { useEffect } from "react";
+// import { useEffect} from "react";
 import axios from "axios";
 import hamburger from "../../../assets/hamburger.png";
+// import PropTypes from 'prop-types'; 
 // import { useState, useEffect } from "react";
 
-export default function MessageFine() {
-  const [payhistory, setpayhistory] = useState(false);
-  const [detail, setdetail] = useState([]);
-  const [modal, setmodal] = useState(false);
-  const sessionStorage = window.sessionStorage;
+// import { useSearchParams } from 'react-router-dom';
 
-  useEffect(() => {
-    const carNum1 = {
-      carNum: "331우7799",
-    };
-    let token = sessionStorage.getItem("token")
-    axios
-      .post("http://localhost:8081/api/record/search-by-carnum", carNum1,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-  },
-      })
+export default function MessageFine() {
+  // const { id } = useParams();
+  const { id } = 9;
+
+  // const [searchParams, setSearchParams] = useSearchParams();
+
+  console.log(id)
+      axios
+      .get("http://localhost:8081/api/feeletter/9")
       .then((res) => {
-        console.log(res.data.responseData);
-        setdetail(res.data.responseData);
-        
-        return
-        
+        console.log(res);
       })
       .catch((error) => {
-        console.log(error);
-      });
-    // callall()
-  }, [
-    // detail
-  ]);
+        console.error(error);
+      })
+
+      
+  const [payhistory, setpayhistory] = useState(false);
+  // const [detail, setdetail] = useState([]);
+  const [modal, setmodal] = useState(false);
+
 
   const openside = () => {
     setmodal(!modal);
-    console.log(detail)
+    // console.log(detail)
   };
   const closeModal = () => {
     setmodal(false);
   };
+  // setSearchParams({ key: 'value' });
 
   return (
     <div className={styles.background}>
+      
       <div className={styles.nav}>
         <div style={{ width: "90%", position: "absolute", zIndex:"5" }}>
           <img src={hamburger} alt="error" width="12%" onClick={openside} />
@@ -81,6 +75,7 @@ export default function MessageFine() {
               <div>
                 <div style={{ fontWeight: "700", fontSize: "1.8em" }}>
                   차넘버
+                  
                 </div>
                 <div style={{ marginTop: "5px" }}>차량소유자: 정주영</div>
               </div>
@@ -123,6 +118,10 @@ export default function MessageFine() {
               }}
             >
               납세자 정보
+             <h2>
+              {/* {searchParams.get('carNum')} */}
+              </h2> 
+                  <h2>User Details - ID: {id}</h2>
             </div>
             <div className={styles.a}>
               <div className={styles.img}>
