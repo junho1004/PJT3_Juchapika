@@ -30,7 +30,7 @@ async def start_websocket_server():
 
 
 async def send_message_to_react_server(message):
-    async with websockets.connect('https://juchapika.site:8082') as ws:
+    async with websockets.connect('wss://juchapika.site:8082') as ws:
         await ws.send(message)
         print('Message sent to React server successfully')
 
