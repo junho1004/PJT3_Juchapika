@@ -1,31 +1,51 @@
 package com.svs.Supervision.controller;
 
+import com.svs.Supervision.dto.response.api.ApiResponseDto;
+import com.svs.Supervision.dto.response.record.RecordCarNumResponseDto;
 import com.svs.Supervision.service.fee.FeeService;
 import com.svs.Supervision.service.record.RecordService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Fee", description = "차량 관련 API")
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.net.URLEncoder;
+@Tag(name = "Fee", description = "과태료 고지서 API")
 @RestController
 @RequestMapping("/feeletter")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class FeeController {
     private final FeeService feeService;
-
-    @GetMapping("/{id}")
+    private final RecordService recordService;
+    @GetMapping("a/{id}")
     public ResponseEntity<?> searchByRecord(@PathVariable("id") String recordEncry ) {
-        System.out.println(recordEncry);
-        String encryptedText = feeService.encrypt(recordEncry);
-        System.out.println("암호화된 텍스트: " + encryptedText);
-        String encryptedData = encryptedText;
-        // 복호화
-        String decryptedText = feeService.decrypt(recordEncry);
-        System.out.println("복호화된 텍스트: " + decryptedText);
+//        String plainText = "11";
+//        String encryptedText = feeService.encrypt(recordEncry);
+//        System.out.println("암호화된 텍스트: " + encryptedText);
+//        String encryptedData = encryptedText;
+//        String encodedData = URLEncoder.encode(encryptedData, StandardCharsets.UTF_8);
+//        System.out.println("인코딩된 데이터: " + encodedData);
+//        // 복호화
+        String decodeData = URLDecoder.decode(recordEncry,StandardCharsets.UTF_8);
+        System.out.println("디코딩된 데이터: "+decodeData);
+//        String decryptedText = feeService.decrypt(decodeData);
+//        System.out.println("복호화된 텍스트: " + decryptedText);
         return null;
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> searchRecordByid(@PathVariable("id") String id ) {
+        RecordCarNumResponseDto recordCarNumResponseDto = recordService.searchRecordById(Long.parseLong(id));
 
+        if(recordCarNumResponseDto ==null) {
+            return new ResponseEntity(new ApiResponseDto(false, "searchRecordById fail@", recordCarNumResponseDto),
+                    HttpStatus.OK);
+        }
+        System.out.println(recordCarNumResponseDto.getCarNum());
+        return new ResponseEntity(new ApiResponseDto(true, "searchRecordById successfully@", recordCarNumResponseDto),HttpStatus.OK);
+    }
 
 }

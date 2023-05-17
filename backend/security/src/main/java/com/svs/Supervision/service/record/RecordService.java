@@ -159,24 +159,30 @@ public class RecordService {
 
     public RecordCarNumResponseDto searchRecordById(Long id) {
 
-        Record record = recordRepository.findById(id).orElseThrow();
-        Car car = record.getCar();
+        Optional<Record> record = recordRepository.findById(id);
 
-        return RecordCarNumResponseDto.builder()
-                .id(record.getId())
-                .date(record.getDate())
-                .location(record.getLocation())
-                .plateImageUrl(record.getPlateImageUrl())
-                .carImageUrl(record.getCarImageUrl())
-                .fine(record.getFine())
-                .pay(record.getPay())
-                .carNum(car.getCarNum())
-                .phoneNum(car.getPhoneNum())
-                .name(car.getName())
-                .address(car.getAddress())
-                .model(car.getModel())
-                .color(car.getColor())
-                .build();
+        if(!record.isPresent()){
+            return null;
+        }
+        else {
+            Car car = record.get().getCar();
+
+            return RecordCarNumResponseDto.builder()
+                    .id(record.get().getId())
+                    .date(record.get().getDate())
+                    .location(record.get().getLocation())
+                    .plateImageUrl(record.get().getPlateImageUrl())
+                    .carImageUrl(record.get().getCarImageUrl())
+                    .fine(record.get().getFine())
+                    .pay(record.get().getPay())
+                    .carNum(car.getCarNum())
+                    .phoneNum(car.getPhoneNum())
+                    .name(car.getName())
+                    .address(car.getAddress())
+                    .model(car.getModel())
+                    .color(car.getColor())
+                    .build();
+        }
     }
 
 
