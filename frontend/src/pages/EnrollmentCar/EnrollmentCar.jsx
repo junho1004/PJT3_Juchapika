@@ -142,7 +142,7 @@ export default function EnrollmentCar() {
   const button = () => {
     // e.preventDefault();
     // console.log(e)
-    console.log("이리와봐요")
+    console.log("asdf")
     // setInputText(InputText);
     const data = {
       id: id,
