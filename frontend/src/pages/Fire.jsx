@@ -32,9 +32,9 @@
 //
 
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // import * as WebSocket from 'websocket';
-//
+
 const [client, setClient] = useState(null);
 
 client.onmessage = (message) => {
