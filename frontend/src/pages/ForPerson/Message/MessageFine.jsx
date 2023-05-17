@@ -183,9 +183,9 @@ export default function MessageFine() {
                 부과내역
                 <span>
                 {pay === true ? (
-                  <span style={{ color: "blue" }}>납부완료</span>
+                  <span style={{ color: "blue" }}>(납부완료)</span>
                 ) : (
-                  <span style={{ color: "red" }}>미납</span>
+                  <span style={{ color: "red" }}>(미납)</span>
                 )}
               </span>
               </div>

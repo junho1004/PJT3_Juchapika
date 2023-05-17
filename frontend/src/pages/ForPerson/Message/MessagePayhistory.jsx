@@ -63,7 +63,7 @@ export default function MessagePayhistory(data) {
                     key={index}
                     >
                       <div className={styles.video1}>
-                        <div style={{width:"20%"}}>{index + 1}.</div>
+                        <div style={{width:"8%"}}>{index + 1}.</div>
                         <div className={styles.video}>{post.location}</div>
                       </div>
                       <hr></hr>
@@ -106,14 +106,13 @@ export default function MessagePayhistory(data) {
                       <span className={styles.texts}>{number.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')}</span>
                     </div>
                     <div className={styles.name}>
-                      <span style={{ width: "50%" }}>주소</span>
+                      <span style={{ width: "50%", wordWrap:"break-all" }}>주소</span>
                       <span className={styles.texts}>{address}</span>
                     </div>
                     <div className={styles.name}>
-                    <span style={{ width: "40%" }}>번호판</span>
+                    <span style={{ width: "50%" }}>번호판</span>
                     <span className={styles.texts}>
-                      {" "}
-                      <img src={plate} alt="go" style={{ width: "100px" }} />
+                      <img src={plate} alt="go" style={{ width: "100%" }} />
                     </span>
                   </div>
                     <div className={styles.name}>
