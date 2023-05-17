@@ -34,6 +34,8 @@
 
 import React, { useEffect } from 'react';
 // import * as WebSocket from 'websocket';
+//
+const [client, setClient] = useState(null);
 
 client.onmessage = (message) => {
   console.log("메시지 도착!");
@@ -64,6 +66,8 @@ const Test = () => {
     return () => {
       client.close();
     };
+
+    setClient(client);
   }, []);
 
   return <div>React App</div>;
