@@ -90,7 +90,7 @@ export default function EnrollmentCar() {
       carNum: InputText,
     }
     console.log(data);
-    axios.put("http://localhost:8081/api/record/fine"
+    axios.put("http://localhost:8081/api/record/update"
       , data,
       {
         headers: {
