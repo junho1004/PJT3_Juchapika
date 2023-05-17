@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 export default function MessagePayhistory(data) {
   const carnum1 = data.data;
-  console.log(carnum1)
+  console.log(carnum1);
   const [posts, setPosts] = useState([]);
   const [modal, Setmodal] = useState(false);
   let [location, setlocation] = useState("");
@@ -18,14 +18,13 @@ export default function MessagePayhistory(data) {
   let [address, setaddress] = useState("");
   let [number, setnumber] = useState("");
 
-
   useEffect(() => {
     const carnum2 = {
       carNum: carnum1,
     };
-    
+
     axios
-      .post("http://localhost:8081/api/feeletter/carnum", carnum2,{})
+      .post("http://localhost:8081/api/feeletter/carnum", carnum2, {})
       .then((res) => {
         let datas = res.data.responseData;
         setPosts(datas);
@@ -53,86 +52,91 @@ export default function MessagePayhistory(data) {
   };
 
   return (
-    
-        <div className={styles.area}>
-                <div className={styles.list}>
-                  {posts.map((post, index) => (
-                    <div
-                    onClick={() => openModal(post)}
-                    className={styles.videos}
-                    key={index}
-                    >
-                      <div className={styles.video1}>
-                        <div style={{width:"8%"}}>{index + 1}.</div>
-                        <div className={styles.video}>{post.location}</div>
-                      </div>
-                      <hr></hr>
-                    </div>
-                  ))}
-                </div>
-          {modal && (
-          <div className={styles.container}>
-            <div className={styles.modal}>
-              <div onClick={closeModal} className={styles.x}>
-                <div>x</div>
+    <div className={styles.area}>
+      <div className={styles.list}>
+        {posts.length > 0 ? (
+          posts.map((post, index) => (
+            <div
+              onClick={() => openModal(post)}
+              className={styles.videos}
+              key={index}
+            >
+              <div className={styles.video1}>
+                <div style={{ width: "8%" }}>{index + 1}.</div>
+                <div className={styles.video}>{post.location}</div>
               </div>
-              <div>
-                <div className={styles.modaltext}>
-                  <div style={{ fontSize: "1.5em", fontWeight: "800" }}>
+              <hr />
+            </div>
+          ))
+        ) : (
+          <div>내역이 없습니다</div>
+        )}
+      </div>
+      {modal && (
+        <div className={styles.container}>
+          <div className={styles.modal}>
+            <div onClick={closeModal} className={styles.x}>
+              <div>x</div>
+            </div>
+            <div>
+              <div className={styles.modaltext}>
+                <div style={{ fontSize: "1.5em", fontWeight: "800" }}>
                   {num}
-                  </div>
                 </div>
-                <div className={styles.modaltext}>
-                  <div style={{ fontSize: "0.7em", marginBottom: "10px" }}>
+              </div>
+              <div className={styles.modaltext}>
+                <div style={{ fontSize: "0.7em", marginBottom: "10px" }}>
                   {location}
-                  </div>
                 </div>
-                <hr></hr>
-                <div className={styles.modaltext1}>
+              </div>
+              <hr></hr>
+              <div className={styles.modaltext1}>
                 <img
                   src={carImageUrl1}
                   alt="go"
                   className={styles.carimage}
                   style={{ width: "50%" }}
                 />
-                  <div className={styles.contenttext}>
-                    
-                    <div className={styles.name}>
-                      <span style={{ width: "50%" }}>소유주</span>
-                      <span className={styles.texts}>{name}</span>
-                    </div>
-                    <div className={styles.name}>
-                      <span style={{ width: "50%" }}>전화번호</span>
-                      <span className={styles.texts}>{number.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')}</span>
-                    </div>
-                    <div className={styles.name}>
-                      <span style={{ width: "50%", wordWrap:"break-all" }}>주소</span>
-                      <span className={styles.texts}>{address}</span>
-                    </div>
-                    <div className={styles.name}>
+                <div className={styles.contenttext}>
+                  <div className={styles.name}>
+                    <span style={{ width: "50%" }}>소유주</span>
+                    <span className={styles.texts}>{name}</span>
+                  </div>
+                  <div className={styles.name}>
+                    <span style={{ width: "50%" }}>전화번호</span>
+                    <span className={styles.texts}>
+                      {number.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}
+                    </span>
+                  </div>
+                  <div className={styles.name}>
+                    <span style={{ width: "50%", wordWrap: "break-all" }}>
+                      주소
+                    </span>
+                    <span className={styles.texts}>{address}</span>
+                  </div>
+                  <div className={styles.name}>
                     <span style={{ width: "50%" }}>번호판</span>
                     <span className={styles.texts}>
                       <img src={plate} alt="go" style={{ width: "100%" }} />
                     </span>
                   </div>
-                    <div className={styles.name}>
-                      <span style={{ width: "50%" }}>납부유무</span>
-                      <span className={styles.texts}>
-                        {pay === "납부완료" ? (
-                          <span style={{ color: "blue" }}>납부완료</span>
-                        ) : (
-                          <span style={{ color: "red" }}>미납</span>
-                        )}
-                      </span>
-                    </div>
+                  <div className={styles.name}>
+                    <span style={{ width: "50%" }}>납부유무</span>
+                    <span className={styles.texts}>
+                      {pay === "납부완료" ? (
+                        <span style={{ color: "blue" }}>납부완료</span>
+                      ) : (
+                        <span style={{ color: "red" }}>미납</span>
+                      )}
+                    </span>
                   </div>
-               
                 </div>
               </div>
             </div>
-            <div className={styles.back} onClick={closeModal}></div>
           </div>
-        )}
+          <div className={styles.back} onClick={closeModal}></div>
         </div>
+      )}
+    </div>
   );
 }

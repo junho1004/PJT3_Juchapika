@@ -137,9 +137,8 @@ export default function EnrollmentCar() {
       .catch((err) => console.log(err));
   };
 
-  const button = (e) => {
-    e.preventDefault();
-    console.log(e)
+  const button = () => {
+   
     console.log("이리와봐요")
     // setInputText(InputText);
     const data = {

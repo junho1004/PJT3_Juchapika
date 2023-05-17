@@ -56,7 +56,9 @@
   width: 100%;
   height: 90%;
   background-color: white;
-  padding:2%
+  padding:2%;
+  overflow: auto;
+   /* max-height: 90%; */
 }
 .content {
   margin: 5%;
