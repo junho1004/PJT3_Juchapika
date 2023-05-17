@@ -27,7 +27,7 @@ export default function MessagePayhistory(data) {
     };
     
     axios
-      .post(`{baseUrl}/feeletter/carnum`, carnum2,{})
+      .post(`${baseUrl}/feeletter/carnum`, carnum2,{})
       .then((res) => {
         let datas = res.data.responseData;
         setPosts(datas);

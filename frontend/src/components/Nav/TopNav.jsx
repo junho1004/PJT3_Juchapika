@@ -202,7 +202,7 @@ export default function TopNav() {
     let token = sessionStorage.getItem("token");
 
     axios
-      .post(`${baseUrl}/record/search-by-carnum`, carNum1, {
+      .post(`${baseUrl}/record/search-by-carnum`, carNum2, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
