@@ -35,7 +35,7 @@
 import React, { useEffect } from 'react';
 import io from 'socket.io-client';
 
-const Test = () => {
+const Fire = () => {
   useEffect(() => {
     const socket = io('wss://juchapika.site:8082'); // HTTPS를 사용한 서버 주소
 
@@ -66,4 +66,4 @@ const Test = () => {
   return <div>React App</div>;
 };
 
-export default Test;
+export default Fire;
