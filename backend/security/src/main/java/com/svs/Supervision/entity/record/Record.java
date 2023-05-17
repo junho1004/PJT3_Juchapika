@@ -76,6 +76,9 @@ public class Record {
         this.cnt=cnt;
         this.car=car;
     }
+    public void cntUpdate(Long cnt){
+        this.cnt=cnt;
+    }
 
 
 }

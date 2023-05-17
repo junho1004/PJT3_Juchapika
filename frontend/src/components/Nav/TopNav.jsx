@@ -37,16 +37,14 @@ export default function TopNav() {
     again();
   }, [nowindex]);
 
-  useEffect(() => {
-  }, [restNumList]);
+  useEffect(() => {}, [restNumList]);
 
-  useEffect(() => {
-   
-  }, [InputText]);
+  useEffect(() => {}, [searchCar]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
+        setSearchHis(false);
         setInputText("");
       }
     };
@@ -79,8 +77,10 @@ export default function TopNav() {
       })
 
       .then((res) => {
+        console.log("왜 한번에 안됨?");
         if (res.data.responseData !== null) {
           setSearchcar(res.data.responseData);
+          console.log(res.data.responseData);
         }
       })
       .catch((error) => {
@@ -105,20 +105,19 @@ export default function TopNav() {
     
     if (InputText !== "") {
       sessionStorage.setItem(`${InputText}`, JSON.stringify(restNum));
+      sessionStorage.setItem(`${InputText}+c`, JSON.stringify(searchCar));
       if (searchCar.length === 0) {
         alert("등록된 차량이 없습니다");
         setInputText("");
         return;
       }
       let foundCar = false;
-
       if (InputText === searchCar[nowindex].carNum) {
         let info = searchCar[nowindex];
         if (!searchHistory.includes(InputText)) {
-          const updatedHistory = [...searchHistory, InputText];
+          const updatedHistory = [InputText, ...searchHistory]; // InputText를 배열의 맨 앞에 추가
           setSearchHistory(updatedHistory);
           sessionStorage.setItem("keywords", JSON.stringify(updatedHistory));
-          
         }
         Setmodal(true);
         setCarNum(info.carNum);
@@ -138,6 +137,7 @@ export default function TopNav() {
       }
       if (!foundCar) {
         alert("등록된 차량이 없습니다");
+
         setInputText("");
         return;
       }
@@ -156,7 +156,6 @@ export default function TopNav() {
       let restNum = arr.filter((item) => {
         return item != nowindex;
       });
-     
       setRestNumList(restNum);
 
       // let foundCar = false;
@@ -194,9 +193,10 @@ export default function TopNav() {
   };
   const clickme = (e) => {
     console.log(e);
-    setRestNumList(JSON.parse(sessionStorage.getItem(`${e}`)))
-    console.log(JSON.parse(sessionStorage.getItem(`${e}`)))
-    const carNum1 = {
+    setRestNumList(JSON.parse(sessionStorage.getItem(`${e}`)));
+    setSearchcar(JSON.parse(sessionStorage.getItem(`${e}+c`)));
+
+    const carNum2 = {
       carNum: e,
     };
     let token = sessionStorage.getItem("token");
@@ -222,7 +222,6 @@ export default function TopNav() {
         setPay(info.pay);
         setPhoneNum(info.phoneNum);
         setPlateImageUrl(info.plateImageUrl);
-        
       })
       .catch((error) => {
         // setSearchcar("");
