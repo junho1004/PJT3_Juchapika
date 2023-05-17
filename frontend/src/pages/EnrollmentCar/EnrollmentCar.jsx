@@ -166,6 +166,28 @@ export default function EnrollmentCar() {
       .catch((err) => console.log(err));
   };
 
+  const Send = () => {
+    console.log("등록됐나?")
+    console.log(id)
+    const data = {
+      id: id,
+    };
+    console.log(data);
+    axios
+      .post("http://localhost:8081/api/record/fine", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.responseData);
+        console.log("등록으로 보내짐");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   let fordate = date.replace("T", " ");
 
   return (
@@ -251,7 +273,11 @@ export default function EnrollmentCar() {
               </div>
             </div>
           </div>
-          <div className={styles.button2} style={{ marginBottom: "3%" }}>
+          <div
+            className={styles.button2}
+            style={{ marginBottom: "3%" }}
+            onClick={Send}
+          >
             납부 알림 메시지 전송
           </div>
           <div onClick={deleteButton} className={styles.button2}>
