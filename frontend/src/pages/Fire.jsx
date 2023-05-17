@@ -33,42 +33,44 @@
 
 
 import React, { useEffect, useState } from 'react';
-// import * as WebSocket from 'websocket';
-
-const [client, setClient] = useState(null);
-
-client.onmessage = (message) => {
-  console.log("메시지 도착!");
-  const packet = message.data;
-  console.log('Received packet :', packet);
-
-  // Process the received packet As needed
-  // ...
-};
 
 const Test = () => {
-  useEffect(() => {
-    const client = new WebSocket('wss://juchapika.site:8082');
+  const [client, setClient] = useState(null);
 
-    client.onopen = () => {
+  useEffect(() => {
+    if (client) {
+      client.onmessage = (message) => {
+        console.log('메시지 도착!');
+        const packet = message.data;
+        console.log('Received packet:', packet);
+
+        // Process the received packet as needed
+        // ...
+      };
+    }
+  }, [client]);
+
+  useEffect(() => {
+    const newClient = new WebSocket('wss://juchapika.site:8082');
+
+    newClient.onopen = () => {
       console.log('WebSocket client connected');
-      console.log(client);
+      console.log(newClient);
     };
 
-    client.onclose = () => {
+    newClient.onclose = () => {
       console.log('WebSocket client disconnected');
     };
 
-    client.onerror = (error) => {
-        console.log(error);
+    newClient.onerror = (error) => {
+      console.log(error);
     };
 
-    setClient(client);
-    
+    setClient(newClient);
+
     return () => {
-      client.close();
+      newClient.close();
     };
-
   }, []);
 
   return <div>React App</div>;
