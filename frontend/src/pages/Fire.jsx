@@ -63,11 +63,12 @@ const Test = () => {
         console.log(error);
     };
 
+    setClient(client);
+    
     return () => {
       client.close();
     };
 
-    setClient(client);
   }, []);
 
   return <div>React App</div>;
