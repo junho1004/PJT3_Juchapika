@@ -10,8 +10,29 @@
   height: 5%;
   background-color: rgba(68, 68, 68, 1);
   font-size: 1em;
+  /* position: absolute; */
 }
+.searchHistory {
+  width: 240px;
+  background-color: white;
+  color: black;
+  height: 100px;
+  position: fixed;
+  z-index: 4;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1%;
+}
+.searchHis {
+  padding: 6% 4% 6% 4%;
+  width: 80%;
 
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px gray solid;
+}
 .contentbox {
   width: 90%;
   height: 100%;
@@ -99,7 +120,7 @@ input:focus::placeholder {
 }
 
 .modal {
-  padding: 1% 1% 3% 2%;
+  padding: 2% 1% 3% 2%;
   position: fixed;
   z-index: 5;
   width: 40%;
@@ -189,7 +210,6 @@ input:focus::placeholder {
   overflow: auto;
   max-height: 70%;
   width: 100%;
-
 }
 .else2::-webkit-scrollbar {
   width: 12px;
@@ -201,7 +221,7 @@ input:focus::placeholder {
 }
 
 .else2::-webkit-scrollbar-track {
-  background-color: white
+  background-color: white;
 }
 .else1 {
   /* position: absolute; */

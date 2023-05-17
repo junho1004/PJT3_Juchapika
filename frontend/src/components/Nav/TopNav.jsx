@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./TopNav.module.css";
 import logo from "../../assets/logo.png";
 import magnifier from "../../assets/magnifier.png";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import axios from "axios";
 
 // eslint-disable-next-line react/prop-types
@@ -24,11 +24,36 @@ export default function TopNav() {
   const [restNumList, setRestNumList] = useState([]);
   let [PlateImageUrl, setPlateImageUrl] = useState(null);
   const sessionStorage = window.sessionStorage;
+  const [searchHistory, setSearchHistory] = useState(
+    JSON.parse(sessionStorage.getItem("keywords")) || []
+  );
+  const [searchhis, setSearchHis] = useState(false);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     again();
   }, [nowindex]);
-  useEffect(() => {}, []);
+
+  useEffect(() => {
+  }, [restNumList]);
+
+  useEffect(() => {
+  }, [searchCar]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (inputRef.current && !inputRef.current.contains(event.target)) {
+        setSearchHis(false)
+        setInputText("")
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const closeModal = () => {
     Setmodal(false);
@@ -36,7 +61,8 @@ export default function TopNav() {
   };
   const onChange = (e) => {
     setInputText(e.target.value);
-
+    // settext(e.target.value)
+    setSearchHis(true);
     const carNum1 = {
       carNum: e.target.value,
     };
@@ -50,9 +76,10 @@ export default function TopNav() {
       })
 
       .then((res) => {
-        console.log(res.data.responseData);
-        setSearchcar(res.data.responseData);
-        console.log("이게뭔지모르아너어럼이");
+          console.log("왜 한번에 안됨?")
+          setSearchcar(res.data.responseData);
+          console.log(res.data.responseData)
+   
       })
       .catch((error) => {
         // setSearchcar("");
@@ -62,6 +89,8 @@ export default function TopNav() {
   };
 
   const handleSubmit = (e) => {
+    console.log(e);
+    setSearchHis(false);
     e.preventDefault();
     let arr = new Array(searchCar.length).fill().map((_, i) => i);
 
@@ -70,18 +99,24 @@ export default function TopNav() {
     });
     // print(restNum)  // [1, 2]
     setRestNumList(restNum);
-
+ 
     if (InputText !== "") {
+      sessionStorage.setItem(`${InputText}`, JSON.stringify(restNum));
+      sessionStorage.setItem(`${InputText}+c`, JSON.stringify(searchCar));
       if (searchCar.length === 0) {
         alert("등록된 차량이 없습니다");
         setInputText("");
         return;
       }
       let foundCar = false;
-
       if (InputText === searchCar[nowindex].carNum) {
+       
         let info = searchCar[nowindex];
-
+        if (!searchHistory.includes(InputText)) {
+          const updatedHistory = [InputText, ...searchHistory]; // InputText를 배열의 맨 앞에 추가
+          setSearchHistory(updatedHistory);
+          sessionStorage.setItem("keywords", JSON.stringify(updatedHistory));
+        }
         Setmodal(true);
         setCarNum(info.carNum);
         setAddress(info.address);
@@ -100,6 +135,7 @@ export default function TopNav() {
       }
       if (!foundCar) {
         alert("등록된 차량이 없습니다");
+      
         setInputText("");
         return;
       }
@@ -118,7 +154,7 @@ export default function TopNav() {
       let restNum = arr.filter((item) => {
         return item != nowindex;
       });
-      // print(restNum)  // [1, 2]
+     
       setRestNumList(restNum);
 
       // let foundCar = false;
@@ -146,6 +182,53 @@ export default function TopNav() {
   };
 
   let fordate = date.replace("T", " ");
+
+  const deletethis = (index) => {
+    setSearchHistory((prevHistory) => {
+      const updatedHistory = [...prevHistory];
+      updatedHistory.splice(index, 1);
+      return updatedHistory;
+    });
+  };
+  const clickme = (e) => {
+    console.log(e);
+    setRestNumList(JSON.parse(sessionStorage.getItem(`${e}`)))
+    setSearchcar(JSON.parse(sessionStorage.getItem(`${e}+c`)))
+    
+    const carNum2 = {
+      carNum: e,
+    };
+    let token = sessionStorage.getItem("token");
+
+    axios
+      .post("http://localhost:8081/api/record/search-by-carnum", carNum2, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      .then((res) => {
+        Setmodal(true);
+        let info = res.data.responseData[nowindex];
+        setCarNum(info.carNum);
+        setAddress(info.address);
+        setCarImageUrl(info.carImageUrl);
+        setDate(info.date);
+        // setFine(info["fine"])
+        setDlocation(info.location);
+        // setModel(info["model"])
+        setName(info.name);
+        setPay(info.pay);
+        setPhoneNum(info.phoneNum);
+        setPlateImageUrl(info.plateImageUrl);
+        
+      })
+      .catch((error) => {
+        // setSearchcar("");
+        console.log(error);
+        // return;
+      });
+  };
 
   return (
     <div>
@@ -177,7 +260,7 @@ export default function TopNav() {
               실시간화면
             </div>
           </div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} ref={inputRef}>
             <div className={styles.blocklogout}>
               <input
                 type="text"
@@ -185,18 +268,28 @@ export default function TopNav() {
                 onChange={onChange}
                 className={styles.searchbox}
                 placeholder="  차량 조회"
-                // onKeyDown={onCheckEnter}
               />
               <div onClick={handleSubmit} className={styles.icon}>
                 {" "}
                 <img src={magnifier} alt="mag" style={{ width: "20px" }}></img>
               </div>
+              {searchhis && (
+                <div className={styles.searchHistory}>
+                  {searchHistory.map((history, index) => (
+                    <div key={index} className={styles.searchHis}>
+                      <div onClick={() => clickme(history)}>{history}</div>{" "}
+                      <div onClick={() => deletethis(index)}>X</div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </form>
         </div>
       </nav>
       {modal && (
         <div className={styles.container}>
+          
           <div className={styles.modal}>
             <div onClick={closeModal} className={styles.x}>
               <div>x</div>
@@ -239,7 +332,10 @@ export default function TopNav() {
                   </div>
                   <div className={styles.name}>
                     <span style={{ width: "40%" }}>전화번호</span>
-                    <span className={styles.texts}> {phoneNum}</span>
+                    <span className={styles.texts}>
+                      {" "}
+                      {phoneNum.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}
+                    </span>
                   </div>
                   <div className={styles.name}>
                     <div style={{ width: "40%" }}>소유주 주소</div>

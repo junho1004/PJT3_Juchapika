@@ -123,7 +123,7 @@ function UserTable({ tableData = [] }) {
   let fordate = date.replace("T", " ");
   return (
     <div>
-      <div style={{ fontSize: "1em" }}>총 {users.length}개</div>
+      <div style={{ fontSize: "1em" }}>총 {users.length}건</div>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -236,7 +236,7 @@ function UserTable({ tableData = [] }) {
                   </div>
                   <div className={styles.name}>
                     <span style={{ width: "40%" }}>전화번호</span>
-                    <span className={styles.texts}> {phoneNum}</span>
+                    <span className={styles.texts}> {phoneNum.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')}</span>
                   </div>
                   <div className={styles.name}>
                     <div style={{ width: "40%" }}>소유주 주소</div>
