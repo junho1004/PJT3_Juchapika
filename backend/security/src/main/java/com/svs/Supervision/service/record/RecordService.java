@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.http.HttpRequest;
 import com.svs.Supervision.dto.request.record.RecordDetailRequestDto;
 import com.svs.Supervision.dto.request.record.RecordIdCarNumRequestDto;
+import com.svs.Supervision.dto.request.record.RecordIdRequestDto;
 import com.svs.Supervision.dto.request.record.RecordRequestDto;
 import com.svs.Supervision.dto.request.sms.SmsSendRequestDto;
 import com.svs.Supervision.dto.response.record.RecordCarNumResponseDto;
@@ -15,8 +16,10 @@ import com.svs.Supervision.repository.car.CarRepository;
 import com.svs.Supervision.repository.record.RecordRepositoryQdslRepository;
 import com.svs.Supervision.repository.record.RecordRepository;
 import lombok.RequiredArgsConstructor;
+import java.text.SimpleDateFormat;
 import lombok.Value;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
@@ -45,7 +48,7 @@ public class RecordService {
     private final CarRepository carRepository;
 
 
-    public void sendMsg(Car car, String msg) {
+    public void sendMsg(Car car, String msg ,String token) {
         String url = "http://localhost:8081/api/sms/send-one";
         HttpClient httpClient = HttpClient.newHttpClient();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -56,6 +59,7 @@ public class RecordService {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", token)
                     .POST(HttpRequest.BodyPublishers.ofString(jsonString))
                     .build();
 
@@ -83,13 +87,13 @@ public class RecordService {
 
             System.out.println("단속 확정이 아니므로, 차량을 이동해달라는 SMS 를 전송한다.");
             // 단속 확정이 아니므로, 차량을 이동해달라는 SMS 를 전송한다.
-            sendMsg(car,
-                    "[JUCHAPIKA] 단속 알리미 \n" +
-                            "주정차 위반 금지구역에 차량이 확인되었습니다. \n 기준시간내에 차량을 이동시켜주세요 \n" +
-                            "- 성명 : " + car.getName() + "\n" +
-                            "- 차종 : " + car.getModel() + "\n" +
-                            "- 번호판 : " + car.getCarNum()
-            );
+//            sendMsg(car,
+//                    "[JUCHAPIKA] 단속 알리미 \n" +
+//                            "주정차 위반 금지구역에 차량이 확인되었습니다. \n 기준시간내에 차량을 이동시켜주세요 \n" +
+//                            "- 성명 : " + car.getName() + "\n" +
+//                            "- 차종 : " + car.getModel() + "\n" +
+//                            "- 번호판 : " + car.getCarNum()
+//            );
 
             recordRepository.save(Record.build(recordRequestDto, car));
 
@@ -108,17 +112,38 @@ public class RecordService {
             if (duration.toMinutes() >= 5) {
                 System.out.println("단속 확정.");
                 // 5 분뒤 또 단속에 걸리는 경우,
-                sendMsg(car,"[JUCHAPIKA] 단속 알리미 \n" +
-                                "단속 기준시간 초과로 확인되었습니다. \n" +
-                                "- 성명 : " + car.getName() + "\n" +
-                                "- 차종 : " + car.getModel() + "\n" +
-                                "- 번호판 : " + car.getCarNum()
-                );
+//                sendMsg(car,"[JUCHAPIKA] 단속 알리미 \n" +
+//                                "단속 기준시간 초과로 확인되었습니다. \n" +
+//                                "- 성명 : " + car.getName() + "\n" +
+//                                "- 차종 : " + car.getModel() + "\n" +
+//                                "- 번호판 : " + car.getCarNum()
+//                );
 
                 Long carId = record.getCar().getId();
                 recordRepository.updateCnt(carId, record.getId());
             }
         }
+    }
+    public void fineRecord(RecordIdRequestDto recordIdRequestDto,String token){
+        Record record = recordRepository.getById(recordIdRequestDto.getId());
+        Car car = record.getCar();
+        String feeUrl = "https://jupika.site/api/feeletter/"+(record.getId());
+        System.out.println(feeUrl);
+        System.out.println(car.getPhoneNum());
+        record.cntUpdate(2L);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH시mm분");
+        String formattedDateTime = record.getDate().format(formatter);
+
+        sendMsg(car,"[JUCHAPIKA] 단속 알리미 \n" +
+                "단속 기준시간 초과로 확인되었습니다. \n" +
+                "- 성명 : " + car.getName() + "\n" +
+                "- 차종 : " + car.getModel() + "\n" +
+                "- 번호판 : " + car.getCarNum()+ "\n" +
+                "- 일시 : " + formattedDateTime + "\n" +
+                "- 장소 : " + record.getLocation() +"\n" +
+                "- 고지서 :"+ feeUrl, token
+        );
     }
 
     public List<RecordCarNumResponseDto> searchRecord(String carNum) {
@@ -146,24 +171,30 @@ public class RecordService {
 
     public RecordCarNumResponseDto searchRecordById(Long id) {
 
-        Record record = recordRepository.findById(id).orElseThrow();
-        Car car = record.getCar();
+        Optional<Record> record = recordRepository.findById(id);
 
-        return RecordCarNumResponseDto.builder()
-                .id(record.getId())
-                .date(record.getDate())
-                .location(record.getLocation())
-                .plateImageUrl(record.getPlateImageUrl())
-                .carImageUrl(record.getCarImageUrl())
-                .fine(record.getFine())
-                .pay(record.getPay())
-                .carNum(car.getCarNum())
-                .phoneNum(car.getPhoneNum())
-                .name(car.getName())
-                .address(car.getAddress())
-                .model(car.getModel())
-                .color(car.getColor())
-                .build();
+        if(!record.isPresent()){
+            return null;
+        }
+        else {
+            Car car = record.get().getCar();
+
+            return RecordCarNumResponseDto.builder()
+                    .id(record.get().getId())
+                    .date(record.get().getDate())
+                    .location(record.get().getLocation())
+                    .plateImageUrl(record.get().getPlateImageUrl())
+                    .carImageUrl(record.get().getCarImageUrl())
+                    .fine(record.get().getFine())
+                    .pay(record.get().getPay())
+                    .carNum(car.getCarNum())
+                    .phoneNum(car.getPhoneNum())
+                    .name(car.getName())
+                    .address(car.getAddress())
+                    .model(car.getModel())
+                    .color(car.getColor())
+                    .build();
+        }
     }
 
 

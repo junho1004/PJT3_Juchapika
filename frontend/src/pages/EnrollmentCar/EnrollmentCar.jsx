@@ -20,12 +20,17 @@ export default function EnrollmentCar() {
   let [date, setdate] = useState("");
   let [locations, setlocation] = useState("");
   let [fine, setfine] = useState("");
+  const[bincan,setbincan]=useState("")
+
 
   let navigate = useNavigate();
   const sessionStorage = window.sessionStorage;
   const token = sessionStorage.getItem("token");
+
+
   useEffect(() => {
     console.log(token);
+    
     axios
       .get("http://localhost:8081/api/record/live-report-list", {
         headers: {
@@ -46,6 +51,7 @@ export default function EnrollmentCar() {
 
   const clickitem = (title, id) => {
     setInputText(title);
+    setbincan(title);
     setid(id);
     // postsss(id)
     const id1 = {
@@ -86,6 +92,8 @@ export default function EnrollmentCar() {
   };
 
   const onChange = (e) => {
+    // setbincan(e.target.value)
+    
     setInputText(e.target.value);
   };
 
@@ -114,7 +122,12 @@ export default function EnrollmentCar() {
             })
             .then((res) => {
               console.log(res.data.responseData);
-              setPosts(res.data.responseData);
+              setInputText("");
+              setfine("");
+              setdate("");
+              setCarImageUrl("");
+              setid("");
+              setlocation("");
             })
             .catch((error) => {
               console.error(error);
@@ -126,6 +139,8 @@ export default function EnrollmentCar() {
 
   const button = (e) => {
     e.preventDefault();
+    console.log(e)
+    console.log("이리와봐요")
     // setInputText(InputText);
     const data = {
       id: id,
@@ -141,8 +156,10 @@ export default function EnrollmentCar() {
       .then((data) => {
         if (!data.data.success) {
           alert("수정 실패했습니다. 다시 시도해주세요");
+          setInputText(bincan)
         } else {
           alert("수정 완료되었습니다");
+          setInputText(InputText)
           axios
             .get("http://localhost:8081/api/record/live-report-list", {
               headers: {
@@ -159,6 +176,36 @@ export default function EnrollmentCar() {
         }
       })
       .catch((err) => console.log(err));
+  };
+
+  const Send = () => {
+    console.log(id)
+    
+    console.log(posts)
+    const data = {
+      id: id,
+    };
+    console.log(data);
+    axios
+      .put("http://localhost:8081/api/record/fine", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.responseData);
+        console.log(res)
+        console.log("등록으로 보내짐");
+        setInputText("");
+              setfine("");
+              setdate("");
+              setCarImageUrl("");
+              setid("");
+              setlocation("");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   let fordate = date.replace("T", " ");
@@ -202,7 +249,16 @@ export default function EnrollmentCar() {
                     className={styles.input}
                   />
                 </form>
-                <div onClick={button} className={styles.button}>
+                <div
+                  className={styles.button}
+                  onClick={() => {
+                    if (carImageUrl) {
+                      button();
+                    } else {
+                      alert("등록하실 차량을 선택해주세요!");
+                    }
+                  }}
+                >
                   <div>수정</div>
                 </div>
               </div>
@@ -224,16 +280,24 @@ export default function EnrollmentCar() {
               <div
                 className={styles.button1}
                 onClick={() => {
-                  navigate("/feeletter", {
-                    state: { data1: InputText, data2: id },
-                  });
+                  if (carImageUrl) {
+                    navigate("/feeletter", {
+                      state: { data1: InputText, data2: id },
+                    });
+                  } else {
+                    alert("등록하실 차량을 선택해주세요!");
+                  }
                 }}
               >
                 고지서 미리보기
               </div>
             </div>
           </div>
-          <div className={styles.button2} style={{ marginBottom: "3%" }}>
+          <div
+            className={styles.button2}
+            style={{ marginBottom: "3%" }}
+            onClick={Send}
+          >
             납부 알림 메시지 전송
           </div>
           <div onClick={deleteButton} className={styles.button2}>

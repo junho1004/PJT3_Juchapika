@@ -76,7 +76,7 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
 
             list = jpaQueryFactory.selectFrom(record)
                     .join(car).on(car.id.eq(record.car.id))
-                    .where(record.date.between(startDate, endDate))
+                    .where(record.date.between(startDate, endDate),record.cnt.eq(2L))
                     .orderBy(record.date.desc())
                     .fetch();
         }
@@ -84,7 +84,7 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
         else if (district.equals("전체") && !dong.equals("전체")) {
             list = jpaQueryFactory.selectFrom(record)
                     .join(car).on(car.id.eq(record.car.id))
-                    .where(record.date.between(startDate, endDate), record.location.contains(dong))
+                    .where(record.date.between(startDate, endDate), record.location.contains(dong),record.cnt.eq(2L))
                     .orderBy(record.date.desc())
                     .fetch();
         }
@@ -95,7 +95,7 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
             System.out.println(record.location.contains(district));
             list = jpaQueryFactory.selectFrom(record)
                     .join(car).on(car.id.eq(record.car.id))
-                    .where(record.date.between(startDate, endDate), record.location.contains(district))
+                    .where(record.date.between(startDate, endDate), record.location.contains(district),record.cnt.eq(2L))
                     .orderBy(record.date.desc())
                     .fetch();
         }
@@ -105,7 +105,7 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
                     .join(car).on(car.id.eq(record.car.id))
                 .where(record.date.between(startDate, endDate),
                         record.location.contains(district),
-                        record.location.contains(dong))
+                        record.location.contains(dong),record.cnt.eq(2L))
                     .orderBy(record.date.desc())
                     .fetch();
         }

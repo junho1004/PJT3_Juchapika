@@ -8,7 +8,6 @@ import axios from "axios";
 
 // eslint-disable-next-line react/prop-types
 export default function TopNav() {
-  let localStorage = window.localStorage;
   const navigate = useNavigate();
   const [InputText, setInputText] = useState("");
   const [modal, Setmodal] = useState(false);
@@ -26,7 +25,7 @@ export default function TopNav() {
   let [PlateImageUrl, setPlateImageUrl] = useState(null);
   const sessionStorage = window.sessionStorage;
   const [searchHistory, setSearchHistory] = useState(
-    JSON.parse(localStorage.getItem("keywords")) || []
+    JSON.parse(sessionStorage.getItem("keywords")) || []
   );
   const [searchhis, setSearchHis] = useState(false);
   const inputRef = useRef(null);
@@ -34,19 +33,15 @@ export default function TopNav() {
   useEffect(() => {
     again();
   }, [nowindex]);
-  // useEffect(() => {
-  //  clickme()
-  // }, [setRestNumList()]);
 
-  useEffect(() => {
-    if (InputText === "") {
-      setSearchHis(false);
-    }
-  }, [InputText]);
+  useEffect(() => {}, [restNumList]);
+
+  useEffect(() => {}, [searchCar]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
+        setSearchHis(false);
         setInputText("");
       }
     };
@@ -79,8 +74,10 @@ export default function TopNav() {
       })
 
       .then((res) => {
+        console.log("왜 한번에 안됨?");
         if (res.data.responseData !== null) {
           setSearchcar(res.data.responseData);
+          console.log(res.data.responseData);
         }
       })
       .catch((error) => {
@@ -103,19 +100,20 @@ export default function TopNav() {
     setRestNumList(restNum);
 
     if (InputText !== "") {
+      sessionStorage.setItem(`${InputText}`, JSON.stringify(restNum));
+      sessionStorage.setItem(`${InputText}+c`, JSON.stringify(searchCar));
       if (searchCar.length === 0) {
         alert("등록된 차량이 없습니다");
         setInputText("");
         return;
       }
       let foundCar = false;
-
       if (InputText === searchCar[nowindex].carNum) {
         let info = searchCar[nowindex];
         if (!searchHistory.includes(InputText)) {
-          const updatedHistory = [...searchHistory, InputText];
+          const updatedHistory = [InputText, ...searchHistory]; // InputText를 배열의 맨 앞에 추가
           setSearchHistory(updatedHistory);
-          localStorage.setItem("keywords", JSON.stringify(updatedHistory));
+          sessionStorage.setItem("keywords", JSON.stringify(updatedHistory));
         }
         Setmodal(true);
         setCarNum(info.carNum);
@@ -135,6 +133,7 @@ export default function TopNav() {
       }
       if (!foundCar) {
         alert("등록된 차량이 없습니다");
+
         setInputText("");
         return;
       }
@@ -153,7 +152,7 @@ export default function TopNav() {
       let restNum = arr.filter((item) => {
         return item != nowindex;
       });
-      // print(restNum)  // [1, 2]
+
       setRestNumList(restNum);
 
       // let foundCar = false;
@@ -191,21 +190,22 @@ export default function TopNav() {
   };
   const clickme = (e) => {
     console.log(e);
-    const carNum1 = {
+    setRestNumList(JSON.parse(sessionStorage.getItem(`${e}`)));
+    setSearchcar(JSON.parse(sessionStorage.getItem(`${e}+c`)));
+
+    const carNum2 = {
       carNum: e,
     };
     let token = sessionStorage.getItem("token");
 
     axios
-      .post("http://localhost:8081/api/record/search-by-carnum", carNum1, {
+      .post("http://localhost:8081/api/record/search-by-carnum", carNum2, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
 
       .then((res) => {
-        console.log(res.data.responseData.length);
-
         Setmodal(true);
         let info = res.data.responseData[nowindex];
         setCarNum(info.carNum);
@@ -219,13 +219,6 @@ export default function TopNav() {
         setPay(info.pay);
         setPhoneNum(info.phoneNum);
         setPlateImageUrl(info.plateImageUrl);
-        // let a = res.data.responseData.length;
-        // const restNum = [...Array(a)]
-        //   .map((_, i) => i)
-        //   .filter((item) => item !== 0);
-        // setRestNumList(restNum);
-        // console.log(restNum);
-        // return restNum;
       })
       .catch((error) => {
         // setSearchcar("");
