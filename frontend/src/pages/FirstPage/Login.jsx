@@ -8,7 +8,7 @@ import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const baseUrl = process.env.REACT_APP_API_URL;
+// const baseUrl = process.env.REACT_APP_API_URL;
 
 export default function Login() {
   const navigate = useNavigate();
