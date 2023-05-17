@@ -20,6 +20,8 @@ export default function EnrollmentCar() {
   let [date, setdate] = useState("");
   let [locations, setlocation] = useState("");
   let [fine, setfine] = useState("");
+  const[bincan,setbincan]=useState("")
+
 
   let navigate = useNavigate();
   const sessionStorage = window.sessionStorage;
@@ -49,6 +51,7 @@ export default function EnrollmentCar() {
 
   const clickitem = (title, id) => {
     setInputText(title);
+    setbincan(title);
     setid(id);
     // postsss(id)
     const id1 = {
@@ -89,6 +92,8 @@ export default function EnrollmentCar() {
   };
 
   const onChange = (e) => {
+    // setbincan(e.target.value)
+    
     setInputText(e.target.value);
   };
 
@@ -133,7 +138,7 @@ export default function EnrollmentCar() {
   };
 
   const button = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     console.log(e)
     console.log("이리와봐요")
     // setInputText(InputText);
@@ -151,8 +156,10 @@ export default function EnrollmentCar() {
       .then((data) => {
         if (!data.data.success) {
           alert("수정 실패했습니다. 다시 시도해주세요");
+          setInputText(bincan)
         } else {
           alert("수정 완료되었습니다");
+          setInputText(InputText)
           axios
             .get("http://localhost:8081/api/record/live-report-list", {
               headers: {
