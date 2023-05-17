@@ -26,7 +26,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
+import org.springframework.web.bind.annotation.RequestHeader;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -74,8 +74,10 @@ public class RecordController {
     @Operation(summary = "단속 차량 최종등록", description = "recordId를 기준으로 최종 등록")
     public ResponseEntity<?> updateRecord(@RequestBody RecordIdRequestDto recordIdRequestDto,
                                           @Parameter(hidden = true)
-                                          @AuthenticationPrincipal User user) {
-        recordService.fineRecord(recordIdRequestDto);
+                                          @AuthenticationPrincipal User user,
+                                          @RequestHeader("Authorization") String token) {
+
+        recordService.fineRecord(recordIdRequestDto,token);
         return new ResponseEntity(new ApiResponseDto(true, "fineRecord successfully@", null), HttpStatus.CREATED);
     }
 
