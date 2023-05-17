@@ -29,15 +29,10 @@ async def start_websocket_server():
         await asyncio.Future()  # Run forever
 
 
-def send_message_to_react_server(message):
-    url = 'https://juchapika.site/test'  # Replace with the endpoint URL of your React server
-    payload = {'message': message}
-    headers = {'Content-Type': 'application/json'}
-    response = requests.post(url, json=payload, headers=headers)
-    if response.status_code == 200:
+async def send_message_to_react_server(message):
+    async with websockets.connect('wss://juchapika.site:8082/') as ws:
+        await ws.send(message)
         print('Message sent to React server successfully')
-    else:
-        print('Failed to send message to React server')
 
 
 async def main():

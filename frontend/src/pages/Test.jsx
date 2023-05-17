@@ -29,42 +29,40 @@
 //   );
 // }
 
-// import axios from 'axios';
-import React, { useEffect } from 'react';
-// import * as WebSocket from 'websocket';
+const express = require('express');
+const app = express();
+const expressWs = require('express-ws')(app);
+const port = 8000;
 
-const Test = () => {
-  useEffect(() => {
-    const client = new window.WebSocket('wss://juchapika.site:8082/');
+app.use(express.json());
 
-    client.onopen = () => {
-      console.log('WebSocket client connected');
-      console.log(client);
-    };
+app.ws('/ws', (ws, req) => {
+  ws.on('message', (message) => {
+    console.log('Packet received from WebSocket:', message);
 
+    // Process the received packet as needed
+    // ...
 
-    client.onmessage = (message) => {
-      const packet = message.data;
-      console.log('Received packet:', packet);
+    sendResponseToWebSocket(ws); // Send a response back to the WebSocket client
+  });
+});
 
-      // Process the received packet as needed
-      // ...
-    };
+app.post('/test', (req, res) => {
+  const packet = req.body.message;
+  console.log('Packet received from WebSocket:', packet);
 
-    client.onclose = () => {
-      console.log('WebSocket client disconnected');
-    };
+  // Process the received packet as needed
+  // ...
 
-    client.onerror = (error) => {
-        console.log(error);
-    };
+  res.sendStatus(200); // Send a response back to the WebSocket server
+});
 
-    return () => {
-      client.close();
-    };
-  }, []);
+app.listen(port, () => {
+  console.log(`React server listening at http://localhost:${port}`);
+});
 
-  return <div>React App</div>;
-};
-
-export default Test;
+function sendResponseToWebSocket(ws) {
+  // Send a response to the WebSocket client
+  const response = 'Response from React server';
+  ws.send(response);
+}
