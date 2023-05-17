@@ -4,26 +4,49 @@ import axios from "axios";
 // import axios from "axios";
 import { useState, useEffect } from "react";
 
-export default function MessagePayhistory() {
+export default function MessagePayhistory(data) {
+  const carnum1 = data.data;
+  console.log(carnum1)
   const [posts, setPosts] = useState([]);
   const [modal, Setmodal] = useState(false);
+  let [location, setlocation] = useState("");
+  const [num, setCarNum] = useState("");
+  let [carImageUrl1, setCarImageUrl] = useState("");
+  let [pay, setpay] = useState();
+  let [plate, setplate] = useState("");
+  let [name, setname] = useState("");
+  let [address, setaddress] = useState("");
+  let [number, setnumber] = useState("");
 
-  const [selectedTitle, setSelectedTitle] = useState("");
 
   useEffect(() => {
+    const carnum2 = {
+      carNum: carnum1,
+    };
+    
     axios
-      .get("https://jsonplaceholder.typicode.com/posts")
-      .then((response) => {
-        setPosts(response.data);
+      .post("http://localhost:8081/api/feeletter/carnum", carnum2,{})
+      .then((res) => {
+        let datas = res.data.responseData;
+        setPosts(datas);
+        console.log(datas);
+        console.log("ddddddd");
       })
       .catch((error) => {
-        console.error(error);
+        console.log(error);
       });
   }, []);
 
-  const openModal = (title) => {
+  const openModal = (i) => {
     Setmodal(true);
-    setSelectedTitle(title);
+    setCarNum(i.carNum);
+    setlocation(i.location);
+    setCarImageUrl(i.carImageUrl);
+    setpay(i.pay);
+    setplate(i.plateImageUrl);
+    setname(i.name);
+    setaddress(i.address);
+    setnumber(i.phoneNum);
   };
   const closeModal = () => {
     Setmodal(false);
@@ -33,15 +56,15 @@ export default function MessagePayhistory() {
     
         <div className={styles.area}>
                 <div className={styles.list}>
-                  {posts.map((post) => (
+                  {posts.map((post, index) => (
                     <div
-                      onClick={() => openModal(post.title)}
-                      className={styles.videos}
-                      key={post.id}
+                    onClick={() => openModal(post)}
+                    className={styles.videos}
+                    key={index}
                     >
                       <div className={styles.video1}>
-                        <div style={{width:"20%"}}>{post.id}</div>
-                        <div className={styles.video}>{post.title}</div>
+                        <div style={{width:"20%"}}>{index + 1}.</div>
+                        <div className={styles.video}>{post.location}</div>
                       </div>
                       <hr></hr>
                     </div>
@@ -56,43 +79,51 @@ export default function MessagePayhistory() {
               <div>
                 <div className={styles.modaltext}>
                   <div style={{ fontSize: "1.5em", fontWeight: "800" }}>
-                    차번호
+                  {num}
                   </div>
                 </div>
                 <div className={styles.modaltext}>
                   <div style={{ fontSize: "0.7em", marginBottom: "10px" }}>
-                    {selectedTitle}
+                  {location}
                   </div>
                 </div>
                 <hr></hr>
                 <div className={styles.modaltext1}>
-                <video
-                  src="https://www.w3schools.com/html/mov_bbb.mp4"
-                  controls
+                <img
+                  src={carImageUrl1}
+                  alt="go"
+                  className={styles.carimage}
+                  style={{ width: "50%" }}
                 />
-
                   <div className={styles.contenttext}>
                     
                     <div className={styles.name}>
                       <span style={{ width: "50%" }}>소유주</span>
-                      <span className={styles.texts}> 이름</span>
+                      <span className={styles.texts}>{name}</span>
                     </div>
                     <div className={styles.name}>
                       <span style={{ width: "50%" }}>전화번호</span>
-                      <span className={styles.texts}> 번호</span>
+                      <span className={styles.texts}>{number.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')}</span>
                     </div>
                     <div className={styles.name}>
                       <span style={{ width: "50%" }}>주소</span>
-                      <span className={styles.texts}>주소</span>
+                      <span className={styles.texts}>{address}</span>
                     </div>
+                    <div className={styles.name}>
+                    <span style={{ width: "40%" }}>번호판</span>
+                    <span className={styles.texts}>
+                      {" "}
+                      <img src={plate} alt="go" style={{ width: "100px" }} />
+                    </span>
+                  </div>
                     <div className={styles.name}>
                       <span style={{ width: "50%" }}>납부유무</span>
                       <span className={styles.texts}>
-                        {/* {fee === "납부완료" ? (
+                        {pay === "납부완료" ? (
                           <span style={{ color: "blue" }}>납부완료</span>
                         ) : (
                           <span style={{ color: "red" }}>미납</span>
-                        )} */}납부완료
+                        )}
                       </span>
                     </div>
                   </div>

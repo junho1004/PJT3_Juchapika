@@ -1,11 +1,10 @@
 import React from "react";
 import styles from "./MessageFine.module.css";
 // import { useNavigate } from "react-router-dom";
-import car from "../../../assets/car1.png";
 import { useState } from "react";
-// import { useParams  } from "react-router-dom";
+import { useParams  } from "react-router-dom";
 import MessagePayhistory from "./MessagePayhistory";
-// import { useEffect} from "react";
+import { useEffect} from "react";
 import axios from "axios";
 import hamburger from "../../../assets/hamburger.png";
 // import PropTypes from 'prop-types'; 
@@ -14,16 +13,38 @@ import hamburger from "../../../assets/hamburger.png";
 // import { useSearchParams } from 'react-router-dom';
 
 export default function MessageFine() {
-  // const { id } = useParams();
-  const { id } = 9;
+  const { id } = useParams();
+  console.log(id)
+  let [name, setName] = useState("");
+  let [phoneNum, setphone] = useState("");
+  let [address, setAddress] = useState("");
+  let [carImageUrl, setCarImageUrl] = useState("");
+  // let [plate, setplate] = useState("");
+  let [date, setDate] = useState("");
+  let [modifiedDate, setmodifieddate] = useState("");
+  let [pay, setPay] = useState(null);
+  let [location, setlocation] = useState("");
+  let [carnum, setcarnum] = useState("");
+  let [fine, setfine] = useState();
 
   // const [searchParams, setSearchParams] = useSearchParams();
 
   console.log(id)
       axios
-      .get("http://localhost:8081/api/feeletter/9")
+      .get(`http://localhost:8081/api/feeletter/${id}`)
       .then((res) => {
-        console.log(res);
+        let datas = res.data.responseData;
+        console.log(datas);
+        setName(datas.name);
+        setphone(datas.phoneNum);
+        setAddress(datas.address);
+        setCarImageUrl(datas.carImageUrl);
+        // setplate(datas.plateImageUrl);
+        setDate(datas.date);
+        setPay(datas.pay);
+        setfine(datas.fine);
+        setlocation(datas.location);
+        setcarnum(datas.carNum)
       })
       .catch((error) => {
         console.error(error);
@@ -42,7 +63,20 @@ export default function MessageFine() {
   const closeModal = () => {
     setmodal(false);
   };
-  // setSearchParams({ key: 'value' });
+  useEffect(() => {
+    const currentDate = new Date(`${date}Z`);
+    currentDate.setDate(currentDate.getDate() - 20);
+
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+    const day = String(currentDate.getDate()).padStart(2, "0");
+
+    const modifiedDate = `${year}/${month}/${day}`;
+    setmodifieddate(modifiedDate);
+  }, [date]);
+
+  let fordate = date.replace("T", " ");
+  let dates = fordate.replace(/-/g, "/");
 
   return (
     <div className={styles.background}>
@@ -74,10 +108,10 @@ export default function MessageFine() {
             <div className={styles.content}>
               <div>
                 <div style={{ fontWeight: "700", fontSize: "1.8em" }}>
-                  차넘버
+                  {carnum}
                   
                 </div>
-                <div style={{ marginTop: "5px" }}>차량소유자: 정주영</div>
+                <div style={{ marginTop: "5px" }}>차량소유자: {name}</div>
               </div>
               <hr style={{ marginTop: "10%", width: "100%" }}></hr>
             </div>
@@ -106,7 +140,7 @@ export default function MessageFine() {
       <div className={styles.body}>
         {payhistory ? (
           <div className={styles.area}>
-            <MessagePayhistory />
+            <MessagePayhistory data = {carnum}/>
           </div>
         ) : (
           <div className={styles.area}>
@@ -118,14 +152,10 @@ export default function MessageFine() {
               }}
             >
               납세자 정보
-             <h2>
-              {/* {searchParams.get('carNum')} */}
-              </h2> 
-                  <h2>User Details - ID: {id}</h2>
             </div>
             <div className={styles.a}>
               <div className={styles.img}>
-                <img src={car} alt="go" width="100%" height="100%" />
+                <img src={carImageUrl} alt="go" width="100%" height="100%" />
               </div>
               <div className={styles.b0}>
                 <div className={styles.c}>
@@ -134,10 +164,10 @@ export default function MessageFine() {
                   <div style={{ paddingBottom: "5px" }}>주소</div>
                 </div>
                 <div className={styles.c1}>
-                  <div style={{ paddingBottom: "5px" }}>정우영</div>
-                  <div style={{ paddingBottom: "5px" }}>010-1234-5678</div>
+                  <div style={{ paddingBottom: "5px" }}>{name}</div>
+                  <div style={{ paddingBottom: "5px" }}>{phoneNum.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}</div>
                   <div style={{ paddingBottom: "5px" }}>
-                    함경북도 함흥시 냉면로 665-1
+                  {address}
                   </div>
                 </div>
               </div>
@@ -151,11 +181,18 @@ export default function MessageFine() {
                 }}
               >
                 부과내역
+                <span>
+                {pay === true ? (
+                  <span style={{ color: "blue" }}>납부완료</span>
+                ) : (
+                  <span style={{ color: "red" }}>미납</span>
+                )}
+              </span>
               </div>
               <div className={styles.f}>
                 <div className={styles.g}>
                   <div className={styles.g1}>납부기한</div>
-                  <div className={styles.g2}>2023/08/05</div>
+                  <div className={styles.g2}>{modifiedDate}</div>
                 </div>
                 <div className={styles.money}>
                   <div className={styles.g51}>
@@ -170,7 +207,7 @@ export default function MessageFine() {
 
                   <div className={styles.g5}>
                     <div className={styles.g3}>과태료</div>
-                    <div className={styles.g4}>40,000</div>
+                    <div className={styles.g4}>{fine}</div>
                   </div>
                   <div className={styles.g5}>
                     <div className={styles.g3}>가산금</div>
@@ -178,17 +215,17 @@ export default function MessageFine() {
                   </div>
                   <div className={styles.g5}>
                     <div className={styles.g3}>합계금액</div>
-                    <div className={styles.g4}>40,000</div>
+                    <div className={styles.g4}>{fine}</div>
                   </div>
                 </div>
 
                 <div className={styles.g}>
                   <div className={styles.g1}>적발일시</div>
-                  <div className={styles.g2}>2023/05/04</div>
+                  <div className={styles.g2}>{dates}</div>
                 </div>
                 <div className={styles.g}>
                   <div className={styles.g1}>적발장소</div>
-                  <div className={styles.g2}>주소적어야함</div>
+                  <div className={styles.g2} style={{ width: "150px", wordWrap: "break-all" }}>{location}</div>
                 </div>
 
                 <div className={styles.g}>
