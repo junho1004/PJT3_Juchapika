@@ -46,9 +46,9 @@ const Test = () => {
     client.onmessage = (message) => {
       console.log("메시지 도착!");
       const packet = message.data;
-      // console.log('Received packet:', packet);
+      console.log('Received packet :', packet);
 
-      // Process the received packet as needed
+      // Process the received packet As needed
       // ...
     };
 
