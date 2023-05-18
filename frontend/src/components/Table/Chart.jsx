@@ -21,7 +21,6 @@ class ApexChart extends Component {
     console.log("========");
 
     const total_data = [];
-
     const series = [  
       {    
         name: "전체",    
@@ -49,6 +48,7 @@ class ApexChart extends Component {
       },
     ];
 
+    console.log(series);
 
     // chartData 의 key(날짜) 값들을 기준으로 (남구, 동구, 서구, 광산구, 북구) 의 단속정보들을 받아온다.
     // start 날짜를 기준으로 
@@ -60,13 +60,10 @@ class ApexChart extends Component {
         for (let i = 1; i < series.length; i++) {
           series[i].data.push(chartData[key][series[i].name]);
         }
-      } else {
-        for (let i = 1; i < series.length; i++) {
-          series[i].data.push(0);
-        }
-      }
-
+      } 
     }
+
+    
 
     for (let i = 0; i < series[1]["data"].length; i++) {
       const total =
@@ -78,6 +75,8 @@ class ApexChart extends Component {
       total_data.push(total);
     }
     
+    console.log(series);
+
     this.state = {
       series,
       options: {
