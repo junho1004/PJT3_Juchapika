@@ -87,30 +87,30 @@ function UserTable({ tableData = [] }) {
     console.log(tableData[i - 1]);
     let info = tableData[i - 1];
     Setmodal(true);
-    setCarImageUrl(info.carImageUrl); ///찍힌 차 이미지 넣어야함
     setDate(info.date); ///언제 걸렸는지
     setDlocation(info.location); ///어디서 걸렸는지 넣어야함
     setPay(info.pay);
     settime(info.time);
-    setPlateImageUrl(info.plateImageUrl); ///얼마인지
-
+    
     const carNum1 = {
       carNum: j,
     };
     let token = sessionStorage.getItem("token")
-
+    
     axios
-      .post(`${baseUrl}/record/search-by-carnum`, carNum1,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-  },
-      })
-      .then((res) => {
-        const info1 = res.data.responseData[0];
-        setAddress(info1.address);
-        setName(info1.name);
-        setCarNum(info1.carNum);
+    .post(`${baseUrl}/record/search-by-carnum`, carNum1,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      const info1 = res.data.responseData[0];
+      setAddress(info1.address);
+      setCarImageUrl(info1.carImageUrl); ///찍힌 차 이미지 넣어야함
+      setName(info1.name);
+      setCarNum(info1.carNum);
+      setPlateImageUrl(info1.plateImageUrl); ///얼마인지
         setPhoneNum(info1.phoneNum);
         return
       })
