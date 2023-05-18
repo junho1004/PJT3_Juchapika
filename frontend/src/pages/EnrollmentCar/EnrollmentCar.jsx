@@ -99,6 +99,9 @@ export default function EnrollmentCar() {
     setInputText(e.target.value);
   };
 
+  //
+  // fix
+  //
   const deleteButton = (e) => {
     e.preventDefault();
 
