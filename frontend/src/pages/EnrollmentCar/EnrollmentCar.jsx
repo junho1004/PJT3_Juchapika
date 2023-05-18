@@ -103,7 +103,7 @@ export default function EnrollmentCar() {
     e.preventDefault();
 
     axios
-      .delete(`${baseUrl}record/delete-by-id`, {
+      .delete(`${baseUrl}/record/delete-by-id`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -203,6 +203,7 @@ export default function EnrollmentCar() {
               setCarImageUrl("");
               setid("");
               setlocation("");
+              alert("문자 메세지가 전송되었습니다");
       })
       .catch((error) => {
         console.error(error);
