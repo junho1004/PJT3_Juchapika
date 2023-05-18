@@ -12,6 +12,8 @@ import hamburger from "../../../assets/hamburger.png";
 
 // import { useSearchParams } from 'react-router-dom';
 
+const baseUrl = process.env.REACT_APP_API_URL;
+
 export default function MessageFine() {
   const { id } = useParams();
   console.log(id)
@@ -31,7 +33,7 @@ export default function MessageFine() {
 
   console.log(id)
       axios
-      .get(`http://localhost:8081/api/feeletter/${id}`)
+      .get(`${baseUrl}/feeletter/${id}`)
       .then((res) => {
         let datas = res.data.responseData;
         console.log(datas);

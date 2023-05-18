@@ -4,6 +4,8 @@ import axios from "axios";
 // import axios from "axios";
 import { useState, useEffect } from "react";
 
+const baseUrl = process.env.REACT_APP_API_URL;
+
 export default function MessagePayhistory(data) {
   const carnum1 = data.data;
   console.log(carnum1);
@@ -24,7 +26,7 @@ export default function MessagePayhistory(data) {
     };
 
     axios
-      .post("http://localhost:8081/api/feeletter/carnum", carnum2, {})
+      .post(`${baseUrl}/feeletter/carnum`, carnum2,{})
       .then((res) => {
         let datas = res.data.responseData;
         setPosts(datas);

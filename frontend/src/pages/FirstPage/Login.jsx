@@ -8,6 +8,7 @@ import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+// const baseUrl = process.env.REACT_APP_API_URL;
 
 export default function Login() {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ export default function Login() {
       password: loginpassword,
     };
     axios
-      .post("http://localhost:8081/api/user/signin", data)
+      .post("https://juchapika.site/api/user/signin", data)
       .then((res) => {
         sessionStorage.setItem("token", res.data.responseData.token);
         navigate("/main");

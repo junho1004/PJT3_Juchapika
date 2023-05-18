@@ -5,6 +5,9 @@ import logo from "../../assets/logo.png";
 import magnifier from "../../assets/magnifier.png";
 import { useEffect, useRef } from "react";
 import axios from "axios";
+import process from "process";
+
+const baseUrl = process.env.REACT_APP_API_URL;
 
 // eslint-disable-next-line react/prop-types
 export default function TopNav() {
@@ -67,7 +70,7 @@ export default function TopNav() {
     let token = sessionStorage.getItem("token");
 
     axios
-      .post("http://localhost:8081/api/record/search-by-carnum", carNum1, {
+      .post(`${baseUrl}/record/search-by-carnum`, carNum1, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -99,6 +102,7 @@ export default function TopNav() {
     // print(restNum)  // [1, 2]
     setRestNumList(restNum);
 
+    
     if (InputText !== "") {
       sessionStorage.setItem(`${InputText}`, JSON.stringify(restNum));
       sessionStorage.setItem(`${InputText}+c`, JSON.stringify(searchCar));
@@ -152,7 +156,6 @@ export default function TopNav() {
       let restNum = arr.filter((item) => {
         return item != nowindex;
       });
-
       setRestNumList(restNum);
 
       // let foundCar = false;
@@ -199,7 +202,7 @@ export default function TopNav() {
     let token = sessionStorage.getItem("token");
 
     axios
-      .post("http://localhost:8081/api/record/search-by-carnum", carNum2, {
+      .post(`${baseUrl}/record/search-by-carnum`, carNum2, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -286,6 +289,7 @@ export default function TopNav() {
       </nav>
       {modal && (
         <div className={styles.container}>
+          
           <div className={styles.modal}>
             <div onClick={closeModal} className={styles.x}>
               <div>x</div>

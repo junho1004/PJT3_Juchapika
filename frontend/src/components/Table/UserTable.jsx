@@ -16,6 +16,8 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 
+const baseUrl = process.env.REACT_APP_API_URL;
+
 function UserTable({ tableData = [] }) {
   // columns 기본값을 빈 배열로 설정
   const [page, setPage] = useState(0);
@@ -98,7 +100,7 @@ function UserTable({ tableData = [] }) {
     let token = sessionStorage.getItem("token")
 
     axios
-      .post("http://localhost:8081/api/record/search-by-carnum", carNum1,
+      .post(`${baseUrl}/record/search-by-carnum`, carNum1,
       {
         headers: {
           Authorization: `Bearer ${token}`,
