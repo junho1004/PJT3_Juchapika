@@ -27,8 +27,8 @@ spring:
 
 coolsms:
   api:
-    key: NCSCOGUYJX1YCUB9
-    secret: FAAQGUZSFSYHSJXL5SUBEZWGVIJUBMJG
+    key: 
+    secret: 
 
 server:
   max-http-header-size: 8000000

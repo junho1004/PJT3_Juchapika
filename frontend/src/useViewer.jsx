@@ -4,10 +4,10 @@ import { useViewer } from "react-kinesis-webrtc";
 export default function Viewer() {
   const config = {
     credentials: {
-      accessKeyId: "AKIAQVY7NV32G734VFPX",
-      secretAccessKey: "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",
+      accessKeyId: "",
+      secretAccessKey: "",
     },
-    channelARN: "arn:aws:kinesisvideo:ap-northeast-2:046773677812:channel/juchapika-channel/1682054445883",
+    channelARN: "arn:aws:kinesisvideo:ap-northeast-2:046773677812:channel/channel-name/1682054445883",
     region: "ap-northeast-2",
     media: {
       audio: true,
