@@ -66,7 +66,7 @@ export default function Feeletter() {
 
   useEffect(() => {
     const currentDate = new Date(`${date}Z`);
-    currentDate.setDate(currentDate.getDate() - 20);
+    currentDate.setDate(currentDate.getDate() + 20);
 
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, "0");

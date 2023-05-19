@@ -46,6 +46,7 @@ import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOG
 @Tag(name = "Record", description = "기록 관련 API")
 @RestController
 @RequestMapping("/record")
+
 @CrossOrigin(origins = "*", allowedHeaders = "*") // 컨트롤러에서 설정
 @RequiredArgsConstructor
 public class RecordController {
@@ -164,6 +165,9 @@ public class RecordController {
         return new ResponseEntity(
                 new ApiResponseDto(true, "searchLiveReport successfully@", recordCarNumResponseDtoList), HttpStatus.OK);
     }
+
+
+
 
     // 1. 전달받은 starDate 와 endDate 를 기준으로 Record 에서 데이터를 조회한다.
     // 2. 조회한 데이터들 중, 5개의 지역별로 개수를 새어 HashMap 형태로 저장한다.
