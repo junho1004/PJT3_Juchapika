@@ -26,7 +26,7 @@ import static io.swagger.v3.oas.integration.StringOpenApiConfigurationLoader.LOG
 @RestController
 @RequestMapping("/feeletter")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*", allowedHeaders = "*") // 컨트롤러에서 설정
 public class FeeController {
     private final FeeService feeService;
     private final RecordService recordService;

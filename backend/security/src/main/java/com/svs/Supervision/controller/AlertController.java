@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/sms")
-@CrossOrigin(origins = "http://localhost:3000") // 컨트롤러에서 설정
+//@CrossOrigin(origins = "http://localhost:3000") // 컨트롤러에서 설정
 public class AlertController {
 
     final DefaultMessageService messageService;

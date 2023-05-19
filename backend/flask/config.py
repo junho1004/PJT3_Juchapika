@@ -1,0 +1,4 @@
+AWS_ACCESS_KEY = ""
+AWS_SECRET_KEY = ""
+BUCKET_NAME = ""
+AWS_S3_BUCKET_REGION = "ap-northeast-2"

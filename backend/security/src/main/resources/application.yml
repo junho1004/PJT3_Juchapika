@@ -25,12 +25,10 @@ spring:
   jackson:
     time-zone: Asia/Seoul
 
-
 coolsms:
   api:
     key: NCSCOGUYJX1YCUB9
     secret: FAAQGUZSFSYHSJXL5SUBEZWGVIJUBMJG
-
 
 server:
   max-http-header-size: 8000000
@@ -62,8 +60,7 @@ springdoc:
     display-query-params-without-oauth2: true
     doc-expansion: none
 
-  paths-to-match:
-    /**
+  paths-to-match: /**
 
   cors:
     allowedOrigins: http://localhost:3000, http://localhost:8080

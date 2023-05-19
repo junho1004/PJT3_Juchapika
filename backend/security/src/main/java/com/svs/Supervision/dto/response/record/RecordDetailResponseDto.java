@@ -21,6 +21,8 @@ public class RecordDetailResponseDto {
     private LocalTime time;
     private String location;
     private String carNum;
+    private String plateImageUrl;
+    private String carImageUrl;
 
 
     public static RecordDetailResponseDto build(Record record) {
@@ -29,6 +31,8 @@ public class RecordDetailResponseDto {
                 .date(record.getDate().toLocalDate())
                 .time(record.getDate().toLocalTime())
                 .carNum(record.getCar().getCarNum())
+                .carImageUrl(record.getCarImageUrl())
+                .plateImageUrl(record.getPlateImageUrl())
                 .build();
     }
 }
