@@ -127,7 +127,7 @@ public class RecordService {
     public void fineRecord(RecordIdRequestDto recordIdRequestDto,String token){
         Record record = recordRepository.getById(recordIdRequestDto.getId());
         Car car = record.getCar();
-        String feeUrl = "https://jupika.site/api/feeletter/"+(record.getId());
+        String feeUrl = "https://juchapika.site/messagefine/"+(record.getId());
         System.out.println(feeUrl);
         System.out.println(car.getPhoneNum());
         record.cntUpdate(2L);

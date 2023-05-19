@@ -126,7 +126,7 @@ public class RecordRepositoryQdslRepositoryImpl implements RecordRepositoryQdslR
         LocalDateTime endDate = recordDetailRequestDto.getEndDate();// 끝시간
 
         return jpaQueryFactory.selectFrom(record)
-                .where(record.date.between(startDate, endDate))
+                .where(record.date.between(startDate, endDate), record.cnt.eq(2L))
                 .fetch();
     }
 

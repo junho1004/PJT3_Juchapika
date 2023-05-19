@@ -22,7 +22,7 @@ export default function EnrollmentCar() {
   let [date, setdate] = useState("");
   let [locations, setlocation] = useState("");
   let [fine, setfine] = useState("");
-  const[bincan,setbincan]=useState("")
+  const [bincan, setbincan] = useState("")
 
 
   let navigate = useNavigate();
@@ -32,7 +32,7 @@ export default function EnrollmentCar() {
 
   useEffect(() => {
     console.log(token);
-    
+
     axios
       .get(`${baseUrl}/record/live-report-list`, {
         headers: {
@@ -95,15 +95,18 @@ export default function EnrollmentCar() {
 
   const onChange = (e) => {
     // setbincan(e.target.value)
-    
+
     setInputText(e.target.value);
   };
 
+  //
+  // fix
+  //
   const deleteButton = (e) => {
     e.preventDefault();
 
     axios
-      .delete(`${baseUrl}record/delete-by-id`, {
+      .delete(`${baseUrl}/record/delete-by-id`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -140,7 +143,7 @@ export default function EnrollmentCar() {
   };
 
   const button = () => {
-   
+
     console.log("이리와봐요")
     // setInputText(InputText);
     const data = {
@@ -181,7 +184,7 @@ export default function EnrollmentCar() {
 
   const Send = () => {
     console.log(id)
-    
+
     console.log(posts)
     const data = {
       id: id,
@@ -198,11 +201,12 @@ export default function EnrollmentCar() {
         console.log(res)
         console.log("등록으로 보내짐");
         setInputText("");
-              setfine("");
-              setdate("");
-              setCarImageUrl("");
-              setid("");
-              setlocation("");
+        setfine("");
+        setdate("");
+        setCarImageUrl("");
+        setid("");
+        setlocation("");
+        alert("문자 메세지가 전송되었습니다");
       })
       .catch((error) => {
         console.error(error);
