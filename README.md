@@ -76,16 +76,16 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
 ## 주요 기능 📦
 
 > ### 라이브 스트리밍
-![로고](images/livestream.png)
+![로고](images/livestream.PNG)
 
 > ### 단속 차량 등록
-![로고](images/caradd.png)
+![로고](images/caradd.PNG)
 
 
 > ### 단속 내역 조회
-![main](images/main.png)
-![excel](images/excel.png)
-![chart](images/chart.png)
+![main](images/main.PNG)
+![excel](images/excel.PNG)
+![chart](images/chart.PNG)
 
 
 <br/>
@@ -98,7 +98,7 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
 
 ## 기대효과 🔔
 <br/>
-![Benefit]](images/Benefit.png)
+![Benefit](images/Benefit.PNG)
 
 
 <br/>
@@ -144,7 +144,7 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
 
 ## 아키텍처 설계도
 
-![아키텍처 설계도](images/architecture.png)
+![아키텍처 설계도](images/Architecture.PNG)
 
 <br/>
 <br/>
@@ -154,7 +154,7 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
 
 ## 사이트맵
 
-![사이트 맵](/images/sitemap.png)
+![사이트 맵](/images/SiteMap.PNG)
 
 <br/>
 <br/>
@@ -163,7 +163,7 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
 
 ## ERD
 
-![ERD](images/ERD.png)
+![ERD](images/ERD.PNG)
 
 <br/>
 <br/>
@@ -227,15 +227,18 @@ ORM(Object Relational Mapping) 기술을 기반하는 JPA를 활용하여 객체
 <br/>
 
 실시간으로 촬영되는 영상을 프레임별로 나누어 YOLOv5를 활용하여 번호판을 인식했습니다. (학습 모델: https://github.com/gyupro/EasyKoreanLpDetector/blob/main/lp_det.pt) 한국어를 포함한 글자를 추출하기 위해 EasyOCR(문자 영역 인식(Detection) + 문자 인식(Recognition)기능을 모두 하는 프레임워크)을 사용했고, 인식률이 80% 이상인 번호판의 번호를 추출하였습니다.
-![SYS3](images/SystemTech3.png)
 
+<br/>
+
+![SYS3](images/detecting.PNG)
+
+<br/>
 
 ### 2-4. AWS Kinesis 실시간 비디오 스트리밍
 
 <br/>
 
 TurtleBot에서 촬영하는 영상을 분석 및 스트리밍을 위해서, 실시간 데이터 스트리밍을 처리하는 데 중점을 둔 완전 관리형 서비스 AWS Kinesis를 사용하였습니다. (참고 문헌: https://www.smarthome-diy.info/blog/developper/smarthome/2020/10/2417/)
-
 
 
 <br/>
@@ -318,7 +321,7 @@ TurtleBot에서 촬영하는 영상을 분석 및 스트리밍을 위해서, 실
 
 |    <img src='images/ziu.png' width='150px'>    |  <img src='images/yunam.png' width='150px'>  |    <img src='images/hye.png' width='150px'>    |     <img src='images/woogie.png' width='150px'>     |     <img src='images/won.png' width='150px'>     |    <img src='images/chang.png' width='150px'>    |
 | :--------------------------------------------: | :-----------------------------------------: | :--------------------------------------------: | :-------------------------------------------------: | :----------------------------------------------: | :----------------------------------------------: |
-| **[FE 최지우👑](https://github.com/choizlor)** | **[FE 김유나](https://yunae.tistory.com/)** | **[FE 나혜승](https://github.com/HyeseungNA)** | **[BE 최종욱](https://whitedevelper.tistory.com/)** | **[BE 이원석](https://github.com/wonseokLee97)** | **[AI 이창민](https://changmiin2.tistory.com/)** |
+| **[BE 이원석👑](https://github.com/choizlor)** | **[BE 정우영](https://yunae.tistory.com/)** | **[FE 박현영](https://github.com/HyeseungNA)** | **[EB 김상래](https://whitedevelper.tistory.com/)** | **[EB 이영도](https://github.com/wonseokLee97)** | **[EB 이준호](https://changmiin2.tistory.com/)** |
 
 <br/>
 <br/>
