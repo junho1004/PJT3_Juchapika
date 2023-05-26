@@ -319,9 +319,9 @@ TurtleBot에서 촬영하는 영상을 분석 및 스트리밍을 위해서, 실
 
 ## 팀원 소개
 
-|    <img src='images/ziu.png' width='150px'>    |  <img src='images/yunam.png' width='150px'>  |    <img src='images/hye.png' width='150px'>    |     <img src='images/woogie.png' width='150px'>     |     <img src='images/won.png' width='150px'>     |    <img src='images/chang.png' width='150px'>    |
+|    <img src='images/wonseokLee97.png' width='150px'>    |  <img src='images/yunam.png' width='150px'>  |    <img src='images/hye.png' width='150px'>    |     <img src='images/woogie.png' width='150px'>     |     <img src='images/won.png' width='150px'>     |    <img src='images/chang.png' width='150px'>    |
 | :--------------------------------------------: | :-----------------------------------------: | :--------------------------------------------: | :-------------------------------------------------: | :----------------------------------------------: | :----------------------------------------------: |
-| **[BE 이원석👑](https://github.com/choizlor)** | **[BE 정우영](https://yunae.tistory.com/)** | **[FE 박현영](https://github.com/HyeseungNA)** | **[EB 김상래](https://whitedevelper.tistory.com/)** | **[EB 이영도](https://github.com/wonseokLee97)** | **[EB 이준호](https://changmiin2.tistory.com/)** |
+| **[BE 이원석👑](https://github.com/wonseokLee97)** | **[BE 정우영](https://yunae.tistory.com/)** | **[FE 박현영](https://github.com/HyeseungNA)** | **[EB 김상래](https://whitedevelper.tistory.com/)** | **[EB 이영도](https://github.com/wonseokLee97)** | **[EB 이준호](https://changmiin2.tistory.com/)** |
 
 <br/>
 <br/>
