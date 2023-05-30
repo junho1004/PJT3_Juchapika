@@ -18,7 +18,7 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
 <br/>
 <br/>
 
----
+
 
 
 <br/>
@@ -68,9 +68,6 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
 
 <br/>
 <br/>
-
----
-
 <br/>
 <br/>
 
@@ -173,7 +170,7 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
 
 > ### 납세자 문자
 **(고지서 링크 첨부: 납세자의 상세고지서내용 및 납부이력 확인용/**개인정보 유출 방지 암호화 구현 )
-<img src="images/alert2.PNG" width="600" height="1000">
+<img src="images/alert2.PNG" width="600" height="800">
 
 <br/>
 <br/>
