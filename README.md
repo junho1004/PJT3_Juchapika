@@ -85,6 +85,10 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
 > ### 단속 내역 조회
 ![main](images/main.PNG)
 
+
+> ### 단속차량 검색
+
+
 ---
 
 ![excel](images/excel.PNG)
@@ -115,7 +119,7 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
 
 ---
 ## 프로젝트 파일 구조 ✔
-### Backend
+### Back-end
 ```
 └── Supervision
     ├── SupervisionApplication.java
@@ -141,6 +145,43 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
         ├── record
         └── user
 ```
+
+### Front-end
+```
+├── Dockerfile
+├── README.md
+├── deploy_conf
+│   └── nginx.conf
+├── firebase.json
+├── firestore.indexes.json
+├── public
+├── src
+│   ├── components
+│   │   ├── Nav
+│   │   └── Table
+│   ├── hooks
+│   ├── pages
+│   │   ├── EnrollmentCar
+│   │   ├── Fire.jsx
+│   │   ├── FirstPage
+│   │   ├── ForPerson
+│   │   ├── LiveStream
+│   │   ├── Main.jsx
+│   │   ├── Main.module.css
+│   │   └── VideoStorage
+│   ├── reportWebVitals.js
+│   ├── rollup.config.js
+│   ├── setupTests.js
+│   ├── tsconfig.json
+│   ├── tslint.json
+│   ├── useViewer.jsx
+│   └── withErrorLog.ts
+├── webpack.config.js
+├── webpack.debug.config.js
+├── webpack.dev.config.js
+└── webpack.dist.config.js
+```
+
 
 
 <br/>
