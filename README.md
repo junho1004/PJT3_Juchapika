@@ -61,6 +61,7 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
 #### **Comunication**
 
 <div style='display:flex;margin-bottom:20px'>
+<img src="https://img.shields.io/badge/mattermost-4053D6?style=for-the-badge&logo=mattermost&logoColor=white">
 <img style="margin:0 5px 0 0" src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=jirasoftware&logoColor=white">
 <img style="margin:0 5px 0 0" src="https://img.shields.io/badge/NOTION-000000?style=for-the-badge&logo=notion&logoColor=white">
 <img  style="margin:0 5px 0 0"src="https://img.shields.io/badge/DISCORD-5865F2?style=for-the-badge&logo=discord&logoColor=white">
