@@ -76,19 +76,72 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
 
 ## 주요 기능 📦
 
-> ### 라이브 스트리밍
-![로고](images/livestream.PNG)
+<br/>
+
+# 1. 촬영 영상 실시간 스트리밍 및 번호판 인식 
+
+
+> ### AWS Kinesis Video Stream를 사용하여 실시간 영상 탐지 및 스트리밍
+<img src="images/live.gif" width="1170" height="500">
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+> ### YOLO5 객체 탐지 알고리즘을 활용한 실시간 번호판 탐지
+<img src="images/detecting.gif" width="1170" height="500">
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+# 2. 단속 결과 처리
+
+
+> ### 단속 차량 수정
+<img src="images/carEdit.gif" width="1170" height="500">
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
 > ### 단속 차량 등록
-![로고](images/caradd.PNG)
+<img src="images/sendMsg.gif" width="1170" height="500">
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+> ### 고지서 미리보기
+<img src="images/preview.gif" width="1170" height="500">
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+> ### 납부 알람 전송
+<img src="images/sendMsg.gif" width="1170" height="500">
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
 
 > ### 단속 내역 조회
 ![main](images/main.PNG)
-
-
-> ### 단속차량 검색
-
 
 ---
 
@@ -98,16 +151,51 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
 
 ![chart](images/chart.PNG)
 
-<br/>
-<br/>
-
 ---
 
 <br/>
 <br/>
-
-## 기대효과 🔔
 <br/>
+<br/>
+<br/>
+
+
+> ### 단속차량 검색
+<img src="images/carSearch.gif" width="1170" height="500">
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+> ### 납세자 문자
+**(고지서 링크 첨부: 납세자의 상세고지서내용 및 납부이력 확인용/**개인정보 유출 방지 암호화 구현 )
+<img src="images/alert2.PNG" width="600" height="1000">
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+
+> ### 모바일 고지서
+<img src="images/mobileView.gif" width="600" height="1000">
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+
+
 
 ![Benefit](images/Benefit.PNG)
 
@@ -118,7 +206,7 @@ _프로젝트 Juchapika는 자율주행 및 실시간 카메라 송수신을 활
 <br/>
 
 
----
+
 ## 프로젝트 파일 구조 ✔
 ### Back-end
 ```
